@@ -1,0 +1,8 @@
+{
+  "auth": {
+    "pin_hash": "35ac9b841dbc6c06c3d2dbd8c8e1bf394810a0b39eb0a8fd313c7c45f174f89c",
+    "max_attempts": 5,
+    "lockout_minutes": 15,
+    "session_hours": 24
+  }
+}

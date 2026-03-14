@@ -600,6 +600,197 @@
             color: var(--text-muted);
             border-top: 1px solid var(--border);
         }
+
+        /* ─── HISTORY BAR ─── */
+        .history-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 28px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+        }
+
+        .history-bar label {
+            color: var(--text-dim);
+            white-space: nowrap;
+        }
+
+        .history-select {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: var(--mono);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .history-select:focus { border-color: var(--accent); }
+
+        .history-badge {
+            font-size: 11px;
+            color: var(--amber);
+            display: none;
+        }
+
+        .history-badge.show { display: inline; }
+
+        /* ─── METHODOLOGY TOGGLE ─── */
+        .methodology-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-right: auto;
+            font-family: var(--sans);
+            transition: all 0.2s;
+        }
+
+        .methodology-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* ─── METHODOLOGY PANEL ─── */
+        .methodology-panel {
+            display: none;
+            padding: 20px 28px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .methodology-panel.open { display: block; }
+
+        .meth-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: var(--text);
+        }
+
+        .meth-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 1200px) { .meth-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 700px) { .meth-grid { grid-template-columns: 1fr; } }
+
+        .meth-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .meth-card h4 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .meth-card--day h4 { color: var(--red); }
+        .meth-card--swing h4 { color: var(--amber); }
+        .meth-card--position h4 { color: var(--accent); }
+        .meth-card--investment h4 { color: var(--green); }
+
+        .meth-card p {
+            font-size: 12px;
+            color: var(--text-dim);
+            line-height: 1.65;
+        }
+
+        /* ─── DRAWER NEW SECTIONS ─── */
+        .d-section {
+            margin-top: 18px;
+            padding: 14px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .d-section-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+
+        .d-section-body {
+            font-size: 13px;
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+        .analyst-consensus {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .analyst-tag {
+            padding: 3px 10px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .analyst-tag.buy { background: rgba(0,196,140,0.15); color: var(--green); }
+        .analyst-tag.hold { background: rgba(240,160,48,0.15); color: var(--amber); }
+        .analyst-tag.sell { background: rgba(255,71,87,0.15); color: var(--red); }
+
+        .bull-bear {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .bull-bear div {
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .bull-case {
+            background: rgba(0,196,140,0.06);
+            border-right: 2px solid var(--green);
+            color: var(--text-dim);
+        }
+
+        .bear-case {
+            background: rgba(255,71,87,0.06);
+            border-right: 2px solid var(--red);
+            color: var(--text-dim);
+        }
+
+        .d-methodology {
+            margin-top: 18px;
+            padding: 12px 14px;
+            background: rgba(139,92,246,0.06);
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 8px;
+        }
+
+        .d-methodology-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--purple);
+            margin-bottom: 6px;
+        }
+
+        .d-methodology-body {
+            font-size: 12px;
+            color: var(--text-dim);
+            line-height: 1.65;
+        }
     </style>
 </head>
 <body>
@@ -639,6 +830,39 @@
             <button class="logout-btn" onclick="logout()">התנתק</button>
         </div>
     </header>
+
+    <!-- HISTORY BAR -->
+    <div class="history-bar" id="history-bar" style="display:none;">
+        <label>תאריך ניתוח:</label>
+        <select class="history-select" id="history-select" onchange="loadHistoryDate(this.value)">
+            <option value="">ניתוח נוכחי</option>
+        </select>
+        <span class="history-badge" id="history-badge">צופה בארכיון</span>
+        <button class="methodology-btn" onclick="toggleMethodology()">מתודולוגיה</button>
+    </div>
+
+    <!-- METHODOLOGY PANEL -->
+    <div class="methodology-panel" id="methodology-panel">
+        <div class="meth-title">פילוסופיית ניתוח קונטרריאנית — Q5 Matrix</div>
+        <div class="meth-grid">
+            <div class="meth-card meth-card--day">
+                <h4>מסחר יומי — ארביטראז' סמנטי</h4>
+                <p>זיהוי חברה שחווה פער מחיר שלילי (Gap Down) כתוצאה מ"רעש" — ציוץ, שינוי מדד, או כותרת מטעה — ולא מפגיעה פונדמנטלית בעסק. המטרה: רווח מהיר מפאניקה של ההמון. המערכת מחפשת ניירות ערך שירדו בחדות על נפח גבוה אך ללא שינוי פונדמנטלי.</p>
+            </div>
+            <div class="meth-card meth-card--swing">
+                <h4>סווינג — רכיבה על קטליזטור</h4>
+                <p>זיהוי חברה המתקרבת לאירוע מכונן — דו"ח כספי, החלטת ריבית, אישור רגולטורי — אשר השוק מתמחר אותו כרגע בחסר. המערכת מנתחת את הפער בין הציפיות לבין הפוטנציאל הנסתר, ומאתרת מניות שעומדות לפני תנועה משמעותית.</p>
+            </div>
+            <div class="meth-card meth-card--position">
+                <h4>פוזיציה — צווארי בקבוק ו"כסף חכם"</h4>
+                <p>זיהוי סקטור שבו מתחיל להיכנס "כסף חכם" — מחזורי מסחר חריגים של מוסדיים — עקב חוסר מהותי ובלתי נראה בתשתית או חומר גלם. המערכת עוקבת אחרי יחסי נפח מסחר לממוצע ומזהה הצטברות שקטה לפני מהלך גדול.</p>
+            </div>
+            <div class="meth-card meth-card--investment">
+                <h4>השקעה ארוכת טווח — מונופול וחפיר פיזי</h4>
+                <p>חברה בעלת חפיר כלכלי שלא ניתן לשכפול — זיכיונות, כורים, תשתיות — מאזן חסין אינפלציה, ויכולת ייצור תזרים מזומנים גם במיתון עולמי. המערכת מדרגת את עומק החפיר, איכות ההנהלה, ויציבות הדיבידנד.</p>
+            </div>
+        </div>
+    </div>
 
     <div id="loading" class="loading">
         <div class="spinner"></div>
@@ -682,13 +906,23 @@
 // AUTHENTICATION SYSTEM
 // ═══════════════════════════════════════════════════
 
-// SHA-256 hash of the 6-digit PIN code (PIN is NOT stored in code — only the hash)
-const VALID_HASH = "35ac9b841dbc6c06c3d2dbd8c8e1bf394810a0b39eb0a8fd313c7c45f174f89c";
+// Auth config loaded from external file (PIN hash NOT in HTML source)
+let VALID_HASH = "";
+let SESSION_HOURS = 24;
+let MAX_ATTEMPTS = 5;
+let LOCKOUT_MINUTES = 15;
 
-// Session duration: 24 hours
-const SESSION_HOURS = 24;
-const MAX_ATTEMPTS = 5;
-const LOCKOUT_MINUTES = 15;
+// Load config from external file
+(async function loadConfig() {
+    try {
+        const r = await fetch("config.json?v=" + Date.now());
+        const cfg = await r.json();
+        VALID_HASH = cfg.auth.pin_hash;
+        MAX_ATTEMPTS = cfg.auth.max_attempts || 5;
+        LOCKOUT_MINUTES = cfg.auth.lockout_minutes || 15;
+        SESSION_HOURS = cfg.auth.session_hours || 24;
+    } catch(e) { console.error("Config load failed:", e); }
+})();
 
 let attempts = 0;
 let lockedUntil = 0;
@@ -849,6 +1083,8 @@ const XRAY = {
 };
 
 let DATA = null;
+let HISTORY_INDEX = [];
+let viewingHistory = false;
 
 async function load() {
     try {
@@ -856,11 +1092,58 @@ async function load() {
         if (!r.ok) throw new Error(r.status);
         DATA = await r.json();
         render();
+        loadHistoryIndex();
     } catch (e) {
         document.getElementById("loading").innerHTML =
             '<div style="color:var(--red);">שגיאה בטעינת נתונים</div>' +
             '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);">הרץ את הבקאנד קודם — ' + e.message + '</div>';
     }
+}
+
+async function loadHistoryIndex() {
+    try {
+        const r = await fetch("history/index.json?v=" + Date.now());
+        if (!r.ok) return;
+        HISTORY_INDEX = await r.json();
+        if (HISTORY_INDEX.length > 0) {
+            const sel = document.getElementById("history-select");
+            HISTORY_INDEX.forEach(entry => {
+                const opt = document.createElement("option");
+                opt.value = entry.file;
+                opt.textContent = entry.date;
+                sel.appendChild(opt);
+            });
+            document.getElementById("history-bar").style.display = "flex";
+        }
+    } catch(e) { console.log("No history index yet"); }
+}
+
+async function loadHistoryDate(file) {
+    if (!file) {
+        // Back to current
+        viewingHistory = false;
+        document.getElementById("history-badge").classList.remove("show");
+        try {
+            const r = await fetch("master_data.json?v=" + Date.now());
+            DATA = await r.json();
+            render();
+        } catch(e) {}
+        return;
+    }
+    try {
+        const r = await fetch(file + "?v=" + Date.now());
+        if (!r.ok) throw new Error(r.status);
+        DATA = await r.json();
+        viewingHistory = true;
+        document.getElementById("history-badge").classList.add("show");
+        render();
+    } catch(e) {
+        alert("שגיאה בטעינת ניתוח מהארכיון");
+    }
+}
+
+function toggleMethodology() {
+    document.getElementById("methodology-panel").classList.toggle("open");
 }
 
 function render() {
@@ -928,6 +1211,13 @@ function card(p, colKey, idx) {
     return h;
 }
 
+const COLUMN_METHODOLOGY = {
+    day_trading: "הגישה הקונטרריאנית למסחר יומי מתמקדת בזיהוי פערי מחיר שנגרמו מרעש תקשורתי ולא מנזק פונדמנטלי. כשמניה צונחת על כותרת מטעה או ציוץ — זו הזדמנות ארביטראז' סמנטי. הציון משקלל את עוצמת הרעש מול הבסיס העסקי.",
+    swing: "אסטרטגיית הסווינג מזהה מניות לפני אירוע מכונן — דו\"ח, החלטת ריבית, אישור FDA — שהשוק מתמחר בחסר. הניתוח בוחן את הפער בין הציפיות הנוכחיות לבין הפוטנציאל, ומדרג לפי עוצמת הקטליזטור הצפוי.",
+    position: "גישת הפוזיציה עוקבת אחרי כניסה שקטה של \"כסף חכם\" — מוסדיים שמצטברים בשקט בסקטורים עם חוסרים מבניים. הניתוח בוחן מחזורי מסחר חריגים, שינויי holdings מוסדיים, וצווארי בקבוק בשרשרת האספקה.",
+    investment: "בהשקעה ארוכת טווח אנחנו מחפשים חפיר כלכלי בלתי ניתן לשכפול — זיכיונות, כורים, תשתיות קריטיות. חברות כאלה שורדות מיתונות, מייצרות תזרים יציב, ומגנות מאינפלציה. הציון משקלל עומק חפיר, איכות הנהלה, ויציבות דיבידנד.",
+};
+
 function openDrawer(colKey, idx) {
     const p = DATA.matrix[colKey].top_picks[idx];
     if (!p) return;
@@ -944,6 +1234,39 @@ function openDrawer(colKey, idx) {
     h += '</div>';
     h += '<div class="d-score">ציון מרוכב: <strong>' + sc + '</strong> / 100</div>';
 
+    // ── Company Description ──
+    if (p.company_description) {
+        h += '<div class="d-section">';
+        h += '<div class="d-section-title">על החברה</div>';
+        h += '<div class="d-section-body">' + p.company_description + '</div>';
+        h += '</div>';
+    }
+
+    // ── Analyst Ratings ──
+    const ar = p.analyst_ratings || {};
+    if (ar.consensus || ar.summary) {
+        h += '<div class="d-section">';
+        h += '<div class="d-section-title">שעון אנליסטים</div>';
+        if (ar.consensus) {
+            let tagClass = "hold";
+            const c = ar.consensus;
+            if (c.includes("קנייה") || c.includes("buy") || c.includes("Buy")) tagClass = "buy";
+            else if (c.includes("מכירה") || c.includes("sell") || c.includes("Sell")) tagClass = "sell";
+            h += '<div class="analyst-consensus"><span class="analyst-tag ' + tagClass + '">' + c + '</span></div>';
+        }
+        if (ar.summary) {
+            h += '<div class="d-section-body">' + ar.summary + '</div>';
+        }
+        if (ar.bull_case || ar.bear_case) {
+            h += '<div class="bull-bear">';
+            if (ar.bull_case) h += '<div class="bull-case"><strong style="color:var(--green);">תזה חיובית:</strong> ' + ar.bull_case + '</div>';
+            if (ar.bear_case) h += '<div class="bear-case"><strong style="color:var(--red);">תזה שלילית:</strong> ' + ar.bear_case + '</div>';
+            h += '</div>';
+        }
+        h += '</div>';
+    }
+
+    // ── X-Ray Parameters ──
     const xrayKeys = Object.keys(XRAY);
     xrayKeys.forEach(key => {
         const param = xray[key] || {};
@@ -961,6 +1284,15 @@ function openDrawer(colKey, idx) {
         h += '<div class="xr-body">' + (param.analysis || "ניתוח לא זמין") + '</div>';
         h += '</div>';
     });
+
+    // ── Methodology for this column ──
+    const methText = COLUMN_METHODOLOGY[colKey] || "";
+    if (methText) {
+        h += '<div class="d-methodology">';
+        h += '<div class="d-methodology-title">מתודולוגיה — ' + (COLUMNS.find(c => c.key === colKey) || {}).title + '</div>';
+        h += '<div class="d-methodology-body">' + methText + '</div>';
+        h += '</div>';
+    }
 
     document.getElementById("drawer-content").innerHTML = h;
     document.getElementById("drawer").classList.add("open");

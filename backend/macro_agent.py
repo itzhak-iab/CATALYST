@@ -77,6 +77,8 @@ class Config:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
     GEMINI_MODEL = "gemini-2.5-flash"
     OUTPUT_FILE = Path(__file__).parent.parent / "docs" / "master_data.json"
+    HISTORY_DIR = Path(__file__).parent.parent / "docs" / "history"
+    CONFIG_FILE = Path(__file__).parent.parent / "docs" / "config.json"
     MAX_RETRIES = 3
     RETRY_DELAY = 5
 
@@ -234,6 +236,8 @@ class DeepDataFetcher:
                     "total_cash": info.get("totalCash", None),
                 },
                 "analyst": {},
+                "business_description": info.get("longBusinessSummary", ""),
+                "analyst_ratings": {},
                 "insiders": [],
             }
 
@@ -243,6 +247,20 @@ class DeepDataFetcher:
                 if recs is not None and not recs.empty:
                     latest = recs.tail(5).to_dict("records")
                     result["analyst"]["recent_recs"] = latest
+            except Exception:
+                pass
+
+            # Analyst ratings summary
+            try:
+                rec_summary = stock.recommendations_summary
+                if rec_summary is not None:
+                    result["analyst_ratings"] = {
+                        "strongBuy": int(rec_summary.get("strongBuy", 0)),
+                        "buy": int(rec_summary.get("buy", 0)),
+                        "hold": int(rec_summary.get("hold", 0)),
+                        "sell": int(rec_summary.get("sell", 0)),
+                        "strongSell": int(rec_summary.get("strongSell", 0)),
+                    }
             except Exception:
                 pass
 
@@ -425,11 +443,13 @@ class ContrarianAIEngine:
 ייצר ניתוח X-Ray מלא עבור כל אחת מ-3 המניות.
 
 ### כללים קריטיים:
-1. **כל הטקסט בעברית בלבד** — תקציר, ניתוח, שמות סקטורים.
+1. **כל הטקסט בעברית בלבד** — תקציר, ניתוח, שמות סקטורים, תיאור החברה, דעת האנליסטים.
 2. **מפתחות JSON באנגלית בלבד** — בדיוק כפי שמופיע בסכמה.
 3. **ציון 1-100** לכל פרמטר — מבוסס על הפילוסופיה הקונטרריאנית (ציון גבוה = הזדמנות קונטרריאנית חזקה).
 4. **ניתוח 2-3 משפטים** לכל פרמטר — ספציפי, עם נתונים.
 5. **composite_score** — ממוצע משוקלל של 8 הפרמטרים.
+6. **company_description** — תיאור של 3-4 משפטים בעברית על מה החברה עושה.
+7. **analyst_ratings** — סיכום דעת האנליסטים בעברית, כולל consensus (קנייה/החזק/מכירה), summary (2-3 משפטים), bull_case (משפט אחד), bear_case (משפט אחד).
 
 ## פורמט פלט — JSON בלבד:
 ```json
@@ -442,6 +462,13 @@ class ContrarianAIEngine:
       "price": {{ "current": 0.0 }},
       "composite_score": {{ "total": 0 }},
       "thesis_summary": "תקציר קונטרריאני 2-3 משפטים בעברית",
+      "company_description": "תיאור החברה בעברית — 3-4 משפטים על מה החברה עושה",
+      "analyst_ratings": {{
+        "consensus": "קנייה/החזק/מכירה",
+        "summary": "סיכום דעת האנליסטים בעברית — 2-3 משפטים",
+        "bull_case": "התזה החיובית — משפט אחד",
+        "bear_case": "התזה השלילית — משפט אחד"
+      }},
       "xray": {{
         "earnings_guidance": {{ "score": 0, "analysis": "ניתוח בעברית" }},
         "regulation": {{ "score": 0, "analysis": "..." }},
@@ -732,6 +759,27 @@ def main():
     Config.OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(Config.OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
+
+    # Archive to history
+    Config.HISTORY_DIR.mkdir(parents=True, exist_ok=True)
+    date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    history_file = Config.HISTORY_DIR / f"{date_str}.json"
+    with open(history_file, "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
+    log.info(f"Archived to {history_file}")
+
+    # Update history index
+    history_index = []
+    for hf in sorted(Config.HISTORY_DIR.glob("*.json"), reverse=True):
+        if hf.name == "index.json":
+            continue
+        history_index.append({
+            "date": hf.stem,
+            "file": f"history/{hf.name}",
+        })
+    with open(Config.HISTORY_DIR / "index.json", "w", encoding="utf-8") as f:
+        json.dump(history_index, f, ensure_ascii=False, indent=2)
+    log.info(f"History index updated: {len(history_index)} entries")
 
     elapsed = time.time() - start_time
     log.info(f"Saved to {Config.OUTPUT_FILE}")
