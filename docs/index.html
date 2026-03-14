@@ -37,6 +37,121 @@
             line-height: 1.5;
         }
 
+        /* ─── LOGIN SCREEN ─── */
+        .login-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-base);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-screen.hidden { display: none; }
+
+        .login-box {
+            width: 360px;
+            max-width: 90vw;
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -1px;
+        }
+
+        .login-logo span { color: var(--accent); }
+
+        .login-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+        }
+
+        .login-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .pin-input {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 24px;
+            direction: ltr;
+        }
+
+        .pin-input input {
+            width: 48px;
+            height: 56px;
+            background: var(--bg-surface);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+            -webkit-text-security: disc;
+        }
+
+        .pin-input input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(45, 91, 227, 0.15);
+        }
+
+        .pin-input input.error {
+            border-color: var(--red);
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--sans);
+        }
+
+        .login-btn:hover { background: #2450c8; transform: translateY(-1px); }
+        .login-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+        .login-error {
+            color: var(--red);
+            font-size: 12px;
+            margin-top: 12px;
+            min-height: 18px;
+        }
+
+        .login-lockout {
+            color: var(--amber);
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        /* ─── APP (hidden until login) ─── */
+        .app { display: none; }
+        .app.visible { display: block; }
+
         /* ─── HEADER ─── */
         header {
             padding: 18px 28px;
@@ -82,6 +197,19 @@
         .badge.after_hours { background: rgba(139,92,246,0.12); color: var(--purple); }
         .badge.weekend { background: rgba(86,92,114,0.12); color: var(--text-muted); }
 
+        .logout-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
         /* ─── MATRIX GRID ─── */
         .matrix {
             display: grid;
@@ -119,7 +247,6 @@
             margin-top: 2px;
         }
 
-        /* Column accent top borders */
         .col--day .col-head { border-top: 3px solid var(--red); }
         .col--swing .col-head { border-top: 3px solid var(--amber); }
         .col--position .col-head { border-top: 3px solid var(--accent); }
@@ -197,15 +324,6 @@
             font-weight: 700;
         }
 
-        .chg {
-            font-family: var(--mono);
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .chg.up { color: var(--green); }
-        .chg.dn { color: var(--red); }
-
         .card-thesis {
             font-size: 12px;
             color: var(--text-dim);
@@ -271,10 +389,7 @@
 
         .drawer-close:hover { background: var(--bg-hover); color: var(--text); }
 
-        .drawer-head {
-            margin-top: 44px;
-            margin-bottom: 20px;
-        }
+        .drawer-head { margin-top: 44px; margin-bottom: 20px; }
 
         .d-ticker {
             font-family: var(--mono);
@@ -309,7 +424,6 @@
             color: var(--text);
         }
 
-        /* X-Ray Param Blocks */
         .xr {
             margin-bottom: 10px;
             border: 1px solid var(--border);
@@ -329,10 +443,7 @@
 
         .xr-head:hover { background: rgba(255,255,255,0.03); }
 
-        .xr-title {
-            font-size: 13px;
-            font-weight: 600;
-        }
+        .xr-title { font-size: 13px; font-weight: 600; }
 
         .xr-score {
             font-family: var(--mono);
@@ -353,7 +464,6 @@
 
         .xr.open .xr-body { display: block; }
 
-        /* Loading */
         .loading {
             text-align: center;
             padding: 100px 20px;
@@ -371,7 +481,6 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 10px;
@@ -383,12 +492,38 @@
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════════
+     LOGIN SCREEN
+     ═══════════════════════════════════════════ -->
+<div id="login-screen" class="login-screen">
+    <div class="login-box">
+        <div class="login-logo"><span>Q5</span> Matrix</div>
+        <div class="login-sub">מטריצת שליטה — גישה מוגבלת</div>
+        <label class="login-label">הזן קוד גישה (6 ספרות)</label>
+        <div class="pin-input" id="pin-container">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+        </div>
+        <button class="login-btn" id="login-btn" onclick="tryLogin()">כניסה</button>
+        <div class="login-error" id="login-error"></div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN APP (hidden until authenticated)
+     ═══════════════════════════════════════════ -->
+<div id="app" class="app">
     <header>
         <div class="logo"><span>Q5</span> Matrix — מטריצת שליטה</div>
         <div class="meta">
             <span id="status"></span>
             <span id="updated"></span>
             <span id="scanned"></span>
+            <button class="logout-btn" onclick="logout()">התנתק</button>
         </div>
     </header>
 
@@ -406,9 +541,161 @@
     </div>
 
     <div id="footer" class="footer" style="display:none;"></div>
+</div>
 
 <script>
-// ─── COLUMN CONFIG ───
+// ═══════════════════════════════════════════════════
+// AUTHENTICATION SYSTEM
+// ═══════════════════════════════════════════════════
+
+// SHA-256 hash of the 6-digit PIN code (PIN is NOT stored in code — only the hash)
+const VALID_HASH = "35ac9b841dbc6c06c3d2dbd8c8e1bf394810a0b39eb0a8fd313c7c45f174f89c";
+
+// Session duration: 24 hours
+const SESSION_HOURS = 24;
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MINUTES = 15;
+
+let attempts = 0;
+let lockedUntil = 0;
+
+// SHA-256 hash function using Web Crypto API
+async function sha256(message) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(message);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+// On page load: check if session is valid
+(function checkSession() {
+    const session = getSession();
+    if (session && session.expires > Date.now()) {
+        showApp();
+    } else {
+        document.getElementById("login-screen").classList.remove("hidden");
+        setupPinInputs();
+    }
+})();
+
+function getSession() {
+    try {
+        const raw = sessionStorage.getItem("q5_session");  // sessionStorage only — dies with tab
+        if (!raw) return null;
+        return JSON.parse(raw);
+    } catch { return null; }
+}
+
+function setSession() {
+    const session = {
+        ts: Date.now(),
+        expires: Date.now() + (SESSION_HOURS * 60 * 60 * 1000),
+    };
+    sessionStorage.setItem("q5_session", JSON.stringify(session));
+}
+
+function setupPinInputs() {
+    const inputs = document.querySelectorAll(".pin-input input");
+    inputs.forEach((inp, i) => {
+        inp.addEventListener("input", function() {
+            this.value = this.value.replace(/[^0-9]/g, "");
+            if (this.value && i < inputs.length - 1) {
+                inputs[i + 1].focus();
+            }
+            // Auto-submit when all 6 filled
+            if (i === inputs.length - 1 && this.value) {
+                tryLogin();
+            }
+        });
+        inp.addEventListener("keydown", function(e) {
+            if (e.key === "Backspace" && !this.value && i > 0) {
+                inputs[i - 1].focus();
+                inputs[i - 1].value = "";
+            }
+            if (e.key === "Enter") {
+                tryLogin();
+            }
+        });
+        inp.addEventListener("paste", function(e) {
+            e.preventDefault();
+            const paste = (e.clipboardData || window.clipboardData).getData("text").replace(/[^0-9]/g, "");
+            for (let j = 0; j < Math.min(paste.length, inputs.length); j++) {
+                inputs[j].value = paste[j];
+            }
+            if (paste.length >= inputs.length) {
+                inputs[inputs.length - 1].focus();
+                tryLogin();
+            }
+        });
+    });
+    inputs[0].focus();
+}
+
+async function tryLogin() {
+    const now = Date.now();
+
+    // Check lockout
+    if (now < lockedUntil) {
+        const remaining = Math.ceil((lockedUntil - now) / 60000);
+        document.getElementById("login-error").innerHTML =
+            '<span class="login-lockout">נעילה זמנית. נסה שוב בעוד ' + remaining + ' דקות</span>';
+        return;
+    }
+
+    const inputs = document.querySelectorAll(".pin-input input");
+    let pin = "";
+    inputs.forEach(inp => pin += inp.value);
+
+    if (pin.length !== 6) {
+        showPinError("הזן 6 ספרות");
+        return;
+    }
+
+    // Hash the entered PIN and compare against stored hash
+    const hash = await sha256(pin);
+
+    if (hash === VALID_HASH) {
+        // Success
+        setSession();
+        showApp();
+    } else {
+        // Wrong code
+        attempts++;
+        if (attempts >= MAX_ATTEMPTS) {
+            lockedUntil = Date.now() + (LOCKOUT_MINUTES * 60 * 1000);
+            document.getElementById("login-error").innerHTML =
+                '<span class="login-lockout">יותר מדי ניסיונות. נעילה ל-' + LOCKOUT_MINUTES + ' דקות</span>';
+            attempts = 0;
+        } else {
+            showPinError("קוד שגוי (" + (MAX_ATTEMPTS - attempts) + " ניסיונות נותרו)");
+        }
+        // Clear inputs
+        inputs.forEach(inp => { inp.value = ""; inp.classList.add("error"); });
+        setTimeout(() => inputs.forEach(inp => inp.classList.remove("error")), 500);
+        inputs[0].focus();
+    }
+}
+
+function showPinError(msg) {
+    document.getElementById("login-error").textContent = msg;
+}
+
+function showApp() {
+    document.getElementById("login-screen").classList.add("hidden");
+    document.getElementById("app").classList.add("visible");
+    load();
+}
+
+function logout() {
+    sessionStorage.removeItem("q5_session");
+    location.reload();
+}
+
+// ═══════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════
+
 const COLUMNS = [
     { key: "day_trading",  title: "מסחר יומי",     sub: "ארביטראז' סמנטי",                    cls: "col--day" },
     { key: "swing",        title: "סווינג",          sub: "רכיבה על קטליזטור",                   cls: "col--swing" },
@@ -416,7 +703,6 @@ const COLUMNS = [
     { key: "investment",   title: "השקעה ארוכת טווח", sub: "מונופול וחפיר פיזי",                 cls: "col--investment" },
 ];
 
-// ─── X-RAY LABELS (Hebrew) ───
 const XRAY = {
     earnings_guidance: "מעקב דוחות וצפי",
     regulation:        "שדה מוקשים רגולטורי",
@@ -430,7 +716,6 @@ const XRAY = {
 
 let DATA = null;
 
-// ─── LOAD DATA ───
 async function load() {
     try {
         const r = await fetch("master_data.json?v=" + Date.now());
@@ -444,13 +729,11 @@ async function load() {
     }
 }
 
-// ─── RENDER MATRIX ───
 function render() {
     document.getElementById("loading").style.display = "none";
     const grid = document.getElementById("matrix");
     grid.style.display = "grid";
 
-    // Meta
     const m = DATA.meta || {};
     const st = document.getElementById("status");
     const s = m.market_status || "unknown";
@@ -490,7 +773,6 @@ function render() {
     });
 }
 
-// ─── STOCK CARD ───
 function card(p, colKey, idx) {
     const price = p.price || {};
     const sc = (p.composite_score || {}).total || 0;
@@ -502,20 +784,16 @@ function card(p, colKey, idx) {
     h += '<div class="card-name">' + (p.company_name || "") + '</div></div>';
     h += '<div class="score ' + cls + '">' + sc + '</div>';
     h += '</div>';
-
     h += '<div class="card-price">';
     h += '<span class="price">$' + ((price.current || 0).toFixed ? (price.current || 0).toFixed(2) : price.current) + '</span>';
     h += '</div>';
-
     if (p.thesis_summary) {
         h += '<div class="card-thesis">' + p.thesis_summary + '</div>';
     }
-
     h += '</div>';
     return h;
 }
 
-// ─── DRAWER ───
 function openDrawer(colKey, idx) {
     const p = DATA.matrix[colKey].top_picks[idx];
     if (!p) return;
@@ -530,10 +808,8 @@ function openDrawer(colKey, idx) {
         h += '<div class="d-thesis">' + p.thesis_summary + '</div>';
     }
     h += '</div>';
-
     h += '<div class="d-score">ציון מרוכב: <strong>' + sc + '</strong> / 100</div>';
 
-    // X-Ray blocks
     const xrayKeys = Object.keys(XRAY);
     xrayKeys.forEach(key => {
         const param = xray[key] || {};
@@ -565,9 +841,6 @@ function closeDrawer() {
 document.getElementById("overlay").addEventListener("click", closeDrawer);
 document.getElementById("close-btn").addEventListener("click", closeDrawer);
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
-
-// ─── INIT ───
-load();
 </script>
 </body>
 </html>
