@@ -1,0 +1,473 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "command-control-matrix-v1",
+  "title": "Command & Control Matrix — Master Data Schema",
+  "description": "מבנה הנתונים המלא שה-Backend (Python) מייצר וה-Frontend (HTML) קורא. כל ריצה של הבקאנד מייצרת קובץ master_data.json אחד לפי הסכמה הזו.",
+  "type": "object",
+  "required": ["meta", "matrix"],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "meta": {
+      "description": "מטא-דאטה על הריצה עצמה",
+      "type": "object",
+      "required": ["generated_at", "model_version", "data_sources", "market_status"],
+      "properties": {
+        "generated_at":   { "type": "string", "format": "date-time", "description": "UTC timestamp של רגע הייצור" },
+        "model_version":  { "type": "string", "description": "גרסת סוכן ה-AI שהפיק את הניתוח, למשל 'matrix-agent-v2.1'" },
+        "data_sources":   {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "רשימת מקורות הנתונים ששימשו (APIs, scrapers, feeds)"
+        },
+        "market_status":  {
+          "type": "string",
+          "enum": ["pre_market", "open", "after_hours", "closed", "weekend"],
+          "description": "מצב השוק ברגע הניתוח"
+        },
+        "next_refresh":   { "type": "string", "format": "date-time", "description": "מתי מתוכנן הריענון הבא" }
+      }
+    },
+
+    "matrix": {
+      "description": "4 העמודות של המטריצה — כל אחת מכילה את ה-Top 3 שלה",
+      "type": "object",
+      "required": ["day_trading", "swing", "position", "investment"],
+      "additionalProperties": false,
+      "properties": {
+
+        "day_trading": { "$ref": "#/$defs/column", "description": "מסחר יומי — מארב נזילות (Liquidity Ambush)" },
+        "swing":       { "$ref": "#/$defs/column", "description": "סווינג — עיוורון קטליזטורים (Blind Catalysts)" },
+        "position":    { "$ref": "#/$defs/column", "description": "פוזיציה — הנגזרת השנייה של צוואר הבקבוק" },
+        "investment":  { "$ref": "#/$defs/column", "description": "השקעה ארוכת טווח — אנטי-שבירות ומונופול תשתיתי" }
+      }
+    }
+  },
+
+  "$defs": {
+
+    "column": {
+      "type": "object",
+      "required": ["strategy", "ai_prompt", "refresh_cadence", "top_picks"],
+      "properties": {
+        "strategy": {
+          "type": "object",
+          "required": ["name_he", "name_en", "objective", "edge_thesis"],
+          "properties": {
+            "name_he":      { "type": "string", "description": "שם האסטרטגיה בעברית" },
+            "name_en":      { "type": "string", "description": "שם האסטרטגיה באנגלית" },
+            "objective":    { "type": "string", "description": "ההישג הנדרש במשפט אחד" },
+            "edge_thesis":  { "type": "string", "description": "התזה הקונטרריאנית — למה אנחנו שונים מהשוק" }
+          }
+        },
+        "ai_prompt": {
+          "type": "string",
+          "description": "השאלה המסדרת שה-AI שואל כדי לאתר מניות לעמודה הזו"
+        },
+        "refresh_cadence": {
+          "type": "string",
+          "enum": ["intraday", "daily_morning", "daily_evening", "weekly"],
+          "description": "תדירות הרענון של העמודה"
+        },
+        "top_picks": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 3,
+          "items": { "$ref": "#/$defs/stock_card" },
+          "description": "עד 3 מניות שדורגו הכי גבוה לאסטרטגיה הזו"
+        }
+      }
+    },
+
+    "stock_card": {
+      "type": "object",
+      "required": [
+        "ticker", "company_name", "sector", "price", "composite_score",
+        "thesis_summary", "xray"
+      ],
+      "properties": {
+
+        "ticker":         { "type": "string", "description": "סימול הטיקר (e.g. CCJ, ICL, STNG)" },
+        "company_name":   { "type": "string", "description": "שם החברה המלא" },
+        "sector":         { "type": "string", "description": "סקטור ראשי" },
+        "sub_sector":     { "type": "string", "description": "תת-סקטור (אופציונלי)" },
+        "exchange":       { "type": "string", "description": "בורסה (NYSE, NASDAQ, TASE, LSE...)" },
+
+        "price": {
+          "type": "object",
+          "required": ["current", "currency", "change_pct_1d"],
+          "properties": {
+            "current":        { "type": "number", "description": "מחיר נוכחי" },
+            "currency":       { "type": "string", "description": "מטבע (USD, ILS, GBP...)" },
+            "change_pct_1d":  { "type": "number", "description": "שינוי אחוזי ביום האחרון" },
+            "change_pct_1w":  { "type": "number", "description": "שינוי אחוזי בשבוע האחרון" },
+            "change_pct_1m":  { "type": "number", "description": "שינוי אחוזי בחודש האחרון" },
+            "high_52w":       { "type": "number", "description": "שיא 52 שבועות" },
+            "low_52w":        { "type": "number", "description": "שפל 52 שבועות" },
+            "distance_from_52w_high_pct": { "type": "number", "description": "מרחק אחוזי משיא 52 שבועות (שלילי = מתחת)" }
+          }
+        },
+
+        "composite_score": {
+          "type": "object",
+          "required": ["total", "confidence"],
+          "properties": {
+            "total":      { "type": "integer", "minimum": 1, "maximum": 100, "description": "ציון משוקלל כולל 1-100" },
+            "confidence": { "type": "string", "enum": ["high", "medium", "low"], "description": "רמת ביטחון ה-AI בתזה" },
+            "breakdown":  {
+              "type": "object",
+              "description": "פירוט הציון לפי כל פרמטר רנטגן (0-100 לכל אחד)",
+              "properties": {
+                "options_mispricing":   { "type": "integer", "minimum": 0, "maximum": 100 },
+                "regulatory_moat":      { "type": "integer", "minimum": 0, "maximum": 100 },
+                "esg_sin_premium":      { "type": "integer", "minimum": 0, "maximum": 100 },
+                "crowd_exhaustion":     { "type": "integer", "minimum": 0, "maximum": 100 },
+                "boring_premium":       { "type": "integer", "minimum": 0, "maximum": 100 },
+                "debt_asymmetry":       { "type": "integer", "minimum": 0, "maximum": 100 },
+                "hostage_power":        { "type": "integer", "minimum": 0, "maximum": 100 },
+                "capital_allocation_iq": { "type": "integer", "minimum": 0, "maximum": 100 }
+              }
+            }
+          }
+        },
+
+        "thesis_summary": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "התזה בשני משפטים — למה המניה הזו, למה עכשיו"
+        },
+
+        "xray": {
+          "description": "שיקוף הרנטגן — 8 הפרמטרים העמוקים",
+          "type": "object",
+          "required": [
+            "options_mispricing",
+            "regulatory_moat",
+            "esg_sin_premium",
+            "crowd_exhaustion",
+            "boring_premium",
+            "debt_asymmetry",
+            "hostage_power",
+            "capital_allocation_iq"
+          ],
+          "properties": {
+
+            "options_mispricing": {
+              "title": "פערי תמחור אופציות סמויים",
+              "description": "מה שוק האופציות מתמחר? הכסף הגדול מהמר על הפתעה?",
+              "type": "object",
+              "required": ["score", "signal", "analysis"],
+              "properties": {
+                "score":  { "type": "integer", "minimum": 0, "maximum": 100 },
+                "signal": { "type": "string", "enum": ["surprise_up", "surprise_down", "neutral", "apathy"], "description": "apathy = השוק אדיש לחלוטין — הזדמנות להפתעה" },
+                "implied_volatility_percentile": { "type": "number", "minimum": 0, "maximum": 100, "description": "IV Percentile — מתחת ל-20 = 'ביטוח זול', מעל 80 = יקר" },
+                "put_call_ratio": { "type": "number", "description": "יחס פוט/קול — מעל 1.5 = פסימיות קיצונית" },
+                "unusual_activity": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type":       { "type": "string", "enum": ["call_sweep", "put_sweep", "block_trade", "dark_pool"] },
+                      "strike":     { "type": "number" },
+                      "expiry":     { "type": "string", "format": "date" },
+                      "premium":    { "type": "string", "description": "סכום הפרמיה (e.g. '$2.4M')" },
+                      "sentiment":  { "type": "string", "enum": ["bullish", "bearish", "hedge"] }
+                    }
+                  },
+                  "description": "פעילות חריגה באופציות — מגלה הימורים גדולים מוסתרים"
+                },
+                "next_earnings_date": { "type": "string", "format": "date" },
+                "analysis": { "type": "string", "maxLength": 500, "description": "ניתוח טקסטואלי של ה-AI" },
+                "sources":  { "type": "array", "items": { "$ref": "#/$defs/source" } }
+              }
+            },
+
+            "regulatory_moat": {
+              "title": "רגולציה כחומת מגן",
+              "description": "האם הרגולציה מגנה על מונופול החברה? חסם כניסה למתחרים?",
+              "type": "object",
+              "required": ["score", "moat_type", "analysis"],
+              "properties": {
+                "score":     { "type": "integer", "minimum": 0, "maximum": 100 },
+                "moat_type": {
+                  "type": "string",
+                  "enum": ["license_monopoly", "environmental_barrier", "government_concession", "capital_barrier", "patent_wall", "none"],
+                  "description": "סוג חומת המגן הרגולטורית"
+                },
+                "barrier_cost_estimate": { "type": "string", "description": "עלות משוערת למתחרה חדש לעבור את החסם (e.g. '$3B + 8 years')" },
+                "pending_legislation": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title":     { "type": "string" },
+                      "jurisdiction": { "type": "string" },
+                      "impact":    { "type": "string", "enum": ["strengthens_moat", "weakens_moat", "neutral"] },
+                      "probability_pct": { "type": "integer", "minimum": 0, "maximum": 100 },
+                      "expected_date":   { "type": "string", "format": "date" }
+                    }
+                  },
+                  "description": "חקיקה ממתינה שעשויה לחזק או להחליש את החפיר"
+                },
+                "threat_level": { "type": "integer", "minimum": 1, "maximum": 10, "description": "1 = זניח, 10 = קיומי — האיום הרגולטורי הנוכחי" },
+                "analysis": { "type": "string", "maxLength": 500 },
+                "sources":  { "type": "array", "items": { "$ref": "#/$defs/source" } }
+              }
+            },
+
+            "esg_sin_premium": {
+              "title": "פרמיית החטא — החרם האתי כמנוע רווח",
+              "description": "כמה קשה למתחרים להשיג מימון בגלל שהתעשייה 'שנואה'?",
+              "type": "object",
+              "required": ["score", "boycott_intensity", "analysis"],
+              "properties": {
+                "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+                "boycott_intensity": {
+                  "type": "string",
+                  "enum": ["extreme", "high", "moderate", "low", "none"],
+                  "description": "רמת ה'חרם' של המוסדיים — extreme = מנועים לחלוטין"
+                },
+                "excluded_from_indices": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "מדדי ESG שהחברה מודרת מהם (e.g. 'MSCI ESG Leaders', 'S&P 500 ESG')"
+                },
+                "institutional_ownership_trend": {
+                  "type": "string",
+                  "enum": ["increasing_despite_esg", "stable", "declining_due_to_esg"],
+                  "description": "מגמת בעלות מוסדית — אם עולה למרות ESG, זה חזק מאוד"
+                },
+                "competitor_funding_difficulty": {
+                  "type": "string",
+                  "enum": ["impossible", "very_hard", "hard", "moderate", "easy"],
+                  "description": "כמה קשה למתחרה לגייס הון בתעשייה הזו"
+                },
+                "new_capacity_pipeline_years": {
+                  "type": "number",
+                  "description": "כמה שנים עד שקיבולת חדשה תיכנס לשוק (אם בכלל)"
+                },
+                "analysis": { "type": "string", "maxLength": 500 },
+                "sources":  { "type": "array", "items": { "$ref": "#/$defs/source" } }
+              }
+            },
+
+            "crowd_exhaustion": {
+              "title": "מיצוי כבשים מול איסוף זאבים",
+              "description": "הציבור קונה בזמן שההנהלה מוכרת, או להפך?",
+              "type": "object",
+              "required": ["score", "phase", "analysis"],
+              "properties": {
+                "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+                "phase": {
+                  "type": "string",
+                  "enum": ["wolf_accumulation", "early_crowd", "peak_euphoria", "distribution", "capitulation"],
+                  "description": "wolf_accumulation = הנהלה קונה + ציבור אדיש = BUY. peak_euphoria = ציבור קונה + הנהלה מוכרת = SELL"
+                },
+                "insider_activity": {
+                  "type": "object",
+                  "properties": {
+                    "net_shares_30d":   { "type": "integer", "description": "נטו מניות שנקנו/נמכרו ע\"י אינסיידרים ב-30 יום (חיובי = קנו)" },
+                    "notable_buyers":   { "type": "array", "items": { "type": "string" }, "description": "שמות בכירים שקנו" },
+                    "notable_sellers":  { "type": "array", "items": { "type": "string" }, "description": "שמות בכירים שמכרו" }
+                  }
+                },
+                "buyback_status": {
+                  "type": "object",
+                  "properties": {
+                    "active_program":      { "type": "boolean" },
+                    "remaining_authorized": { "type": "string", "description": "סכום שנותר לקנייה חזרה (e.g. '$500M')" },
+                    "pace_vs_historical":   { "type": "string", "enum": ["accelerating", "normal", "decelerating", "paused"], "description": "קצב מול היסטורי" }
+                  }
+                },
+                "analyst_consensus": {
+                  "type": "object",
+                  "properties": {
+                    "buy_pct":    { "type": "number", "minimum": 0, "maximum": 100 },
+                    "hold_pct":   { "type": "number", "minimum": 0, "maximum": 100 },
+                    "sell_pct":   { "type": "number", "minimum": 0, "maximum": 100 },
+                    "target_price_avg": { "type": "number" },
+                    "upgrades_30d":     { "type": "integer" },
+                    "downgrades_30d":   { "type": "integer" }
+                  }
+                },
+                "media_sentiment": {
+                  "type": "object",
+                  "properties": {
+                    "mentions_7d":   { "type": "integer", "description": "כמות אזכורים בתקשורת ב-7 ימים" },
+                    "tone":          { "type": "string", "enum": ["euphoric", "positive", "neutral", "negative", "panic"] },
+                    "retail_buzz":   { "type": "string", "enum": ["viral", "high", "moderate", "low", "silent"] }
+                  }
+                },
+                "ripe_for_exit": { "type": "boolean", "description": "TRUE = בשל למימוש (קונצנזוס במיצוי)" },
+                "analysis": { "type": "string", "maxLength": 500 },
+                "sources":  { "type": "array", "items": { "$ref": "#/$defs/source" } }
+              }
+            },
+
+            "boring_premium": {
+              "title": "ארביטראז' השעמום",
+              "description": "יחס תזרים מזומנים מול תשומת לב תקשורתית — שעמום = הזדמנות",
+              "type": "object",
+              "required": ["score", "hype_to_fcf_ratio", "analysis"],
+              "properties": {
+                "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+                "hype_to_fcf_ratio": {
+                  "type": "number",
+                  "description": "יחס (אזכורים_שבועיים / FCF_שנתי_במיליונים). ככל שנמוך יותר = 'משעמם ומכניס' = טוב"
+                },
+                "media_mentions_weekly":    { "type": "integer", "description": "ממוצע אזכורים שבועיים בתקשורת הפיננסית" },
+                "social_media_mentions_weekly": { "type": "integer", "description": "אזכורים בטוויטר/רדיט/טיקטוק" },
+                "free_cash_flow_annual_m":  { "type": "number", "description": "תזרים מזומנים חופשי שנתי (מיליוני $)" },
+                "fcf_yield_pct":            { "type": "number", "description": "תשואת תזרים חופשי (FCF / Market Cap * 100)" },
+                "google_trends_score":      { "type": "integer", "minimum": 0, "maximum": 100, "description": "Google Trends — 0 = אף אחד לא מחפש" },
+                "business_description":     { "type": "string", "description": "תיאור העסק ב-10 מילים (ככל שיותר אפור — יותר טוב)" },
+                "analysis": { "type": "string", "maxLength": 500 },
+                "sources":  { "type": "array", "items": { "$ref": "#/$defs/source" } }
+              }
+            },
+
+            "debt_asymmetry": {
+              "title": "אסימטריה של מבנה החוב",
+              "description": "האם החוב הוא נכס אינפלציוני או פצצה מתקתקת?",
+              "type": "object",
+              "required": ["score", "verdict", "analysis"],
+              "properties": {
+                "score":   { "type": "integer", "minimum": 0, "maximum": 100 },
+                "verdict": { "type": "string", "enum": ["inflation_asset", "neutral", "ticking_bomb"], "description": "inflation_asset = החוב משרת אותנו. ticking_bomb = סכנה" },
+                "total_debt_m":        { "type": "number", "description": "סה\"כ חוב (מיליוני $)" },
+                "debt_to_equity":      { "type": "number" },
+                "weighted_avg_rate":   { "type": "number", "description": "ריבית משוקללת על כל החוב (%)" },
+                "fixed_rate_pct":      { "type": "number", "minimum": 0, "maximum": 100, "description": "% מהחוב בריבית קבועה" },
+                "maturity_wall": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "year":      { "type": "integer" },
+                      "amount_m":  { "type": "number", "description": "סכום פירעון (מיליוני $)" },
+                      "rate":      { "type": "number", "description": "ריבית על הנתח הזה (%)" }
+                    }
+                  },
+                  "description": "לוח פירעונות — מתי ובאיזה עלות צריכים למחזר"
+                },
+                "refinancing_risk": {
+                  "type": "string",
+                  "enum": ["none_until_2028+", "low", "moderate", "high", "imminent"],
+                  "description": "סיכון מחזור חוב בטווח הקרוב"
+                },
+                "interest_coverage_ratio": { "type": "number", "description": "EBITDA / הוצאות ריבית — מעל 5 = בטוח" },
+                "analysis": { "type": "string", "maxLength": 500 },
+                "sources":  { "type": "array", "items": { "$ref": "#/$defs/source" } }
+              }
+            },
+
+            "hostage_power": {
+              "title": "רדיוס הפיצוץ הגיאופוליטי — תופס ערובה או בן ערובה?",
+              "description": "האם הלקוחות כלואים, או שיכולים לעבור למתחרה מחר?",
+              "type": "object",
+              "required": ["score", "role", "analysis"],
+              "properties": {
+                "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+                "role":  {
+                  "type": "string",
+                  "enum": ["hostage_taker", "mutual_dependency", "hostage", "replaceable"],
+                  "description": "hostage_taker = תופס ערובה = אידיאלי. hostage = תלוי באחרים = מסוכן"
+                },
+                "market_share_pct":        { "type": "number", "description": "נתח שוק גלובלי במוצר הקריטי (%)" },
+                "substitution_difficulty": {
+                  "type": "string",
+                  "enum": ["impossible", "years", "months", "weeks", "trivial"],
+                  "description": "כמה זמן לוקח ללקוח למצוא תחליף"
+                },
+                "pricing_power_evidence":  { "type": "string", "description": "ראיות ליכולת העלאת מחירים (מה עשו ב-3 שנים האחרונות)" },
+                "geopolitical_leverage": {
+                  "type": "object",
+                  "properties": {
+                    "critical_to_countries": { "type": "array", "items": { "type": "string" }, "description": "מדינות שתלויות במוצר הזה" },
+                    "supply_concentration":  { "type": "string", "description": "ריכוזיות ההיצע (e.g. '3 countries control 85%')" },
+                    "sanctions_risk":        { "type": "string", "enum": ["low", "moderate", "high"], "description": "סיכון סנקציות שיקפיצו מחירים" }
+                  }
+                },
+                "supply_chain_position": { "type": "string", "description": "מיקום בשרשרת — חולית הצוואר שאי אפשר לעקוף" },
+                "analysis": { "type": "string", "maxLength": 500 },
+                "sources":  { "type": "array", "items": { "$ref": "#/$defs/source" } }
+              }
+            },
+
+            "capital_allocation_iq": {
+              "title": "מנת המשכל של הקצאת ההון",
+              "description": "האם המנכ\"ל בונה אימפריות או מכונת קומפאונדינג?",
+              "type": "object",
+              "required": ["score", "ceo_type", "analysis"],
+              "properties": {
+                "score":    { "type": "integer", "minimum": 0, "maximum": 100 },
+                "ceo_type": {
+                  "type": "string",
+                  "enum": ["stealth_compounder", "disciplined_allocator", "neutral", "empire_builder", "value_destroyer"],
+                  "description": "stealth_compounder = קמצן + Buybacks אגרסיביים = אידיאלי"
+                },
+                "ceo_name":                { "type": "string" },
+                "ceo_tenure_years":        { "type": "number" },
+                "fcf_deployment": {
+                  "type": "object",
+                  "description": "איך המנכ\"ל מפזר את תזרים המזומנים החופשי",
+                  "properties": {
+                    "buybacks_pct":       { "type": "number", "description": "% FCF → רכישה חוזרת של מניות" },
+                    "dividends_pct":      { "type": "number", "description": "% FCF → דיבידנדים" },
+                    "organic_capex_pct":  { "type": "number", "description": "% FCF → השקעה אורגנית" },
+                    "ma_pct":             { "type": "number", "description": "% FCF → רכישות (M&A)" },
+                    "debt_reduction_pct": { "type": "number", "description": "% FCF → פירעון חוב" }
+                  }
+                },
+                "shares_outstanding_trend": {
+                  "type": "object",
+                  "properties": {
+                    "current":        { "type": "number", "description": "מניות בשוק כרגע (מיליונים)" },
+                    "change_3y_pct":  { "type": "number", "description": "שינוי ב-3 שנים (שלילי = כיווץ = מעולה)" },
+                    "change_5y_pct":  { "type": "number", "description": "שינוי ב-5 שנים" }
+                  }
+                },
+                "roic_5y_avg":       { "type": "number", "description": "תשואה על הון מושקע ממוצעת 5 שנים (%)" },
+                "ma_track_record":   { "type": "string", "enum": ["excellent", "good", "mixed", "poor", "no_activity"], "description": "הצלחת רכישות היסטורית" },
+                "skin_in_the_game":  { "type": "number", "description": "% מהמניות שבבעלות המנכ\"ל/הנהלה" },
+                "analysis": { "type": "string", "maxLength": 500 },
+                "sources":  { "type": "array", "items": { "$ref": "#/$defs/source" } }
+              }
+            }
+          }
+        },
+
+        "action": {
+          "type": "object",
+          "description": "השלב הבא לביצוע — מה הסוחר צריך לעשות",
+          "properties": {
+            "recommendation": {
+              "type": "string",
+              "enum": ["strong_buy", "buy", "hold", "reduce", "sell", "wait_for_catalyst"],
+              "description": "המלצה ברורה"
+            },
+            "entry_zone":   { "type": "string", "description": "טווח מחירים לכניסה (e.g. '$48-$52')" },
+            "stop_loss":    { "type": "string", "description": "סטופ לוס (e.g. '$44 (-8%)')" },
+            "target_1":     { "type": "string", "description": "יעד ראשון" },
+            "target_2":     { "type": "string", "description": "יעד שני" },
+            "time_horizon": { "type": "string", "description": "טווח זמן צפוי (e.g. '2-5 days', '3-6 months')" },
+            "key_trigger":  { "type": "string", "description": "האירוע שצריך לקרות כדי שהתזה תתממש" }
+          }
+        }
+      }
+    },
+
+    "source": {
+      "type": "object",
+      "required": ["type", "title"],
+      "properties": {
+        "type":       { "type": "string", "enum": ["news", "sec_filing", "earnings_transcript", "analyst_report", "data_provider", "social", "government", "research_paper"] },
+        "title":      { "type": "string" },
+        "url":        { "type": "string", "format": "uri" },
+        "date":       { "type": "string", "format": "date" },
+        "credibility": { "type": "string", "enum": ["verified", "reliable", "unverified"] }
+      }
+    }
+  }
+}

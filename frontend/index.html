@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q5 Matrix — Command & Control</title>
+    <style>
+        /* =============================================
+           CSS VARIABLES & RESET
+           ============================================= */
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a2e;
+            --bg-drawer: #0f0f18;
+            --border: #1e1e2e;
+            --border-active: #3b82f6;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-amber: #f59e0b;
+            --accent-purple: #8b5cf6;
+            --score-high: #10b981;
+            --score-mid: #f59e0b;
+            --score-low: #ef4444;
+            --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --radius: 12px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* =============================================
+           HEADER
+           ============================================= */
+        .header {
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.9);
+        }
+
+        .header-left h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-left h1 span { color: var(--accent-blue); }
+
+        .header-meta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.open { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+        .status-badge.closed { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
+        .status-badge.pre_market { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+        .status-badge.after_hours { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
+        .status-badge.weekend { background: rgba(100, 116, 139, 0.15); color: var(--text-muted); }
+
+        .refresh-btn {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: none; /* Hidden until we wire up GitHub Actions dispatch */
+        }
+        .refresh-btn:hover { background: #2563eb; transform: translateY(-1px); }
+
+        /* =============================================
+           MATRIX GRID (4 columns)
+           ============================================= */
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1200px) { .matrix { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 700px) { .matrix { grid-template-columns: 1fr; } }
+
+        /* =============================================
+           COLUMN
+           ============================================= */
+        .column {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .column-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .column-header h2 {
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .column-header .cadence {
+            font-size: 11px;
+            color: var(--text-muted);
+            background: rgba(100, 116, 139, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .col-day .column-header { border-top: 3px solid var(--accent-red); }
+        .col-swing .column-header { border-top: 3px solid var(--accent-amber); }
+        .col-position .column-header { border-top: 3px solid var(--accent-blue); }
+        .col-investment .column-header { border-top: 3px solid var(--accent-green); }
+
+        .column-body { padding: 12px; }
+
+        /* =============================================
+           STOCK CARD
+           ============================================= */
+        .stock-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .stock-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-active);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .stock-card:last-child { margin-bottom: 0; }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .ticker-name .ticker {
+            font-family: var(--font-mono);
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .ticker-name .name {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .score-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: 800;
+            border: 3px solid;
+            flex-shrink: 0;
+        }
+
+        .score-high { border-color: var(--score-high); color: var(--score-high); }
+        .score-mid { border-color: var(--score-mid); color: var(--score-mid); }
+        .score-low { border-color: var(--score-low); color: var(--score-low); }
+
+        .card-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .change {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .change.up { color: var(--accent-green); }
+        .change.down { color: var(--accent-red); }
+
+        .card-thesis {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+        }
+
+        .card-action {
+            margin-top: 8px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .action-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .action-badge.strong_buy { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+        .action-badge.buy { background: rgba(16, 185, 129, 0.12); color: var(--accent-green); }
+        .action-badge.hold { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+        .action-badge.sell { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
+        .action-badge.reduce { background: rgba(239, 68, 68, 0.12); color: var(--accent-red); }
+        .action-badge.wait_for_catalyst { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
+
+        .empty-column {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* =============================================
+           SIDE DRAWER (X-Ray Panel)
+           ============================================= */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .drawer-overlay.open { opacity: 1; pointer-events: all; }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 520px;
+            max-width: 90vw;
+            height: 100vh;
+            background: var(--bg-drawer);
+            border-right: 1px solid var(--border);
+            z-index: 300;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .drawer.open { transform: translateX(0); }
+
+        .drawer-close {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drawer-close:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+
+        .drawer-header {
+            margin-top: 48px;
+            margin-bottom: 24px;
+        }
+
+        .drawer-header .d-ticker {
+            font-family: var(--font-mono);
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .drawer-header .d-name {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .drawer-header .d-thesis {
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            padding: 12px;
+            background: rgba(59, 130, 246, 0.06);
+            border-radius: 8px;
+            border-right: 3px solid var(--accent-blue);
+        }
+
+        /* X-Ray Parameter Block */
+        .xray-param {
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .xray-param-header {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+        }
+
+        .xray-param-header:hover { background: rgba(255, 255, 255, 0.04); }
+
+        .xray-param-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .xray-score-badge {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 800;
+            padding: 2px 10px;
+            border-radius: 6px;
+        }
+
+        .xray-param-body {
+            padding: 12px 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+            display: none;
+        }
+
+        .xray-param.open .xray-param-body { display: block; }
+
+        .xray-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .xray-detail:last-child { border: none; }
+        .xray-detail .label { color: var(--text-muted); }
+        .xray-detail .value { color: var(--text-primary); font-weight: 600; font-family: var(--font-mono); }
+
+        /* Action Section in Drawer */
+        .drawer-action {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 10px;
+        }
+
+        .drawer-action h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: var(--accent-green);
+        }
+
+        /* Sources */
+        .sources-list {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .sources-list h4 {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .source-item {
+            font-size: 11px;
+            color: var(--text-secondary);
+            padding: 3px 0;
+        }
+
+        .source-item a { color: var(--accent-blue); text-decoration: none; }
+        .source-item a:hover { text-decoration: underline; }
+
+        /* Loading / Error states */
+        .loading {
+            text-align: center;
+            padding: 100px 20px;
+            color: var(--text-muted);
+        }
+
+        .loading-spinner {
+            width: 40px; height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .radar-stats {
+            text-align: center;
+            padding: 8px 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <h1><span>Q5</span> Matrix — Command & Control</h1>
+        </div>
+        <div class="header-meta">
+            <span id="market-status"></span>
+            <span id="last-updated"></span>
+            <span id="radar-count"></span>
+        </div>
+    </header>
+
+    <!-- LOADING STATE -->
+    <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+        <div>Loading matrix data...</div>
+    </div>
+
+    <!-- MATRIX GRID -->
+    <div id="matrix" class="matrix" style="display:none;"></div>
+
+    <!-- SIDE DRAWER -->
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+    <div id="drawer" class="drawer">
+        <button class="drawer-close" id="drawer-close">&times;</button>
+        <div id="drawer-content"></div>
+    </div>
+
+    <!-- RADAR STATS FOOTER -->
+    <div id="radar-stats" class="radar-stats" style="display:none;"></div>
+
+    <script>
+    // ============================================
+    // DATA LOADING
+    // ============================================
+    let matrixData = null;
+
+    async function loadData() {
+        try {
+            const resp = await fetch('master_data.json?t=' + Date.now());
+            if (!resp.ok) throw new Error('Failed to load data');
+            matrixData = await resp.json();
+            renderMatrix();
+        } catch (err) {
+            document.getElementById('loading').innerHTML =
+                '<div style="color: var(--accent-red);">Failed to load data. Run the backend first.</div>' +
+                '<div style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">' + err.message + '</div>';
+        }
+    }
+
+    // ============================================
+    // RENDER MATRIX
+    // ============================================
+    function renderMatrix() {
+        document.getElementById('loading').style.display = 'none';
+        const grid = document.getElementById('matrix');
+        grid.style.display = 'grid';
+
+        // Header meta
+        const meta = matrixData.meta || {};
+        const statusEl = document.getElementById('market-status');
+        const status = meta.market_status || 'unknown';
+        statusEl.innerHTML = '<span class="status-badge ' + status + '">' + status.replace('_', ' ') + '</span>';
+
+        const updatedEl = document.getElementById('last-updated');
+        if (meta.generated_at) {
+            const d = new Date(meta.generated_at);
+            updatedEl.textContent = 'Updated: ' + d.toLocaleString('he-IL');
+        }
+
+        // Radar stats
+        if (meta.radar_stats) {
+            const rs = document.getElementById('radar-stats');
+            rs.style.display = 'block';
+            rs.textContent = 'Radar scanned: ' + (meta.radar_stats.total_scanned || '?') +
+                ' stocks | Deep analyzed: ' + (meta.radar_stats.selected_for_deep_analysis || '?');
+            document.getElementById('radar-count').textContent =
+                meta.radar_stats.total_scanned + ' scanned';
+        }
+
+        // Columns
+        const columns = [
+            { key: 'day_trading', label: 'Day Trading', icon: '\u26A1', cls: 'col-day' },
+            { key: 'swing', label: 'Swing', icon: '\uD83C\uDF0A', cls: 'col-swing' },
+            { key: 'position', label: 'Position', icon: '\uD83C\uDFAF', cls: 'col-position' },
+            { key: 'investment', label: 'Investment', icon: '\uD83C\uDFE6', cls: 'col-investment' },
+        ];
+
+        grid.innerHTML = '';
+        const matrix = matrixData.matrix || {};
+
+        columns.forEach(col => {
+            const data = matrix[col.key] || {};
+            const strategy = data.strategy || {};
+            const picks = data.top_picks || [];
+            const cadence = data.refresh_cadence || '';
+
+            let html = '<div class="column ' + col.cls + '">';
+            html += '<div class="column-header">';
+            html += '<h2>' + col.icon + ' ' + (strategy.name_he || col.label) + '</h2>';
+            html += '<span class="cadence">' + cadence + '</span>';
+            html += '</div>';
+            html += '<div class="column-body">';
+
+            if (picks.length === 0) {
+                html += '<div class="empty-column">No picks for this cycle</div>';
+            } else {
+                picks.forEach((pick, idx) => {
+                    html += renderCard(pick, col.key, idx);
+                });
+            }
+
+            html += '</div></div>';
+            grid.innerHTML += html;
+        });
+    }
+
+    // ============================================
+    // RENDER STOCK CARD
+    // ============================================
+    function renderCard(pick, colKey, idx) {
+        const price = pick.price || {};
+        const score = (pick.composite_score || {}).total || 0;
+        const change = price.change_pct_1d || 0;
+        const action = (pick.action || {}).recommendation || '';
+
+        let scoreClass = 'score-low';
+        if (score >= 70) scoreClass = 'score-high';
+        else if (score >= 45) scoreClass = 'score-mid';
+
+        let changeClass = change >= 0 ? 'up' : 'down';
+        let changeStr = (change >= 0 ? '+' : '') + change.toFixed(1) + '%';
+
+        let html = '<div class="stock-card" onclick="openDrawer(\'' + colKey + '\',' + idx + ')">';
+        html += '<div class="card-top">';
+        html += '<div class="ticker-name">';
+        html += '<div class="ticker">' + (pick.ticker || '?') + '</div>';
+        html += '<div class="name">' + (pick.company_name || '') + '</div>';
+        html += '</div>';
+        html += '<div class="score-circle ' + scoreClass + '">' + score + '</div>';
+        html += '</div>';
+        html += '<div class="card-price">';
+        html += '<span class="price">$' + (price.current || 0).toFixed(2) + '</span>';
+        html += '<span class="change ' + changeClass + '">' + changeStr + '</span>';
+        html += '</div>';
+        html += '<div class="card-thesis">' + (pick.thesis_summary || '') + '</div>';
+        html += '<div class="card-action">';
+        if (action) {
+            html += '<span class="action-badge ' + action + '">' + action.replace(/_/g, ' ') + '</span>';
+        }
+        const act = pick.action || {};
+        if (act.time_horizon) {
+            html += '<span class="action-badge" style="background:rgba(100,116,139,0.1);color:var(--text-muted);">' + act.time_horizon + '</span>';
+        }
+        html += '</div></div>';
+        return html;
+    }
+
+    // ============================================
+    // SIDE DRAWER (X-Ray)
+    // ============================================
+    const XRAY_LABELS = {
+        options_mispricing: { title: '\uD83C\uDFB2 Options Mispricing', titleHe: '\u05E4\u05E2\u05E8\u05D9 \u05EA\u05DE\u05D7\u05D5\u05E8 \u05D0\u05D5\u05E4\u05E6\u05D9\u05D5\u05EA' },
+        regulatory_moat: { title: '\uD83C\uDFDB Regulatory Moat', titleHe: '\u05E8\u05D2\u05D5\u05DC\u05E6\u05D9\u05D4 \u05DB\u05D7\u05D5\u05DE\u05EA \u05DE\u05D2\u05DF' },
+        esg_sin_premium: { title: '\u2620\uFE0F Sin Premium', titleHe: '\u05E4\u05E8\u05DE\u05D9\u05D9\u05EA \u05D4\u05D7\u05D8\u05D0' },
+        crowd_exhaustion: { title: '\uD83D\uDC3A Wolf vs Sheep', titleHe: '\u05DE\u05D9\u05E6\u05D5\u05D9 \u05DB\u05D1\u05E9\u05D9\u05DD / \u05D0\u05D9\u05E1\u05D5\u05E3 \u05D6\u05D0\u05D1\u05D9\u05DD' },
+        boring_premium: { title: '\uD83D\uDCA4 Boring Premium', titleHe: '\u05D0\u05E8\u05D1\u05D9\u05D8\u05E8\u05D0\u05D6\u05F3 \u05D4\u05E9\u05E2\u05DE\u05D5\u05DD' },
+        debt_asymmetry: { title: '\uD83D\uDCA3 Debt Asymmetry', titleHe: '\u05D0\u05E1\u05D9\u05DE\u05D8\u05E8\u05D9\u05EA \u05D7\u05D5\u05D1' },
+        hostage_power: { title: '\uD83D\uDD12 Hostage Power', titleHe: '\u05EA\u05D5\u05E4\u05E1 \u05E2\u05E8\u05D5\u05D1\u05D4 / \u05D1\u05DF \u05E2\u05E8\u05D5\u05D1\u05D4' },
+        capital_allocation_iq: { title: '\uD83E\uDDE0 Capital IQ', titleHe: '\u05DE\u05E0\u05EA \u05D4\u05DE\u05E9\u05DB\u05DC \u05E9\u05DC \u05D4\u05E7\u05E6\u05D0\u05EA \u05D4\u05D5\u05DF' },
+    };
+
+    function openDrawer(colKey, idx) {
+        const pick = matrixData.matrix[colKey].top_picks[idx];
+        if (!pick) return;
+
+        const xray = pick.xray || {};
+        const action = pick.action || {};
+        const price = pick.price || {};
+        const score = (pick.composite_score || {}).total || 0;
+
+        let html = '<div class="drawer-header">';
+        html += '<div class="d-ticker">' + pick.ticker + '</div>';
+        html += '<div class="d-name">' + (pick.company_name || '') + ' | ' + (pick.sector || '') + '</div>';
+        html += '<div class="d-thesis">' + (pick.thesis_summary || '') + '</div>';
+        html += '</div>';
+
+        // Score breakdown bar
+        const bd = (pick.composite_score || {}).breakdown || {};
+        html += '<div style="margin-bottom:20px;">';
+        html += '<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Composite Score: <strong style="font-size:20px;color:var(--text-primary);">' + score + '</strong>/100</div>';
+        html += '</div>';
+
+        // X-Ray parameters
+        const xrayKeys = Object.keys(XRAY_LABELS);
+        xrayKeys.forEach(key => {
+            const param = xray[key] || {};
+            const paramScore = param.score || 0;
+            const label = XRAY_LABELS[key];
+            let scoreBg, scoreColor;
+            if (paramScore >= 70) { scoreBg = 'rgba(16,185,129,0.15)'; scoreColor = 'var(--score-high)'; }
+            else if (paramScore >= 45) { scoreBg = 'rgba(245,158,11,0.15)'; scoreColor = 'var(--score-mid)'; }
+            else { scoreBg = 'rgba(239,68,68,0.15)'; scoreColor = 'var(--score-low)'; }
+
+            html += '<div class="xray-param" onclick="this.classList.toggle(\'open\')">';
+            html += '<div class="xray-param-header">';
+            html += '<span class="xray-param-title">' + label.title + '</span>';
+            html += '<span class="xray-score-badge" style="background:' + scoreBg + ';color:' + scoreColor + ';">' + paramScore + '</span>';
+            html += '</div>';
+            html += '<div class="xray-param-body">';
+            html += '<div style="margin-bottom:8px;">' + (param.analysis || 'No analysis available') + '</div>';
+
+            // Show key fields
+            Object.keys(param).forEach(k => {
+                if (['score', 'analysis', 'sources'].includes(k)) return;
+                let val = param[k];
+                if (typeof val === 'object' && val !== null) {
+                    if (Array.isArray(val)) val = val.length + ' items';
+                    else val = JSON.stringify(val).substring(0, 80) + '...';
+                }
+                html += '<div class="xray-detail"><span class="label">' + k.replace(/_/g, ' ') + '</span><span class="value">' + val + '</span></div>';
+            });
+
+            // Sources
+            if (param.sources && param.sources.length > 0) {
+                html += '<div class="sources-list"><h4>Sources</h4>';
+                param.sources.forEach(src => {
+                    html += '<div class="source-item">';
+                    if (src.url) html += '<a href="' + src.url + '" target="_blank">' + src.title + '</a>';
+                    else html += src.title;
+                    if (src.date) html += ' (' + src.date + ')';
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+
+            html += '</div></div>';
+        });
+
+        // Action section
+        if (action.recommendation) {
+            html += '<div class="drawer-action">';
+            html += '<h3>Action Plan</h3>';
+            const actionFields = [
+                ['Recommendation', action.recommendation],
+                ['Entry Zone', action.entry_zone],
+                ['Stop Loss', action.stop_loss],
+                ['Target 1', action.target_1],
+                ['Target 2', action.target_2],
+                ['Time Horizon', action.time_horizon],
+                ['Key Trigger', action.key_trigger],
+            ];
+            actionFields.forEach(([label, val]) => {
+                if (val) {
+                    html += '<div class="xray-detail"><span class="label">' + label + '</span><span class="value">' + val.replace(/_/g, ' ') + '</span></div>';
+                }
+            });
+            html += '</div>';
+        }
+
+        document.getElementById('drawer-content').innerHTML = html;
+        document.getElementById('drawer').classList.add('open');
+        document.getElementById('drawer-overlay').classList.add('open');
+    }
+
+    function closeDrawer() {
+        document.getElementById('drawer').classList.remove('open');
+        document.getElementById('drawer-overlay').classList.remove('open');
+    }
+
+    document.getElementById('drawer-overlay').addEventListener('click', closeDrawer);
+    document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+    // ============================================
+    // INIT
+    // ============================================
+    loadData();
+    </script>
+</body>
+</html>

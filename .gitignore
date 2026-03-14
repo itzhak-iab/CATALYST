@@ -1,0 +1,44 @@
+# ===========================
+# SECURITY — API Keys & Secrets
+# ===========================
+.env
+.env.*
+*.env
+secrets.json
+credentials.json
+
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# ===========================
+# Logs (local only)
+# ===========================
+logs/*.log
+
+# ===========================
+# OS Files
+# ===========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ===========================
+# IDE
+# ===========================
+.vscode/
+.idea/
+*.code-workspace

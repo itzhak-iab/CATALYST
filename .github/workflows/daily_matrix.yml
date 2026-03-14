@@ -1,0 +1,50 @@
+name: Q5 Matrix — Daily Contrarian Analysis
+
+on:
+  # Manual trigger from GitHub UI or API (the "Run Analysis" button)
+  workflow_dispatch:
+
+  # Automatic: Every day at 12:00 UTC = 07:00 ET (2 hours before market open)
+  schedule:
+    - cron: '0 12 * * 1-5'  # Monday-Friday only
+
+permissions:
+  contents: write  # Needed to commit master_data.json back to the repo
+
+jobs:
+  run-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # 1. Checkout the repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Python
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      # 4. Run the Matrix Engine
+      # GEMINI_API_KEY comes from GitHub Secrets — NEVER in the code
+      - name: Run Matrix Backend
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python backend/matrix_backend.py
+
+      # 5. Commit the updated JSON to the repo (so GitHub Pages serves fresh data)
+      - name: Commit updated data
+        run: |
+          git config user.name "Q5-Matrix Bot"
+          git config user.email "bot@q5-matrix.local"
+          git add frontend/master_data.json
+          git diff --staged --quiet || git commit -m "Update matrix data — $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push

@@ -1,0 +1,54 @@
+{
+    "meta": {
+        "generated_at": "2026-01-01T00:00:00Z",
+        "model_version": "placeholder",
+        "data_sources": [],
+        "market_status": "closed"
+    },
+    "matrix": {
+        "day_trading": {
+            "strategy": {
+                "name_he": "\u05de\u05d0\u05e8\u05d1 \u05e0\u05d6\u05d9\u05dc\u05d5\u05ea",
+                "name_en": "Liquidity Ambush",
+                "objective": "",
+                "edge_thesis": ""
+            },
+            "ai_prompt": "",
+            "refresh_cadence": "intraday",
+            "top_picks": []
+        },
+        "swing": {
+            "strategy": {
+                "name_he": "\u05e2\u05d9\u05d5\u05d5\u05e8\u05d5\u05df \u05e7\u05d8\u05dc\u05d9\u05d6\u05d8\u05d5\u05e8\u05d9\u05dd",
+                "name_en": "Blind Catalysts",
+                "objective": "",
+                "edge_thesis": ""
+            },
+            "ai_prompt": "",
+            "refresh_cadence": "daily_evening",
+            "top_picks": []
+        },
+        "position": {
+            "strategy": {
+                "name_he": "\u05d4\u05e0\u05d2\u05d6\u05e8\u05ea \u05d4\u05e9\u05e0\u05d9\u05d9\u05d4",
+                "name_en": "Second Derivative Bottleneck",
+                "objective": "",
+                "edge_thesis": ""
+            },
+            "ai_prompt": "",
+            "refresh_cadence": "daily_evening",
+            "top_picks": []
+        },
+        "investment": {
+            "strategy": {
+                "name_he": "\u05d0\u05e0\u05d8\u05d9-\u05e9\u05d1\u05d9\u05e8\u05d5\u05ea",
+                "name_en": "Anti-Fragility",
+                "objective": "",
+                "edge_thesis": ""
+            },
+            "ai_prompt": "",
+            "refresh_cadence": "weekly",
+            "top_picks": []
+        }
+    }
+}
