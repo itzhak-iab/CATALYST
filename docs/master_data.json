@@ -1,54 +1,1080 @@
 {
-    "meta": {
-        "generated_at": "2026-01-01T00:00:00Z",
-        "model_version": "placeholder",
-        "data_sources": [],
-        "market_status": "closed"
-    },
-    "matrix": {
-        "day_trading": {
-            "strategy": {
-                "name_he": "\u05de\u05d0\u05e8\u05d1 \u05e0\u05d6\u05d9\u05dc\u05d5\u05ea",
-                "name_en": "Liquidity Ambush",
-                "objective": "",
-                "edge_thesis": ""
+  "matrix": {
+    "day_trading": {
+      "strategy": {
+        "name_he": "מארב נזילות",
+        "name_en": "Liquidity Ambush",
+        "objective": "ניצול מכירה מכנית/כפויה לרווח מהיר תוך-יומי, ללא חשיפת לילה",
+        "edge_thesis": "אנחנו לא קונים 'חדשות רעות'. אנחנו קונים וואקום נזילות שנוצר ממכירה אלגוריתמית עיוורת (ETF rebalancing, stop-loss cascades) — בידיעה שהמחיר יתוקן ברגע שהמכירה המכנית תסתיים.",
+        "ai_prompt": "מתוך רשימת המניות שלנו, איזו חברה חווה הבוקר פער מחיר שלילי (Gap Down) שנובע ממכירה כפויה (ETF rebalancing, stop-loss cascade, margin call) ולא מפגיעה פיזית בעסק? חפש אנומליות נפח מול ממוצע 20 יום.",
+        "refresh_cadence": "intraday"
+      },
+      "ai_prompt": "מתוך רשימת המניות שלנו, איזו חברה חווה הבוקר פער מחיר שלילי (Gap Down) שנובע ממכירה כפויה (ETF rebalancing, stop-loss cascade, margin call) ולא מפגיעה פיזית בעסק? חפש אנומליות נפח מול ממוצע 20 יום.",
+      "refresh_cadence": "intraday",
+      "top_picks": [
+        {
+          "ticker": "ULTA",
+          "company_name": "Ulta Beauty, Inc.",
+          "sector": "Consumer Cyclical",
+          "sub_sector": "Specialty Retail",
+          "exchange": "NMS",
+          "price": {
+            "current": 535.72,
+            "currency": "USD",
+            "change_pct_1d": -14.24,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 714.97,
+            "low_52w": 323.37,
+            "distance_from_52w_high_pct": -25.07
+          },
+          "composite_score": {
+            "total": 43.48,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 60,
+              "regulatory_moat": 20,
+              "esg_sin_premium": 10,
+              "crowd_exhaustion": 80,
+              "boring_premium": 40,
+              "debt_asymmetry": 65,
+              "hostage_power": 30,
+              "capital_allocation_iq": 60
+            }
+          },
+          "thesis_summary": "ULTA's sharp 1-day decline represents a potential capitulation event, creating a contrarian day trading opportunity. The underlying business fundamentals remain sound, and the market's overreaction could lead to a quick technical rebound.",
+          "xray": {
+            "options_mispricing": {
+              "score": 60,
+              "signal": "surprise_up",
+              "analysis": "Despite high implied volatility, the sharp 1-day drop suggests potential overreaction and mechanical selling, creating a short-term rebound opportunity if the underlying business fundamentals are intact. Put/call ratio is neutral, but the significant price decline could lead to a mispricing for a quick recovery."
             },
-            "ai_prompt": "",
-            "refresh_cadence": "intraday",
-            "top_picks": []
+            "regulatory_moat": {
+              "score": 20,
+              "moat_type": "none",
+              "analysis": "The specialty retail sector typically faces low regulatory hurdles, relying more on brand, customer experience, and supply chain efficiency rather than government-imposed barriers to entry."
+            },
+            "esg_sin_premium": {
+              "score": 10,
+              "boycott_intensity": "none",
+              "analysis": "Ulta Beauty operates in the consumer discretionary sector, which is generally not subject to ESG boycotts or 'sin premium' dynamics. It is unlikely to benefit from capital scarcity for competitors due to ESG concerns."
+            },
+            "crowd_exhaustion": {
+              "score": 80,
+              "phase": "capitulation",
+              "analysis": "The significant single-day price drop indicates a strong capitulation phase, likely driven by panic selling or algorithmic triggers. Despite this, analysts maintain a 'buy' rating with a high target, suggesting a potential disconnect between market reaction and underlying value."
+            },
+            "boring_premium": {
+              "score": 40,
+              "hype_to_fcf_ratio": 379.73,
+              "analysis": "While not a 'boring' infrastructure play, Ulta Beauty generates a moderate free cash flow yield. The recent sharp price movement suggests market attention, but the underlying business is stable, potentially offering an arbitrage on temporary market overreaction."
+            },
+            "debt_asymmetry": {
+              "score": 65,
+              "verdict": "neutral",
+              "analysis": "Ulta Beauty maintains a manageable debt-to-equity ratio. While total debt exceeds cash, the balance sheet appears stable, and there's no immediate indication of a 'ticking bomb' or a significant 'inflation asset' advantage."
+            },
+            "hostage_power": {
+              "score": 30,
+              "role": "replaceable",
+              "analysis": "In the competitive specialty retail landscape, Ulta Beauty, while having a strong brand, does not possess 'hostage-taker' pricing power. Customers have alternatives, limiting its ability to unilaterally raise prices significantly."
+            },
+            "capital_allocation_iq": {
+              "score": 60,
+              "ceo_type": "disciplined_allocator",
+              "analysis": "With no dividend and neutral insider activity, capital allocation appears disciplined, focusing on internal growth or potential future buybacks. Strong free cash flow provides flexibility for strategic capital deployment."
+            }
+          },
+          "action": {
+            "recommendation": "Buy",
+            "entry_zone": "Below 540",
+            "stop_loss": "520",
+            "target_1": "555",
+            "target_2": "570",
+            "time_horizon": "Intraday",
+            "key_trigger": "Stabilization of selling pressure, volume confirmation."
+          }
         },
-        "swing": {
-            "strategy": {
-                "name_he": "\u05e2\u05d9\u05d5\u05d5\u05e8\u05d5\u05df \u05e7\u05d8\u05dc\u05d9\u05d6\u05d8\u05d5\u05e8\u05d9\u05dd",
-                "name_en": "Blind Catalysts",
-                "objective": "",
-                "edge_thesis": ""
+        {
+          "ticker": "MEOH",
+          "company_name": "Methanex Corporation",
+          "sector": "Basic Materials",
+          "sub_sector": "Chemicals",
+          "exchange": "NMS",
+          "price": {
+            "current": 51.75,
+            "currency": "USD",
+            "change_pct_1d": -10.87,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 59.09,
+            "low_52w": 25.46,
+            "distance_from_52w_high_pct": -12.42
+          },
+          "composite_score": {
+            "total": 70.81,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 70,
+              "regulatory_moat": 75,
+              "esg_sin_premium": 70,
+              "crowd_exhaustion": 60,
+              "boring_premium": 90,
+              "debt_asymmetry": 50,
+              "hostage_power": 80,
+              "capital_allocation_iq": 70
+            }
+          },
+          "thesis_summary": "MEOH's sharp decline is met with strong bullish options activity and excellent FCF yield in a 'boring' sector. This suggests a contrarian opportunity for a quick rebound, supported by regulatory moats in the chemicals industry.",
+          "xray": {
+            "options_mispricing": {
+              "score": 70,
+              "signal": "surprise_up",
+              "analysis": "Despite a significant 1-day price drop, the extremely low put/call volume ratio (0.04) indicates a strong bullish bias in the options market, suggesting a potential for an upside surprise or a quick rebound from the current dip."
             },
-            "ai_prompt": "",
-            "refresh_cadence": "daily_evening",
-            "top_picks": []
+            "regulatory_moat": {
+              "score": 75,
+              "moat_type": "environmental_barrier",
+              "analysis": "As a chemical producer, Methanex operates in an industry with substantial environmental and safety regulations, which act as significant barriers to entry for new competitors and protect incumbents."
+            },
+            "esg_sin_premium": {
+              "score": 70,
+              "boycott_intensity": "moderate",
+              "analysis": "The chemicals sector, particularly those involved in industrial production, can face moderate ESG scrutiny, potentially limiting new capital for competitors and creating a 'sin premium' for established players like Methanex."
+            },
+            "crowd_exhaustion": {
+              "score": 60,
+              "phase": "early_crowd",
+              "analysis": "The 1-day drop appears to be a shakeout rather than full capitulation, with options data showing strong call-side activity, indicating an 'early crowd' phase where investors are buying the dip, supported by a low short interest."
+            },
+            "boring_premium": {
+              "score": 90,
+              "hype_to_fcf_ratio": 96.62,
+              "analysis": "Methanex operates in the 'boring' chemicals sector, yet boasts an exceptional FCF yield of 11.25%. This high cash generation relative to its low 'hype' factor makes it an attractive arbitrage candidate for value-oriented investors."
+            },
+            "debt_asymmetry": {
+              "score": 50,
+              "verdict": "neutral",
+              "analysis": "Methanex has a relatively high debt-to-equity ratio and significant net debt. However, its strong free cash flow generation provides a buffer, suggesting a neutral debt structure without immediate 'ticking bomb' risks, but also not a clear 'inflation asset'."
+            },
+            "hostage_power": {
+              "score": 80,
+              "role": "mutual_dependency",
+              "analysis": "As a producer of methanol, a critical chemical commodity, Methanex holds a position of mutual dependency within its supply chains. While not a pure 'hostage-taker,' its products are essential inputs for numerous industries."
+            },
+            "capital_allocation_iq": {
+              "score": 70,
+              "ceo_type": "disciplined_allocator",
+              "analysis": "Methanex exhibits disciplined capital allocation with a modest dividend and strong free cash flow. While insider activity is neutral, the consistent cash generation suggests a focus on shareholder returns and prudent management."
+            }
+          },
+          "action": {
+            "recommendation": "Buy",
+            "entry_zone": "Below 52",
+            "stop_loss": "49",
+            "target_1": "54",
+            "target_2": "56",
+            "time_horizon": "Intraday/Short-term Swing",
+            "key_trigger": "Reversal in price action, continued call volume."
+          }
         },
-        "position": {
-            "strategy": {
-                "name_he": "\u05d4\u05e0\u05d2\u05d6\u05e8\u05ea \u05d4\u05e9\u05e0\u05d9\u05d9\u05d4",
-                "name_en": "Second Derivative Bottleneck",
-                "objective": "",
-                "edge_thesis": ""
+        {
+          "ticker": "ADBE",
+          "company_name": "Adobe Inc.",
+          "sector": "Technology",
+          "sub_sector": "Software - Application",
+          "exchange": "NMS",
+          "price": {
+            "current": 249.32,
+            "currency": "USD",
+            "change_pct_1d": -7.58,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 422.95,
+            "low_52w": 244.28,
+            "distance_from_52w_high_pct": -41.05
+          },
+          "composite_score": {
+            "total": 60.24,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 65,
+              "regulatory_moat": 40,
+              "esg_sin_premium": 10,
+              "crowd_exhaustion": 70,
+              "boring_premium": 60,
+              "debt_asymmetry": 80,
+              "hostage_power": 90,
+              "capital_allocation_iq": 75
+            }
+          },
+          "thesis_summary": "Adobe, significantly down from its 52-week high, presents a contrarian day trading opportunity. Strong FCF, robust balance sheet, and 'hostage-taker' market position suggest the recent dip is an overreaction, with options data hinting at upside potential.",
+          "xray": {
+            "options_mispricing": {
+              "score": 65,
+              "signal": "surprise_up",
+              "analysis": "Despite a recent price drop, the significantly higher implied volatility for calls compared to puts, coupled with a balanced put/call ratio, suggests the options market is pricing in substantial upside potential. This could indicate a mispricing for a short-term rebound."
             },
-            "ai_prompt": "",
-            "refresh_cadence": "daily_evening",
-            "top_picks": []
-        },
-        "investment": {
-            "strategy": {
-                "name_he": "\u05d0\u05e0\u05d8\u05d9-\u05e9\u05d1\u05d9\u05e8\u05d5\u05ea",
-                "name_en": "Anti-Fragility",
-                "objective": "",
-                "edge_thesis": ""
+            "regulatory_moat": {
+              "score": 40,
+              "moat_type": "patent_wall",
+              "analysis": "Adobe's moat primarily stems from its strong brand, extensive intellectual property, and ecosystem lock-in, rather than direct regulatory barriers. While not a 'license monopoly,' its patent portfolio provides some protection."
             },
-            "ai_prompt": "",
-            "refresh_cadence": "weekly",
-            "top_picks": []
+            "esg_sin_premium": {
+              "score": 10,
+              "boycott_intensity": "none",
+              "analysis": "Adobe operates in the technology sector, which is typically viewed favorably by ESG funds. It does not benefit from a 'sin premium' or capital scarcity for competitors due to ESG concerns."
+            },
+            "crowd_exhaustion": {
+              "score": 70,
+              "phase": "capitulation",
+              "analysis": "Adobe has been in a significant downtrend from its 52-week high, and today's drop could represent a capitulation event. Despite this, analyst sentiment remains positive, suggesting a potential bottoming process for a contrarian entry."
+            },
+            "boring_premium": {
+              "score": 60,
+              "hype_to_fcf_ratio": 83.48,
+              "analysis": "While Adobe is a well-known tech company, its robust 9.08% free cash flow yield relative to its recent price action suggests it's generating substantial cash without excessive 'hype' at current valuations, offering a 'boring premium' opportunity."
+            },
+            "debt_asymmetry": {
+              "score": 80,
+              "verdict": "inflation_asset",
+              "analysis": "Adobe's balance sheet is robust, with total cash nearly matching total debt, resulting in a very low net debt position. This strong financial health makes its debt effectively an 'inflation asset,' providing stability and flexibility."
+            },
+            "hostage_power": {
+              "score": 90,
+              "role": "hostage_taker",
+              "analysis": "Adobe's dominant position in creative and marketing software makes it a 'hostage-taker.' Its ecosystem creates high switching costs, granting it significant pricing power and making its products indispensable for many users and businesses."
+            },
+            "capital_allocation_iq": {
+              "score": 75,
+              "ceo_type": "disciplined_allocator",
+              "analysis": "Adobe's management demonstrates disciplined capital allocation, evidenced by strong free cash flow generation and no dividend, allowing for strategic reinvestment or potential future share buybacks to enhance shareholder value."
+            }
+          },
+          "action": {
+            "recommendation": "Buy",
+            "entry_zone": "Below 250",
+            "stop_loss": "245",
+            "target_1": "258",
+            "target_2": "265",
+            "time_horizon": "Intraday/Short-term Swing",
+            "key_trigger": "Price stabilization, reversal from 52w low."
+          }
         }
+      ]
+    },
+    "swing": {
+      "strategy": {
+        "name_he": "עיוורון קטליזטורים",
+        "name_en": "Blind Catalysts",
+        "objective": "ניצול אירוע נקודתי 'משעמם' שהשוק מסנן — לפני שהתקשורת מגלה אותו",
+        "edge_thesis": "השוק מתמחר דו\"חות שבועות מראש, אבל מתעלם מקטליזטורים \"משעממים\": סיום פריסת חוב, Lock-up expirations, פשיטת רגל של מתחרים, או שינויי רגולציה שקטים שמשנים את כלכלת התעשייה.",
+        "ai_prompt": "איזו חברה מתקרבת לאירוע מכונן 'שקט' (סיום חוב, lock-up expiration, אישור רגולטורי, פשיטת רגל של מתחרה) שהשוק מתמחר בחסר כי הוא 'משעמם מדי' לכותרות?",
+        "refresh_cadence": "daily_evening"
+      },
+      "ai_prompt": "איזו חברה מתקרבת לאירוע מכונן 'שקט' (סיום חוב, lock-up expiration, אישור רגולטורי, פשיטת רגל של מתחרה) שהשוק מתמחר בחסר כי הוא 'משעמם מדי' לכותרות?",
+      "refresh_cadence": "daily_evening",
+      "top_picks": [
+        {
+          "ticker": "CACC",
+          "company_name": "Credit Acceptance Corporation",
+          "sector": "Financial Services",
+          "sub_sector": "Credit Services",
+          "exchange": "NMS",
+          "price": {
+            "current": 447.79,
+            "currency": "USD",
+            "change_pct_1d": -9.35,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 549.75,
+            "low_52w": 401.9,
+            "distance_from_52w_high_pct": -18.55
+          },
+          "composite_score": {
+            "total": 59.57,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 75,
+              "regulatory_moat": 80,
+              "esg_sin_premium": 85,
+              "crowd_exhaustion": 90,
+              "boring_premium": 10,
+              "debt_asymmetry": 20,
+              "hostage_power": 70,
+              "capital_allocation_iq": 40
+            }
+          },
+          "thesis_summary": "CACC is experiencing extreme bearish sentiment and capitulation, driven by high short interest and put volume. Despite high debt, its regulatory moat and 'sin premium' niche could make it ripe for a contrarian rebound if the market has overreacted to its perceived risks.",
+          "xray": {
+            "options_mispricing": {
+              "score": 75,
+              "signal": "surprise_up",
+              "analysis": "The exceptionally high put/call volume ratio (3.8) alongside cheaper put implied volatility indicates extreme bearish sentiment in the options market. This presents a potential contrarian 'surprise up' opportunity if the market is overpricing downside risks."
+            },
+            "regulatory_moat": {
+              "score": 80,
+              "moat_type": "license_monopoly",
+              "analysis": "Operating in the credit services sector, CACC benefits from significant regulatory barriers, including strict licensing requirements and consumer protection laws, which limit new entrants and provide a strong 'license monopoly' moat."
+            },
+            "esg_sin_premium": {
+              "score": 85,
+              "boycott_intensity": "high",
+              "analysis": "Credit Acceptance operates in a segment (subprime auto lending) that often faces high ESG scrutiny and potential boycotts. This 'sin premium' can deter new competitors, leading to reduced supply and potentially higher profits for incumbents."
+            },
+            "crowd_exhaustion": {
+              "score": 90,
+              "phase": "capitulation",
+              "analysis": "With a significant price drop, extremely high short interest (30%), and overwhelming put volume, CACC is clearly in a deep 'capitulation' phase, indicating extreme crowd exhaustion and potential for a contrarian rebound."
+            },
+            "boring_premium": {
+              "score": 10,
+              "hype_to_fcf_ratio": 99999,
+              "analysis": "Credit Acceptance operates in a 'boring' but essential niche. However, the reported zero free cash flow is a significant concern, severely limiting its 'boring premium' appeal, as the core philosophy relies on strong cash generation."
+            },
+            "debt_asymmetry": {
+              "score": 20,
+              "verdict": "ticking_bomb",
+              "analysis": "CACC's extremely high debt-to-equity ratio and minimal cash position, coupled with zero reported free cash flow, present a significant 'ticking bomb' scenario, indicating high refinancing risk and vulnerability to rising interest rates."
+            },
+            "hostage_power": {
+              "score": 70,
+              "role": "mutual_dependency",
+              "analysis": "CACC provides a critical service to a specific market segment, creating a 'mutual dependency.' While customers might seek alternatives, the regulatory barriers for new entrants give CACC a strong position in its niche."
+            },
+            "capital_allocation_iq": {
+              "score": 40,
+              "ceo_type": "neutral",
+              "analysis": "With no dividend and a neutral insider signal, capital allocation is difficult to assess given the very high debt levels. The focus is likely on debt management rather than aggressive shareholder returns."
+            }
+          },
+          "action": {
+            "recommendation": "Buy",
+            "entry_zone": "Below 450",
+            "stop_loss": "430",
+            "target_1": "470",
+            "target_2": "490",
+            "time_horizon": "1-3 Weeks",
+            "key_trigger": "Short squeeze, reversal of put volume."
+          }
+        },
+        {
+          "ticker": "VEON",
+          "company_name": "VEON Ltd.",
+          "sector": "Communication Services",
+          "sub_sector": "Telecom Services",
+          "exchange": "NMS",
+          "price": {
+            "current": 50.6,
+            "currency": "USD",
+            "change_pct_1d": 14.2,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 64.0,
+            "low_52w": 34.55,
+            "distance_from_52w_high_pct": -20.94
+          },
+          "composite_score": {
+            "total": 69.86,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 70,
+              "regulatory_moat": 85,
+              "esg_sin_premium": 50,
+              "crowd_exhaustion": 70,
+              "boring_premium": 95,
+              "debt_asymmetry": 40,
+              "hostage_power": 80,
+              "capital_allocation_iq": 70
+            }
+          },
+          "thesis_summary": "VEON, a 'boring' telecom with an excellent FCF yield and strong regulatory moat, has seen a significant price jump. Despite high debt, its 'hostage-taker' power and options data suggesting upside potential make it a strong contrarian swing play for a sustained rally.",
+          "xray": {
+            "options_mispricing": {
+              "score": 70,
+              "signal": "surprise_up",
+              "analysis": "Despite a high put/call volume ratio, the significantly higher implied volatility for calls suggests the options market anticipates substantial upside movement. The recent 14.2% price surge could be the catalyst for a 'surprise up' swing, potentially catching bears off guard."
+            },
+            "regulatory_moat": {
+              "score": 85,
+              "moat_type": "license_monopoly",
+              "analysis": "As a telecom services provider, VEON operates in a highly regulated industry with significant barriers to entry, including spectrum licenses and extensive infrastructure build-out costs, creating a strong 'license monopoly' moat."
+            },
+            "esg_sin_premium": {
+              "score": 50,
+              "boycott_intensity": "moderate",
+              "analysis": "While telecom services are not inherently 'sinful,' VEON's operations in various emerging markets might expose it to governance and geopolitical risks that some ESG funds avoid, potentially creating a moderate 'sin premium' effect."
+            },
+            "crowd_exhaustion": {
+              "score": 70,
+              "phase": "wolf_accumulation",
+              "analysis": "The significant 1-day price surge, coupled with a 'strong buy' analyst recommendation and very low short interest, suggests a potential 'wolf accumulation' phase, where smart money is entering despite lingering bearish options volume, indicating a sentiment reversal."
+            },
+            "boring_premium": {
+              "score": 95,
+              "hype_to_fcf_ratio": 105.03,
+              "analysis": "VEON operates in the 'boring' but essential telecom sector, boasting an exceptional 13.52% free cash flow yield. This strong cash generation combined with its low 'hype' profile makes it a prime candidate for a 'boring premium' arbitrage."
+            },
+            "debt_asymmetry": {
+              "score": 40,
+              "verdict": "neutral",
+              "analysis": "VEON carries a very high debt-to-equity ratio, but its substantial cash reserves and excellent free cash flow generation mitigate immediate 'ticking bomb' concerns. The debt structure is neutral, not an 'inflation asset' but also not critically unstable."
+            },
+            "hostage_power": {
+              "score": 80,
+              "role": "hostage_taker",
+              "analysis": "As a key telecom infrastructure provider in its operating regions, VEON holds significant 'hostage-taker' power. Its services are essential, and the cost and complexity of building competing networks create a strong barrier to substitution."
+            },
+            "capital_allocation_iq": {
+              "score": 70,
+              "ceo_type": "disciplined_allocator",
+              "analysis": "With no dividend and strong free cash flow, VEON's capital allocation appears disciplined, likely prioritizing debt reduction or strategic reinvestment. The absence of insider data makes a definitive CEO type assessment challenging, but FCF strength is positive."
+            }
+          },
+          "action": {
+            "recommendation": "Buy",
+            "entry_zone": "Above 50",
+            "stop_loss": "48",
+            "target_1": "53",
+            "target_2": "56",
+            "time_horizon": "1-4 Weeks",
+            "key_trigger": "Breakout above resistance, continued institutional buying."
+          }
+        },
+        {
+          "ticker": "LEU",
+          "company_name": "Centrus Energy Corp.",
+          "sector": "Energy",
+          "sub_sector": "Uranium",
+          "exchange": "NYQ",
+          "price": {
+            "current": 209.64,
+            "currency": "USD",
+            "change_pct_1d": -2.42,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 464.25,
+            "low_52w": 49.4,
+            "distance_from_52w_high_pct": -54.84
+          },
+          "composite_score": {
+            "total": 77.33,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 60,
+              "regulatory_moat": 95,
+              "esg_sin_premium": 90,
+              "crowd_exhaustion": 85,
+              "boring_premium": 40,
+              "debt_asymmetry": 90,
+              "hostage_power": 95,
+              "capital_allocation_iq": 50
+            }
+          },
+          "thesis_summary": "LEU, a critical uranium supplier with an extreme regulatory moat and 'sin premium,' is deeply in capitulation. Despite low FCF, its cash-rich balance sheet and 'hostage-taker' power make it a compelling contrarian swing play, especially with analysts expecting a significant rebound.",
+          "xray": {
+            "options_mispricing": {
+              "score": 60,
+              "signal": "surprise_up",
+              "analysis": "The high put/call volume ratio and extremely high, balanced implied volatility suggest significant market uncertainty and bearish sentiment. However, given the stock is already deeply discounted from its 52-week high, options might be overpricing downside risk, creating a 'surprise up' opportunity."
+            },
+            "regulatory_moat": {
+              "score": 95,
+              "moat_type": "government_concession",
+              "analysis": "Centrus Energy operates in the highly strategic and regulated uranium sector, benefiting from immense government concessions and regulatory barriers related to nuclear materials, making it a near-monopoly in its niche."
+            },
+            "esg_sin_premium": {
+              "score": 90,
+              "boycott_intensity": "extreme",
+              "analysis": "The nuclear energy sector, despite its carbon-free nature, faces 'extreme' ESG boycott intensity due to concerns about waste and safety. This deters new capital, creating a significant 'sin premium' for existing, essential players like Centrus."
+            },
+            "crowd_exhaustion": {
+              "score": 85,
+              "phase": "capitulation",
+              "analysis": "Centrus Energy is deep in a 'capitulation' phase, evidenced by its over 50% drop from 52-week highs, high short interest, and put-heavy options volume. This suggests extreme crowd exhaustion, ripe for a contrarian reversal."
+            },
+            "boring_premium": {
+              "score": 40,
+              "hype_to_fcf_ratio": 263.04,
+              "analysis": "Centrus operates in the inherently 'boring' uranium sector, but its very low free cash flow yield is a concern. While the industry lacks consumer hype, the FCF generation needs to improve to fully realize a 'boring premium'."
+            },
+            "debt_asymmetry": {
+              "score": 90,
+              "verdict": "inflation_asset",
+              "analysis": "Despite a high debt-to-equity ratio, Centrus Energy holds significantly more cash than total debt, resulting in a negative net debt position. This makes its debt effectively an 'inflation asset,' providing a strong, resilient balance sheet."
+            },
+            "hostage_power": {
+              "score": 95,
+              "role": "hostage_taker",
+              "analysis": "Centrus Energy is a critical 'hostage-taker' in the global nuclear fuel supply chain, providing enriched uranium that is indispensable for nuclear power generation. Its specialized role grants it immense pricing power and makes it virtually irreplaceable."
+            },
+            "capital_allocation_iq": {
+              "score": 50,
+              "ceo_type": "neutral",
+              "analysis": "With a very low free cash flow yield and no dividend, capital allocation effectiveness is questionable. While insider activity is neutral, the company needs to demonstrate better FCF generation to be considered a strong capital allocator."
+            }
+          },
+          "action": {
+            "recommendation": "Buy",
+            "entry_zone": "Below 210",
+            "stop_loss": "195",
+            "target_1": "225",
+            "target_2": "240",
+            "time_horizon": "1-3 Months",
+            "key_trigger": "Uranium price strength, geopolitical catalysts."
+          }
+        }
+      ]
+    },
+    "position": {
+      "strategy": {
+        "name_he": "הנגזרת השנייה של צוואר הבקבוק",
+        "name_en": "Second Derivative Bottleneck",
+        "objective": "תפיסת החוליה הנסתרת בשרשרת האספקה — שלב אחד עמוק מהטרנד שכולם רואים",
+        "edge_thesis": "כולם קונים את הטרנד הישיר (שבבי AI, ליתיום לרכב חשמלי). אנחנו קונים את ה'את החפירה בבהלה לזהב' — החברה שמייצרת את קירור השרתים, את הנחושת לשנאים, את הדלק לספינות שמובילות את הכל.",
+        "ai_prompt": "באיזה סקטור הכסף המוסדי מתחיל להבין שיש חוסר מהותי? איזו חוליה בשרשרת האספקה (שלב שני/שלישי מהטרנד הראשי) מציגה פריצה במחזור מסחר שמעידה על כניסת 'כסף חכם' — בעוד התקשורת עדיין לא גילתה את הסיפור?",
+        "refresh_cadence": "daily_evening"
+      },
+      "ai_prompt": "באיזה סקטור הכסף המוסדי מתחיל להבין שיש חוסר מהותי? איזו חוליה בשרשרת האספקה (שלב שני/שלישי מהטרנד הראשי) מציגה פריצה במחזור מסחר שמעידה על כניסת 'כסף חכם' — בעוד התקשורת עדיין לא גילתה את הסיפור?",
+      "refresh_cadence": "daily_evening",
+      "top_picks": [
+        {
+          "ticker": "MUR",
+          "company_name": "Murphy Oil Corporation",
+          "sector": "Energy",
+          "sub_sector": "Oil & Gas E&P",
+          "exchange": "NYQ",
+          "price": {
+            "current": 36.81,
+            "currency": "USD",
+            "change_pct_1d": 6.02,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 36.9,
+            "low_52w": 18.95,
+            "distance_from_52w_high_pct": -0.24
+          },
+          "composite_score": {
+            "total": 77.29,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 70,
+              "regulatory_moat": 80,
+              "esg_sin_premium": 95,
+              "crowd_exhaustion": 60,
+              "boring_premium": 75,
+              "debt_asymmetry": 70,
+              "hostage_power": 90,
+              "capital_allocation_iq": 70
+            }
+          },
+          "thesis_summary": "Murphy Oil, an 'extreme sin premium' oil & gas producer with a strong regulatory moat and 'hostage-taker' power, is trading near 52-week highs. Despite analyst caution, options data suggests overpricing of downside risk, making it a compelling contrarian position for continued upside.",
+          "xray": {
+            "options_mispricing": {
+              "score": 70,
+              "signal": "surprise_up",
+              "analysis": "Despite strong call volume and recent price appreciation, the significantly higher implied volatility for puts suggests the market is overpricing downside risk. This creates a potential 'surprise up' scenario if the market's bearish insurance is unwarranted, leading to continued upside."
+            },
+            "regulatory_moat": {
+              "score": 80,
+              "moat_type": "environmental_barrier",
+              "analysis": "Murphy Oil operates in the Oil & Gas E&P sector, which is characterized by high regulatory hurdles, including complex permitting processes and stringent environmental regulations, creating substantial barriers to entry for new competitors."
+            },
+            "esg_sin_premium": {
+              "score": 95,
+              "boycott_intensity": "extreme",
+              "analysis": "The Oil & Gas sector faces 'extreme' ESG boycott intensity, severely limiting new capital formation for competitors. This 'sin premium' creates a favorable supply-demand dynamic for existing producers like Murphy Oil, leading to windfall profits."
+            },
+            "crowd_exhaustion": {
+              "score": 60,
+              "phase": "wolf_accumulation",
+              "analysis": "Despite trading near 52-week highs and a positive 1-day change, analysts maintain a 'hold' rating with a target below current price. This divergence, coupled with moderate short interest, suggests 'wolf accumulation' where smart money is buying while the broader crowd remains cautious."
+            },
+            "boring_premium": {
+              "score": 75,
+              "hype_to_fcf_ratio": 108.66,
+              "analysis": "Murphy Oil operates in the 'boring' but essential Oil & Gas E&P sector, generating a healthy 5.54% free cash flow yield. This strong cash generation with relatively low 'hype' (despite recent price action) makes it a good 'boring premium' candidate."
+            },
+            "debt_asymmetry": {
+              "score": 70,
+              "verdict": "neutral",
+              "analysis": "Murphy Oil maintains a moderate debt-to-equity ratio. While total debt exceeds cash, the net debt position is manageable relative to its EBITDA, suggesting a neutral debt structure without immediate 'ticking bomb' risks or clear 'inflation asset' benefits."
+            },
+            "hostage_power": {
+              "score": 90,
+              "role": "hostage_taker",
+              "analysis": "As an oil and gas producer, Murphy Oil holds significant 'hostage-taker' power. Its products are essential global commodities with limited short-term substitutes, granting it strong pricing power, especially during periods of supply constraint."
+            },
+            "capital_allocation_iq": {
+              "score": 70,
+              "ceo_type": "disciplined_allocator",
+              "analysis": "Murphy Oil exhibits disciplined capital allocation with a reasonable 3.6% dividend yield and strong free cash flow. While insider activity is neutral, the consistent return of capital to shareholders suggests prudent management."
+            }
+          },
+          "action": {
+            "recommendation": "Buy",
+            "entry_zone": "35-37",
+            "stop_loss": "33",
+            "target_1": "40",
+            "target_2": "45",
+            "time_horizon": "3-6 Months",
+            "key_trigger": "Sustained high energy prices, increased institutional ownership."
+          }
+        },
+        {
+          "ticker": "SSL",
+          "company_name": "Sasol Ltd.",
+          "sector": "Basic Materials",
+          "sub_sector": "Specialty Chemicals",
+          "exchange": "NYQ",
+          "price": {
+            "current": 11.31,
+            "currency": "USD",
+            "change_pct_1d": 6.7,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 11.51,
+            "low_52w": 2.78,
+            "distance_from_52w_high_pct": -1.74
+          },
+          "composite_score": {
+            "total": 78.1,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 70,
+              "regulatory_moat": 75,
+              "esg_sin_premium": 90,
+              "crowd_exhaustion": 50,
+              "boring_premium": 100,
+              "debt_asymmetry": 70,
+              "hostage_power": 85,
+              "capital_allocation_iq": 80
+            }
+          },
+          "thesis_summary": "Sasol, a 'boring' specialty chemicals producer with an astounding 65.25% FCF yield and strong 'sin premium,' is trading near 52-week highs. Its 'hostage-taker' power and strong options momentum make it a top contrarian position, despite analyst apathy, for long-term value creation.",
+          "xray": {
+            "options_mispricing": {
+              "score": 70,
+              "signal": "surprise_up",
+              "analysis": "The extremely call-heavy options volume and very high call implied volatility indicate strong bullish sentiment and expectations of significant upside. Trading near 52-week highs, the market might still be underestimating the momentum, creating a 'surprise up' opportunity."
+            },
+            "regulatory_moat": {
+              "score": 75,
+              "moat_type": "environmental_barrier",
+              "analysis": "Sasol operates in the specialty chemicals sector, which faces considerable environmental and safety regulations. These regulatory hurdles act as substantial barriers to entry, protecting Sasol's market position."
+            },
+            "esg_sin_premium": {
+              "score": 90,
+              "boycott_intensity": "high",
+              "analysis": "Sasol, known for its coal-to-liquids technology, faces 'high' ESG boycott intensity due to its carbon footprint. This 'sin premium' deters new capital for competitors, creating a favorable environment for existing, essential producers."
+            },
+            "crowd_exhaustion": {
+              "score": 50,
+              "phase": "early_crowd",
+              "analysis": "Sasol is experiencing strong positive momentum, trading near 52-week highs with very low short interest. While not a 'capitulation' play, the lack of analyst coverage and a target below current price suggests the 'early crowd' is recognizing the value, indicating potential for further upside."
+            },
+            "boring_premium": {
+              "score": 100,
+              "hype_to_fcf_ratio": 10.27,
+              "analysis": "Sasol operates in the quintessentially 'boring' specialty chemicals sector, yet boasts an astounding 65.25% free cash flow yield. This unparalleled cash generation relative to its low 'hype' profile makes it the ultimate 'boring premium' arbitrage opportunity."
+            },
+            "debt_asymmetry": {
+              "score": 70,
+              "verdict": "neutral",
+              "analysis": "Sasol carries substantial total debt, but its phenomenal free cash flow generation (65.25% yield) provides immense capacity for debt reduction. While net debt is high, the company's ability to service and reduce it rapidly positions its debt as neutral, not a 'ticking bomb'."
+            },
+            "hostage_power": {
+              "score": 85,
+              "role": "hostage_taker",
+              "analysis": "Sasol, with its unique chemical processes and production of essential fuels and chemicals, holds significant 'hostage-taker' power. Its specialized offerings and large-scale operations make it difficult to bypass, granting it strong pricing leverage."
+            },
+            "capital_allocation_iq": {
+              "score": 80,
+              "ceo_type": "disciplined_allocator",
+              "analysis": "With no dividend and an extraordinary free cash flow yield, Sasol's capital allocation appears highly disciplined, likely prioritizing debt reduction and strategic reinvestment to maximize long-term value. The FCF generation is a testament to strong management."
+            }
+          },
+          "action": {
+            "recommendation": "Strong Buy",
+            "entry_zone": "11-11.5",
+            "stop_loss": "10.5",
+            "target_1": "12.5",
+            "target_2": "14",
+            "time_horizon": "6-12 Months",
+            "key_trigger": "Continued FCF growth, positive news on debt reduction."
+          }
+        },
+        {
+          "ticker": "VEON",
+          "company_name": "VEON Ltd.",
+          "sector": "Communication Services",
+          "sub_sector": "Telecom Services",
+          "exchange": "NMS",
+          "price": {
+            "current": 50.6,
+            "currency": "USD",
+            "change_pct_1d": 14.2,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 64.0,
+            "low_52w": 34.55,
+            "distance_from_52w_high_pct": -20.94
+          },
+          "composite_score": {
+            "total": 69.86,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 70,
+              "regulatory_moat": 85,
+              "esg_sin_premium": 50,
+              "crowd_exhaustion": 70,
+              "boring_premium": 95,
+              "debt_asymmetry": 40,
+              "hostage_power": 80,
+              "capital_allocation_iq": 70
+            }
+          },
+          "thesis_summary": "VEON, a 'boring' telecom with an excellent FCF yield and strong regulatory moat, is showing signs of 'wolf accumulation' despite high debt. Its 'hostage-taker' power and strong analyst support make it a compelling contrarian position for long-term value in essential infrastructure.",
+          "xray": {
+            "options_mispricing": {
+              "score": 70,
+              "signal": "surprise_up",
+              "analysis": "Despite a high put/call volume ratio, the significantly higher implied volatility for calls suggests the options market anticipates substantial upside movement. The recent 14.2% price surge could be the catalyst for a 'surprise up' swing, potentially catching bears off guard."
+            },
+            "regulatory_moat": {
+              "score": 85,
+              "moat_type": "license_monopoly",
+              "analysis": "As a telecom services provider, VEON operates in a highly regulated industry with significant barriers to entry, including spectrum licenses and extensive infrastructure build-out costs, creating a strong 'license monopoly' moat."
+            },
+            "esg_sin_premium": {
+              "score": 50,
+              "boycott_intensity": "moderate",
+              "analysis": "While telecom services are not inherently 'sinful,' VEON's operations in various emerging markets might expose it to governance and geopolitical risks that some ESG funds avoid, potentially creating a moderate 'sin premium' effect."
+            },
+            "crowd_exhaustion": {
+              "score": 70,
+              "phase": "wolf_accumulation",
+              "analysis": "The significant 1-day price surge, coupled with a 'strong buy' analyst recommendation and very low short interest, suggests a potential 'wolf accumulation' phase, where smart money is entering despite lingering bearish options volume, indicating a sentiment reversal."
+            },
+            "boring_premium": {
+              "score": 95,
+              "hype_to_fcf_ratio": 105.03,
+              "analysis": "VEON operates in the 'boring' but essential telecom sector, boasting an exceptional 13.52% free cash flow yield. This strong cash generation combined with its low 'hype' profile makes it a prime candidate for a 'boring premium' arbitrage."
+            },
+            "debt_asymmetry": {
+              "score": 40,
+              "verdict": "neutral",
+              "analysis": "VEON carries a very high debt-to-equity ratio, but its substantial cash reserves and excellent free cash flow generation mitigate immediate 'ticking bomb' concerns. The debt structure is neutral, not an 'inflation asset' but also not critically unstable."
+            },
+            "hostage_power": {
+              "score": 80,
+              "role": "hostage_taker",
+              "analysis": "As a key telecom infrastructure provider in its operating regions, VEON holds significant 'hostage-taker' power. Its services are essential, and the cost and complexity of building competing networks create a strong barrier to substitution."
+            },
+            "capital_allocation_iq": {
+              "score": 70,
+              "ceo_type": "disciplined_allocator",
+              "analysis": "With no dividend and strong free cash flow, VEON's capital allocation appears disciplined, likely prioritizing debt reduction or strategic reinvestment. The absence of insider data makes a definitive CEO type assessment challenging, but FCF strength is positive."
+            }
+          },
+          "action": {
+            "recommendation": "Strong Buy",
+            "entry_zone": "50-51",
+            "stop_loss": "47",
+            "target_1": "60",
+            "target_2": "70",
+            "time_horizon": "6-12 Months",
+            "key_trigger": "Continued FCF growth, geopolitical stability in operating regions."
+          }
+        }
+      ]
+    },
+    "investment": {
+      "strategy": {
+        "name_he": "אנטי-שבירות ומונופול תשתיתי",
+        "name_en": "Anti-Fragility & Infrastructure Monopoly",
+        "objective": "גידור התיק מפני אינפלציה, ריביות גבוהות ומשברים גיאופוליטיים — בעלות על נכסים שהעולם לא יכול לחיות בלעדיהם",
+        "edge_thesis": "טכנולוגיה משתבשת. אנחנו משקיעים בנכסים \"משעממים\" שהביקוש אליהם קשיח לחלוטין: אנרגיה, חקלאות בסיסית, ספנות קשיחה, כרייה. חברות שמייצרות מיליארדים גם אם הריבית תעלה ל-10% או תפרוץ מלחמת עולם.",
+        "ai_prompt": "לאיזו חברה יש את החפיר הפיזי הרחב ביותר (כורים, זיכיונות, נתיבי סחר) שאי אפשר לשכפל, מאזן חסין-כדורים, ויכולת לייצר תזרים מזומנים חיובי גם בתרחיש של מיתון + ריבית 10% + מלחמה?",
+        "refresh_cadence": "weekly"
+      },
+      "ai_prompt": "לאיזו חברה יש את החפיר הפיזי הרחב ביותר (כורים, זיכיונות, נתיבי סחר) שאי אפשר לשכפל, מאזן חסין-כדורים, ויכולת לייצר תזרים מזומנים חיובי גם בתרחיש של מיתון + ריבית 10% + מלחמה?",
+      "refresh_cadence": "weekly",
+      "top_picks": [
+        {
+          "ticker": "SCCO",
+          "company_name": "Southern Copper Corporation",
+          "sector": "Basic Materials",
+          "sub_sector": "Copper",
+          "exchange": "NYQ",
+          "price": {
+            "current": 170.83,
+            "currency": "USD",
+            "change_pct_1d": -5.39,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 223.89,
+            "low_52w": 72.27701,
+            "distance_from_52w_high_pct": -23.7
+          },
+          "composite_score": {
+            "total": 77.52,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 70,
+              "regulatory_moat": 95,
+              "esg_sin_premium": 85,
+              "crowd_exhaustion": 80,
+              "boring_premium": 50,
+              "debt_asymmetry": 60,
+              "hostage_power": 95,
+              "capital_allocation_iq": 75
+            }
+          },
+          "thesis_summary": "Southern Copper, an indispensable copper producer with extreme regulatory and 'sin premium' moats, is experiencing crowd pessimism despite massive insider ownership. Its 'hostage-taker' power and long-term essential commodity status make it a top contrarian investment for inflation hedging and infrastructure plays.",
+          "xray": {
+            "options_mispricing": {
+              "score": 70,
+              "signal": "surprise_up",
+              "analysis": "The exceptionally high put/call volume ratio and slightly higher put implied volatility signal strong bearish sentiment. This presents a contrarian 'surprise up' opportunity for Southern Copper, as the market may be overpricing downside risks in a critical commodity producer."
+            },
+            "regulatory_moat": {
+              "score": 95,
+              "moat_type": "environmental_barrier",
+              "analysis": "Southern Copper benefits from an immense regulatory moat in copper mining, characterized by stringent environmental regulations, long permitting processes, and massive capital requirements, effectively creating a high barrier to entry and protecting its operations."
+            },
+            "esg_sin_premium": {
+              "score": 85,
+              "boycott_intensity": "high",
+              "analysis": "Copper mining often faces 'high' ESG boycott intensity due to environmental concerns and social impacts. This 'sin premium' limits new capital for competitors, creating a favorable supply-demand dynamic and windfall profits for established players like Southern Copper."
+            },
+            "crowd_exhaustion": {
+              "score": 80,
+              "phase": "wolf_accumulation",
+              "analysis": "Despite a recent price drop and strong bearish options activity, Southern Copper's extremely high insider ownership (89.7%) suggests 'wolf accumulation.' The crowd is pessimistic, but insiders hold strong conviction, indicating a potential contrarian long-term buy."
+            },
+            "boring_premium": {
+              "score": 50,
+              "hype_to_fcf_ratio": 227.42,
+              "analysis": "Southern Copper operates in the 'boring' but essential copper mining sector. While its FCF yield is relatively low, the fundamental nature of its commodity and lack of consumer hype make it a candidate for 'boring premium' if FCF improves."
+            },
+            "debt_asymmetry": {
+              "score": 60,
+              "verdict": "neutral",
+              "analysis": "Southern Copper maintains a moderate debt-to-equity ratio. While it holds significant cash, its net debt is still substantial. The debt structure is neutral, not posing an immediate 'ticking bomb' risk, nor offering a clear 'inflation asset' advantage."
+            },
+            "hostage_power": {
+              "score": 95,
+              "role": "hostage_taker",
+              "analysis": "Southern Copper is a 'hostage-taker' in the global economy, producing copper, an indispensable commodity for electrification, construction, and technology. Its control over vast reserves grants it immense pricing power and makes it irreplaceable."
+            },
+            "capital_allocation_iq": {
+              "score": 75,
+              "ceo_type": "stealth_compounder",
+              "analysis": "With extremely high insider ownership and a consistent dividend, capital allocation is likely focused on long-term value creation. Despite a lower FCF yield, the 'stealth compounder' CEO type is inferred from the strong insider alignment and essential nature of the business."
+            }
+          },
+          "action": {
+            "recommendation": "Strong Buy",
+            "entry_zone": "165-170",
+            "stop_loss": "155",
+            "target_1": "190",
+            "target_2": "210",
+            "time_horizon": "1-3 Years",
+            "key_trigger": "Global infrastructure spending, copper demand growth."
+          }
+        },
+        {
+          "ticker": "AU",
+          "company_name": "AngloGold Ashanti PLC",
+          "sector": "Basic Materials",
+          "sub_sector": "Gold",
+          "exchange": "NYQ",
+          "price": {
+            "current": 94.89,
+            "currency": "USD",
+            "change_pct_1d": -7.85,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 129.14,
+            "low_52w": 31.91,
+            "distance_from_52w_high_pct": -26.52
+          },
+          "composite_score": {
+            "total": 78.14,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 75,
+              "regulatory_moat": 90,
+              "esg_sin_premium": 80,
+              "crowd_exhaustion": 60,
+              "boring_premium": 70,
+              "debt_asymmetry": 95,
+              "hostage_power": 80,
+              "capital_allocation_iq": 70
+            }
+          },
+          "thesis_summary": "AngloGold Ashanti, a 'boring' gold miner with strong regulatory and 'sin premium' moats, is cash-rich and trading below its 52-week high. Despite a recent dip, extreme bullish options activity and high dividend yield make it a compelling contrarian investment for inflation hedging and portfolio diversification.",
+          "xray": {
+            "options_mispricing": {
+              "score": 75,
+              "signal": "surprise_up",
+              "analysis": "Despite a recent price drop, AngloGold Ashanti exhibits an extremely call-heavy options volume, indicating strong bullish sentiment. While both call and put IVs are very high, the overall bias suggests the market anticipates a 'surprise up' move, potentially after a shakeout."
+            },
+            "regulatory_moat": {
+              "score": 90,
+              "moat_type": "environmental_barrier",
+              "analysis": "AngloGold Ashanti operates in gold mining, an industry with significant regulatory and capital barriers, including complex environmental permitting, land access, and geopolitical considerations, which protect established players."
+            },
+            "esg_sin_premium": {
+              "score": 80,
+              "boycott_intensity": "high",
+              "analysis": "Gold mining often faces 'high' ESG boycott intensity due to environmental impact, water usage, and labor practices. This 'sin premium' limits new capital for competitors, creating a favorable supply-demand dynamic and windfall profits for established producers like AngloGold Ashanti."
+            },
+            "crowd_exhaustion": {
+              "score": 60,
+              "phase": "early_crowd",
+              "analysis": "Despite a recent price drop, AngloGold Ashanti is experiencing 'early crowd' accumulation, evidenced by extremely low short interest and overwhelming call options volume. Analysts also maintain a 'buy' rating, suggesting a collective belief in a rebound."
+            },
+            "boring_premium": {
+              "score": 70,
+              "hype_to_fcf_ratio": 175.61,
+              "analysis": "AngloGold Ashanti operates in the 'boring' but essential gold mining sector, generating a moderate 4.47% free cash flow yield. Its fundamental commodity nature and lack of consumer hype make it a good 'boring premium' candidate for long-term investment."
+            },
+            "debt_asymmetry": {
+              "score": 95,
+              "verdict": "inflation_asset",
+              "analysis": "AngloGold Ashanti boasts an exceptionally strong balance sheet with very low debt-to-equity and significantly more cash than total debt, resulting in a negative net debt position. This makes its debt effectively an 'inflation asset,' providing extreme financial resilience."
+            },
+            "hostage_power": {
+              "score": 80,
+              "role": "mutual_dependency",
+              "analysis": "AngloGold Ashanti, as a major gold producer, holds a position of 'mutual dependency.' Gold is an essential store of value and has industrial uses, but the market has multiple suppliers. Its scale provides some pricing power."
+            },
+            "capital_allocation_iq": {
+              "score": 70,
+              "ceo_type": "disciplined_allocator",
+              "analysis": "AngloGold Ashanti demonstrates disciplined capital allocation with a strong 4.48% dividend yield and robust free cash flow. While insider ownership is low, the consistent return of capital to shareholders indicates prudent management."
+            }
+          },
+          "action": {
+            "recommendation": "Strong Buy",
+            "entry_zone": "90-95",
+            "stop_loss": "85",
+            "target_1": "110",
+            "target_2": "125",
+            "time_horizon": "1-3 Years",
+            "key_trigger": "Rising inflation expectations, geopolitical instability."
+          }
+        },
+        {
+          "ticker": "CF",
+          "company_name": "CF Industries Holdings, Inc.",
+          "sector": "Basic Materials",
+          "sub_sector": "Agricultural Inputs",
+          "exchange": "NYQ",
+          "price": {
+            "current": 129.57,
+            "currency": "USD",
+            "change_pct_1d": -4.73,
+            "change_pct_1w": 0,
+            "change_pct_1m": 0,
+            "high_52w": 137.44,
+            "low_52w": 67.34,
+            "distance_from_52w_high_pct": -5.73
+          },
+          "composite_score": {
+            "total": 75.0,
+            "confidence": "medium",
+            "breakdown": {
+              "options_mispricing": 70,
+              "regulatory_moat": 80,
+              "esg_sin_premium": 75,
+              "crowd_exhaustion": 60,
+              "boring_premium": 80,
+              "debt_asymmetry": 70,
+              "hostage_power": 90,
+              "capital_allocation_iq": 70
+            }
+          },
+          "thesis_summary": "CF Industries, an essential agricultural inputs producer with strong regulatory and 'sin premium' moats, is trading near its 52-week high. Despite analyst caution, options data suggests overpricing of downside risk, making it a compelling contrarian investment for global food security and inflation hedging.",
+          "xray": {
+            "options_mispricing": {
+              "score": 70,
+              "signal": "surprise_up",
+              "analysis": "Despite call-heavy options volume, the significantly higher implied volatility for puts suggests the market is overpricing downside risk. This creates a potential 'surprise up' scenario for CF Industries, especially after a recent price dip, if bearish insurance is unwarranted."
+            },
+            "regulatory_moat": {
+              "score": 80,
+              "moat_type": "environmental_barrier",
+              "analysis": "CF Industries operates in agricultural inputs, a sector with high regulatory barriers, including environmental and safety regulations for chemical production and distribution, which limit new entrants and protect incumbents."
+            },
+            "esg_sin_premium": {
+              "score": 75,
+              "boycott_intensity": "moderate",
+              "analysis": "Fertilizer production can face 'moderate' ESG boycott intensity due to environmental concerns related to runoff and greenhouse gas emissions. This 'sin premium' can deter new capital for competitors, creating a favorable environment for existing producers."
+            },
+            "crowd_exhaustion": {
+              "score": 60,
+              "phase": "wolf_accumulation",
+              "analysis": "Despite a recent price drop, CF Industries is trading near its 52-week high, with analysts maintaining a 'hold' rating and a target below current price. This divergence, coupled with moderate short interest, suggests 'wolf accumulation' by smart money."
+            },
+            "boring_premium": {
+              "score": 80,
+              "hype_to_fcf_ratio": 73.11,
+              "analysis": "CF Industries operates in the 'boring' but essential agricultural inputs sector, generating a strong 6.47% free cash flow yield. This robust cash generation with low 'hype' makes it an excellent 'boring premium' candidate for long-term investment."
+            },
+            "debt_asymmetry": {
+              "score": 70,
+              "verdict": "neutral",
+              "analysis": "CF Industries maintains a moderate debt-to-equity ratio. While it holds significant cash, its net debt is still substantial. The debt structure is neutral, not posing an immediate 'ticking bomb' risk, nor offering a clear 'inflation asset' advantage."
+            },
+            "hostage_power": {
+              "score": 90,
+              "role": "hostage_taker",
+              "analysis": "CF Industries is a 'hostage-taker' in the global food supply chain, providing essential fertilizers that are indispensable for agricultural production. Its critical role grants it significant pricing power and makes it difficult to bypass."
+            },
+            "capital_allocation_iq": {
+              "score": 70,
+              "ceo_type": "disciplined_allocator",
+              "analysis": "CF Industries demonstrates disciplined capital allocation with a modest 1.54% dividend yield and strong free cash flow. While insider activity is neutral, the consistent return of capital to shareholders suggests prudent management."
+            }
+          },
+          "action": {
+            "recommendation": "Buy",
+            "entry_zone": "128-130",
+            "stop_loss": "125",
+            "target_1": "135",
+            "target_2": "145",
+            "time_horizon": "1-2 Years",
+            "key_trigger": "Global food demand, agricultural commodity price strength."
+          }
+        }
+      ]
     }
+  },
+  "meta": {
+    "generated_at": "2026-03-14T20:51:39.814947+00:00",
+    "model_version": "matrix-engine-v3.0-radar/gemini-2.5-flash",
+    "data_sources": [
+      "yfinance_api",
+      "yahoo_screeners",
+      "cboe_options_chain",
+      "sec_insider_transactions",
+      "analyst_recommendations",
+      "gemini_gemini-2.5-flash"
+    ],
+    "market_status": "weekend",
+    "next_refresh": "2026-03-15T00:51:39.814962+00:00",
+    "radar_stats": {
+      "total_scanned": 40,
+      "selected_for_deep_analysis": 11,
+      "triage_reasoning": {
+        "day_trading": "These stocks exhibit significant negative price movement on unusually high volume, indicative of potential mechanical selling rather than fundamental news, setting up for an intraday bounce.",
+        "swing": "These companies possess high debt-to-equity ratios or operate in sectors prone to 'boring' but impactful regulatory or financial restructuring events that the broader market often overlooks.",
+        "position": "These selections represent critical second-derivative bottlenecks in essential energy, chemical inputs, and communication infrastructure, showing unusual volume indicating smart money accumulation ahead of broader recognition.",
+        "investment": "These companies possess strong free cash flow, robust balance sheets, and operate in anti-fragile sectors (copper, gold, agriculture) with inelastic demand and inherent physical moats, providing long-term portfolio resilience."
+      }
+    }
+  }
 }
