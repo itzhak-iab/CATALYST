@@ -103,9 +103,9 @@ class Config:
     TOP_PICKS_PER_COLUMN = 3      # AI selects this many per strategy column
 
     # --- Output ---
-    # JSON goes to frontend/ so GitHub Pages can serve it
-    OUTPUT_FILE = Path(__file__).parent.parent / "frontend" / "master_data.json"
-    SCHEMA_FILE = Path(__file__).parent.parent / "frontend" / "master_data_schema.json"
+    # JSON goes to docs/ so GitHub Pages can serve it
+    OUTPUT_FILE = Path(__file__).parent.parent / "docs" / "master_data.json"
+    SCHEMA_FILE = Path(__file__).parent.parent / "docs" / "master_data_schema.json"
 
 
 # ==============================================================
