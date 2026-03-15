@@ -2,200 +2,232 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q5 // SIGNAL MATRIX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#060608">
+    <title>Q5 SIGNAL</title>
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #060608; --bg-panel: #0e0e12; --bg-card: #151519; --bg-card-hover: #1a1a22;
-            --border: #222230; --border-hover: #d4af37;
-            --accent: #d4af37; --accent-dim: #a08628; --accent-glow: rgba(212,175,55,0.15);
-            --text-main: #e8e8ec; --text-dim: #9a9ab0; --text-muted: #5a5a72;
+            --bg: #060608; --bg2: #0e0e12; --bg3: #151519; --bg4: #1a1a22;
+            --border: #222230; --border-h: #d4af37;
+            --gold: #d4af37; --gold-dim: #a08628; --gold-glow: rgba(212,175,55,0.15);
+            --txt: #e8e8ec; --txt2: #9a9ab0; --txt3: #5a5a72;
             --green: #2dd4a8; --red: #f0506e; --amber: #f5a623; --purple: #8b7cf6;
-            --mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
-            --radius: 8px;
+            --mono: 'SF Mono','JetBrains Mono','Fira Code',monospace;
+            --r: 10px;
+            --safe-b: env(safe-area-inset-bottom, 0px);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Heebo', sans-serif; }
-        body { background: var(--bg-main); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--txt);overscroll-behavior:none}
 
-        /* ─── LOGIN ─── */
-        .login-screen { position: fixed; inset: 0; background: var(--bg-main); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .login-screen.hidden { display: none; }
-        .login-box { width: 380px; max-width: 90vw; text-align: center; }
-        .login-logo { font-size: 36px; font-weight: 900; margin-bottom: 4px; letter-spacing: 3px; }
-        .login-logo span { color: var(--accent); }
-        .login-tagline { font-size: 11px; color: var(--text-muted); letter-spacing: 6px; text-transform: uppercase; margin-bottom: 40px; }
-        .login-label { font-size: 12px; color: var(--text-dim); margin-bottom: 12px; display: block; }
-        .pin-input { display: flex; gap: 10px; justify-content: center; margin-bottom: 28px; direction: ltr; }
-        .pin-input input { width: 48px; height: 58px; background: var(--bg-panel); border: 1.5px solid var(--border); border-radius: 12px; color: var(--text-main); font-family: var(--mono); font-size: 22px; font-weight: 700; text-align: center; outline: none; transition: all 0.2s; -webkit-text-security: disc; }
-        .pin-input input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow), 0 0 20px var(--accent-glow); }
-        .pin-input input.error { border-color: var(--red); animation: shake 0.4s ease; }
-        @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
-        .login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent), var(--accent-dim)); color: var(--bg-main); border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 1px; }
-        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--accent-glow); }
-        .login-error { color: var(--red); font-size: 12px; margin-top: 14px; min-height: 18px; }
-        .login-lockout { color: var(--amber); }
+        /* ══════ LOGIN ══════ */
+        .login{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center}
+        .login.hide{display:none}
+        .login-box{width:340px;max-width:88vw;text-align:center}
+        .login-logo{font-size:32px;font-weight:900;letter-spacing:3px;margin-bottom:2px}
+        .login-logo b{color:var(--gold)}
+        .login-sub{font-size:10px;color:var(--txt3);letter-spacing:5px;text-transform:uppercase;margin-bottom:36px}
+        .pin-row{display:flex;gap:8px;justify-content:center;margin-bottom:24px;direction:ltr}
+        .pin-row input{width:44px;height:54px;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;color:var(--txt);font-family:var(--mono);font-size:20px;font-weight:700;text-align:center;outline:none;transition:.2s;-webkit-text-security:disc}
+        .pin-row input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow)}
+        .pin-row input.err{border-color:var(--red);animation:shake .4s}
+        @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+        .login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:1px}
+        .login-msg{color:var(--red);font-size:12px;margin-top:12px;min-height:18px}
+        .login-msg.lock{color:var(--amber)}
+        .login-label{font-size:12px;color:var(--txt2);margin-bottom:12px}
 
-        /* ─── APP ─── */
-        .app { display: none; flex-direction: column; height: 100vh; }
-        .app.visible { display: flex; }
+        /* ══════ APP SHELL ══════ */
+        .app{display:none;flex-direction:column;height:100dvh;height:100vh}
+        .app.on{display:flex}
 
-        /* ─── HEADER ─── */
-        header { padding: 16px 32px; background: linear-gradient(180deg, var(--bg-panel) 0%, var(--bg-main) 100%); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; z-index: 10; }
-        .logo { font-size: 22px; font-weight: 900; letter-spacing: 3px; display: flex; align-items: center; gap: 8px; }
-        .logo span { color: var(--accent); }
-        .logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 3px; text-transform: uppercase; margin-top: 2px; }
-        .controls { display: flex; gap: 12px; align-items: center; }
-        .timestamp { font-size: 12px; color: var(--text-muted); font-weight: 400; }
-        .badge { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
-        .badge.open { background: rgba(45,212,168,0.1); color: var(--green); border: 1px solid rgba(45,212,168,0.2); }
-        .badge.closed { background: rgba(240,80,110,0.1); color: var(--red); border: 1px solid rgba(240,80,110,0.2); }
-        .badge.pre_market { background: rgba(245,166,35,0.1); color: var(--amber); border: 1px solid rgba(245,166,35,0.2); }
-        .badge.after_hours { background: rgba(139,124,246,0.1); color: var(--purple); border: 1px solid rgba(139,124,246,0.2); }
-        .badge.weekend { background: rgba(90,90,114,0.1); color: var(--text-muted); border: 1px solid rgba(90,90,114,0.2); }
-        .btn { background: transparent; color: var(--accent); border: 1px solid rgba(212,175,55,0.4); padding: 7px 18px; border-radius: 6px; cursor: pointer; font-weight: 700; transition: all 0.25s; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
-        .btn:hover { background: var(--accent); color: var(--bg-main); box-shadow: 0 0 16px var(--accent-glow); }
-        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .btn.running { background: var(--amber); border-color: var(--amber); color: var(--bg-main); animation: pulse 1.5s ease infinite; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
-        .btn-ghost { background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
-        .btn-ghost:hover { border-color: var(--red); color: var(--red); }
+        /* ─── TOP BAR ─── */
+        .topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;gap:8px;min-height:52px}
+        .topbar-logo{font-size:17px;font-weight:900;letter-spacing:2px;white-space:nowrap}
+        .topbar-logo b{color:var(--gold)}
+        .topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+        .badge{padding:3px 10px;border-radius:16px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+        .badge.open{background:rgba(45,212,168,.1);color:var(--green);border:1px solid rgba(45,212,168,.2)}
+        .badge.closed{background:rgba(240,80,110,.1);color:var(--red);border:1px solid rgba(240,80,110,.2)}
+        .badge.pre_market{background:rgba(245,166,35,.1);color:var(--amber);border:1px solid rgba(245,166,35,.2)}
+        .badge.after_hours{background:rgba(139,124,246,.1);color:var(--purple);border:1px solid rgba(139,124,246,.2)}
+        .badge.weekend{background:rgba(90,90,114,.1);color:var(--txt3);border:1px solid rgba(90,90,114,.2)}
+        .btn-s{background:transparent;color:var(--gold);border:1px solid rgba(212,175,55,.4);padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+        .btn-s:hover{background:var(--gold);color:#000}
+        .btn-s.running{background:var(--amber);border-color:var(--amber);color:#000;animation:pulse 1.5s ease infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+        .btn-ghost{background:none;border:1px solid var(--border);color:var(--txt3);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:10px;white-space:nowrap}
+        .btn-ghost:hover{border-color:var(--red);color:var(--red)}
 
-        /* ─── TOOLBAR ─── */
-        .toolbar { display: none; align-items: center; gap: 14px; padding: 8px 32px; background: var(--bg-panel); border-bottom: 1px solid var(--border); font-size: 12px; }
-        .toolbar.show { display: flex; }
-        .toolbar label { color: var(--text-muted); white-space: nowrap; font-size: 11px; }
-        .toolbar select { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); padding: 5px 12px; border-radius: 6px; font-size: 11px; font-family: var(--mono); cursor: pointer; outline: none; }
-        .toolbar select:focus { border-color: var(--accent); }
-        .history-badge { font-size: 11px; color: var(--amber); display: none; font-weight: 700; }
-        .history-badge.show { display: inline; }
-        .toolbar-spacer { flex: 1; }
-        .toolbar-btn { background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 4px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s; }
-        .toolbar-btn:hover { border-color: var(--accent); color: var(--accent); }
+        /* ─── INFO BAR ─── */
+        .infobar{display:none;padding:6px 16px;background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;color:var(--txt3);flex-shrink:0;gap:10px;align-items:center;flex-wrap:wrap}
+        .infobar.on{display:flex}
+        .infobar select{background:var(--bg3);border:1px solid var(--border);color:var(--txt);padding:4px 8px;border-radius:6px;font-size:11px;font-family:var(--mono);cursor:pointer;outline:none}
+        .infobar select:focus{border-color:var(--gold)}
+        .arch-badge{color:var(--amber);font-weight:700;display:none;font-size:10px}
+        .arch-badge.on{display:inline}
+        .info-spacer{flex:1}
+        .info-btn{background:none;border:1px solid var(--border);color:var(--txt3);padding:3px 10px;border-radius:6px;font-size:10px;cursor:pointer}
+        .info-btn:hover{border-color:var(--gold);color:var(--gold)}
 
-        /* ─── METHODOLOGY ─── */
-        .methodology-panel { display: none; padding: 20px 32px; background: var(--bg-panel); border-bottom: 1px solid var(--border); }
-        .methodology-panel.open { display: block; }
-        .meth-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: var(--accent); letter-spacing: 1px; }
-        .meth-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-        @media (max-width: 1200px) { .meth-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 700px) { .meth-grid { grid-template-columns: 1fr; } }
-        .meth-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
-        .meth-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--accent); }
-        .meth-card p { font-size: 11.5px; color: var(--text-dim); line-height: 1.7; }
+        /* ─── TAB NAV (mobile category switcher) ─── */
+        .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+        .tabs::-webkit-scrollbar{display:none}
+        .tab{flex:1;min-width:0;padding:10px 6px;text-align:center;font-size:11px;font-weight:700;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap;background:transparent;border-top:none;border-left:none;border-right:none}
+        .tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+        .tab[data-col="day_trading"].active{color:var(--red);border-bottom-color:var(--red)}
+        .tab[data-col="swing"].active{color:var(--amber);border-bottom-color:var(--amber)}
+        .tab[data-col="position"].active{color:var(--purple);border-bottom-color:var(--purple)}
+        .tab[data-col="investment"].active{color:var(--green);border-bottom-color:var(--green)}
 
-        /* ─── BOARD ─── */
-        .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 24px 32px; flex: 1; overflow-y: auto; }
-        .board::-webkit-scrollbar { width: 6px; }
-        .board::-webkit-scrollbar-track { background: transparent; }
-        .board::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        @media (max-width: 1200px) { .board { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 700px) { .board { grid-template-columns: 1fr; padding: 12px; gap: 12px; } }
-        .column { display: flex; flex-direction: column; gap: 10px; }
-        .col-header { padding: 14px 16px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); position: relative; overflow: hidden; }
-        .col-header::after { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 2px; }
-        .col--day .col-header::after { background: linear-gradient(90deg, var(--red), transparent); }
-        .col--swing .col-header::after { background: linear-gradient(90deg, var(--amber), transparent); }
-        .col--position .col-header::after { background: linear-gradient(90deg, var(--purple), transparent); }
-        .col--investment .col-header::after { background: linear-gradient(90deg, var(--green), transparent); }
-        .col-title { font-size: 15px; font-weight: 700; letter-spacing: 0.5px; }
-        .col-desc { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
-        .col-count { position: absolute; top: 14px; left: 16px; font-size: 10px; color: var(--text-muted); font-family: var(--mono); }
+        /* ─── CONTENT AREA ─── */
+        .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+        .content::-webkit-scrollbar{width:4px}
+        .content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: all 0.25s; position: relative; }
-        .card:hover { border-color: rgba(212,175,55,0.3); background: var(--bg-card-hover); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-        .card-ticker { font-size: 20px; font-weight: 900; font-family: var(--mono); letter-spacing: 1px; }
-        .card-company { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .card-score { min-width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 16px; font-weight: 900; }
-        .card-score.hi { background: rgba(45,212,168,0.1); color: var(--green); border: 1px solid rgba(45,212,168,0.2); }
-        .card-score.mid { background: rgba(245,166,35,0.1); color: var(--amber); border: 1px solid rgba(245,166,35,0.2); }
-        .card-score.lo { background: rgba(240,80,110,0.1); color: var(--red); border: 1px solid rgba(240,80,110,0.2); }
-        .card-thesis { font-size: 12px; line-height: 1.6; color: var(--text-dim); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; border-top: 1px solid var(--border); padding-top: 10px; }
-        .empty-col { text-align: center; padding: 40px 16px; color: var(--text-muted); font-size: 12px; }
+        /* ─── METHODOLOGY PANEL ─── */
+        .meth{display:none;padding:16px;background:var(--bg2);border-bottom:1px solid var(--border)}
+        .meth.on{display:block}
+        .meth-title{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px;letter-spacing:1px}
+        .meth-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+        .meth-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px}
+        .meth-card h4{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:4px}
+        .meth-card p{font-size:10.5px;color:var(--txt2);line-height:1.6}
+
+        /* ─── LOADING ─── */
+        .loading{text-align:center;color:var(--txt3);padding:60px 20px}
+        .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* ─── BOARD (Desktop: 4-col grid / Mobile: single column per tab) ─── */
+        .board{padding:12px}
+        .board-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+        .col-wrap{display:flex;flex-direction:column;gap:8px}
+        .col-head{padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);position:relative;overflow:hidden}
+        .col-head::after{content:'';position:absolute;top:0;right:0;left:0;height:2px}
+        .col--day .col-head::after{background:linear-gradient(90deg,var(--red),transparent)}
+        .col--swing .col-head::after{background:linear-gradient(90deg,var(--amber),transparent)}
+        .col--position .col-head::after{background:linear-gradient(90deg,var(--purple),transparent)}
+        .col--investment .col-head::after{background:linear-gradient(90deg,var(--green),transparent)}
+        .col-title{font-size:14px;font-weight:700;letter-spacing:.5px}
+        .col-desc{font-size:10px;color:var(--txt3);margin-top:2px}
+        .col-count{position:absolute;top:10px;left:14px;font-size:9px;color:var(--txt3);font-family:var(--mono)}
+
+        /* ─── CARD ─── */
+        .card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;transition:.2s;position:relative}
+        .card:hover{border-color:rgba(212,175,55,.3);background:var(--bg4)}
+        .card:active{transform:scale(.98)}
+        .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+        .card-ticker{font-size:18px;font-weight:900;font-family:var(--mono);letter-spacing:1px}
+        .card-co{font-size:10px;color:var(--txt3);margin-top:1px}
+        .card-sc{min-width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:15px;font-weight:900}
+        .card-sc.hi{background:rgba(45,212,168,.1);color:var(--green);border:1px solid rgba(45,212,168,.2)}
+        .card-sc.mid{background:rgba(245,166,35,.1);color:var(--amber);border:1px solid rgba(245,166,35,.2)}
+        .card-sc.lo{background:rgba(240,80,110,.1);color:var(--red);border:1px solid rgba(240,80,110,.2)}
+        .card-thesis{font-size:11.5px;line-height:1.55;color:var(--txt2);border-top:1px solid var(--border);padding-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .empty-col{text-align:center;padding:40px 16px;color:var(--txt3);font-size:12px}
 
         /* ─── OVERLAY & DRAWER ─── */
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; z-index: 100; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(6px); }
-        .overlay.active { display: block; opacity: 1; }
-        .drawer { position: fixed; top: 0; right: -700px; width: 620px; max-width: 100%; height: 100vh; background: var(--bg-main); border-left: 1px solid rgba(212,175,55,0.2); z-index: 101; transition: right 0.35s cubic-bezier(0.16,1,0.3,1); overflow-y: auto; padding: 36px; box-shadow: -16px 0 48px rgba(0,0,0,0.6); }
-        .drawer.open { right: 0; }
-        .drawer::-webkit-scrollbar { width: 4px; }
-        .drawer::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-        .close-btn { position: absolute; top: 16px; left: 16px; background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-dim); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .close-btn:hover { background: var(--bg-card-hover); color: var(--text-main); }
-        .d-header { margin-top: 40px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-        .d-ticker { font-size: 30px; font-weight: 900; color: var(--accent); font-family: var(--mono); letter-spacing: 2px; }
-        .d-meta { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
-        .d-thesis { font-size: 14px; line-height: 1.75; color: var(--text-main); padding: 14px 16px; background: rgba(212,175,55,0.04); border-radius: var(--radius); border-right: 3px solid var(--accent); margin-top: 14px; }
-        .d-score { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
-        .d-score strong { font-size: 24px; color: var(--accent); font-family: var(--mono); }
+        .overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;z-index:100;opacity:0;transition:opacity .3s;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+        .overlay.on{display:block;opacity:1}
+        .drawer{position:fixed;top:0;right:-100%;width:100%;max-width:560px;height:100dvh;height:100vh;background:var(--bg);border-left:1px solid rgba(212,175,55,.15);z-index:101;transition:right .3s cubic-bezier(.16,1,.3,1);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 16px calc(20px + var(--safe-b));box-shadow:-8px 0 32px rgba(0,0,0,.5)}
+        .drawer.on{right:0}
+        .drawer::-webkit-scrollbar{width:3px}
+        .drawer::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+        .close-x{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-start;padding-bottom:8px}
+        .close-x button{background:var(--bg2);border:1px solid var(--border);color:var(--txt2);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center}
+        .close-x button:hover{color:var(--txt)}
+        .d-head{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+        .d-ticker{font-size:26px;font-weight:900;color:var(--gold);font-family:var(--mono);letter-spacing:2px}
+        .d-meta{font-size:12px;color:var(--txt2);margin-top:3px}
+        .d-thesis{font-size:13px;line-height:1.7;color:var(--txt);padding:12px 14px;background:rgba(212,175,55,.04);border-radius:var(--r);border-right:3px solid var(--gold);margin-top:12px}
+        .d-score{font-size:11px;color:var(--txt3);margin-bottom:16px}
+        .d-score strong{font-size:22px;color:var(--gold);font-family:var(--mono)}
 
         /* ─── DRAWER SECTIONS ─── */
-        .d-section { margin-bottom: 16px; padding: 14px 16px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); }
-        .d-section-title { font-size: 12px; font-weight: 700; margin-bottom: 8px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
-        .d-section-body { font-size: 13px; color: var(--text-dim); line-height: 1.75; }
-        .analyst-consensus { display: flex; gap: 8px; margin-bottom: 10px; }
-        .analyst-tag { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-        .analyst-tag.buy { background: rgba(45,212,168,0.12); color: var(--green); }
-        .analyst-tag.hold { background: rgba(245,166,35,0.12); color: var(--amber); }
-        .analyst-tag.sell { background: rgba(240,80,110,0.12); color: var(--red); }
-        .bull-bear { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .bull-bear div { padding: 10px 12px; border-radius: var(--radius); font-size: 12px; line-height: 1.6; }
-        .bull-case { background: rgba(45,212,168,0.04); border-right: 2px solid var(--green); }
-        .bear-case { background: rgba(240,80,110,0.04); border-right: 2px solid var(--red); }
-        .bull-bear strong { display: block; margin-bottom: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .d-sec{margin-bottom:12px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
+        .d-sec-t{font-size:11px;font-weight:700;margin-bottom:6px;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
+        .d-sec-b{font-size:12px;color:var(--txt2);line-height:1.7}
+        .an-con{display:flex;gap:6px;margin-bottom:8px}
+        .an-tag{padding:3px 10px;border-radius:16px;font-size:10px;font-weight:700}
+        .an-tag.buy{background:rgba(45,212,168,.12);color:var(--green)}
+        .an-tag.hold{background:rgba(245,166,35,.12);color:var(--amber)}
+        .an-tag.sell{background:rgba(240,80,110,.12);color:var(--red)}
+        .bb{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+        .bb div{padding:8px 10px;border-radius:var(--r);font-size:11px;line-height:1.5}
+        .bb .bull{background:rgba(45,212,168,.04);border-right:2px solid var(--green)}
+        .bb .bear{background:rgba(240,80,110,.04);border-right:2px solid var(--red)}
+        .bb strong{display:block;margin-bottom:3px;font-size:9px;text-transform:uppercase;letter-spacing:1px}
 
-        /* ─── X-RAY ─── */
-        .xray-grid { display: grid; gap: 10px; margin-bottom: 16px; }
-        .xray-item { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; transition: all 0.2s; position: relative; }
-        .xray-item:hover { background: var(--bg-card); }
-        .xray-item::before { content: ''; position: absolute; top: 0; right: 0; width: 3px; height: 100%; border-radius: 0 var(--radius) var(--radius) 0; }
-        .xray-item.hi::before { background: var(--green); }
-        .xray-item.mid::before { background: var(--amber); }
-        .xray-item.lo::before { background: var(--red); }
-        .x-head { display: flex; justify-content: space-between; align-items: center; }
-        .x-title { font-size: 12px; font-weight: 600; color: var(--text-dim); }
-        .x-score { font-family: var(--mono); font-size: 14px; font-weight: 900; }
-        .x-score.hi { color: var(--green); }
-        .x-score.mid { color: var(--amber); }
-        .x-score.lo { color: var(--red); }
-        .x-desc { font-size: 12.5px; line-height: 1.7; color: var(--text-dim); margin-top: 10px; display: none; padding-top: 10px; border-top: 1px solid var(--border); }
-        .xray-item.open .x-desc { display: block; }
+        /* ─── X-RAY ITEMS ─── */
+        .xr-grid{display:grid;gap:8px;margin-bottom:12px}
+        .xr{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:.15s;position:relative}
+        .xr:hover{background:var(--bg3)}
+        .xr::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;border-radius:0 var(--r) var(--r) 0}
+        .xr.hi::before{background:var(--green)}.xr.mid::before{background:var(--amber)}.xr.lo::before{background:var(--red)}
+        .xr-h{display:flex;justify-content:space-between;align-items:center}
+        .xr-t{font-size:11px;font-weight:600;color:var(--txt2)}
+        .xr-s{font-family:var(--mono);font-size:13px;font-weight:900}
+        .xr-s.hi{color:var(--green)}.xr-s.mid{color:var(--amber)}.xr-s.lo{color:var(--red)}
+        .xr-d{font-size:11.5px;line-height:1.65;color:var(--txt2);margin-top:8px;display:none;padding-top:8px;border-top:1px solid var(--border)}
+        .xr.open .xr-d{display:block}
 
-        .d-methodology { margin-top: 16px; padding: 12px 14px; background: rgba(139,124,246,0.04); border: 1px solid rgba(139,124,246,0.12); border-radius: var(--radius); }
-        .d-methodology-title { font-size: 11px; font-weight: 700; color: var(--purple); margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
-        .d-methodology-body { font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+        .d-meth{margin-top:12px;padding:10px 12px;background:rgba(139,124,246,.04);border:1px solid rgba(139,124,246,.12);border-radius:var(--r)}
+        .d-meth-t{font-size:10px;font-weight:700;color:var(--purple);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase}
+        .d-meth-b{font-size:11px;color:var(--txt2);line-height:1.6}
 
         /* ─── MODAL ─── */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 400; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
-        .modal-overlay.show { display: flex; }
-        .modal-box { background: var(--bg-panel); border: 1px solid rgba(212,175,55,0.2); border-radius: 14px; padding: 32px; width: 360px; max-width: 90vw; text-align: center; }
-        .modal-box h3 { font-size: 16px; margin-bottom: 6px; color: var(--accent); }
-        .modal-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
-        .modal-pin { display: flex; gap: 8px; justify-content: center; margin-bottom: 18px; direction: ltr; }
-        .modal-pin input { width: 42px; height: 48px; background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text-main); font-family: var(--mono); font-size: 18px; font-weight: 700; text-align: center; outline: none; -webkit-text-security: disc; }
-        .modal-pin input:focus { border-color: var(--accent); }
-        .modal-actions { display: flex; gap: 10px; }
-        .modal-actions button { flex: 1; padding: 11px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; }
-        .modal-cancel { background: none; border: 1px solid var(--border); color: var(--text-muted); }
-        .modal-confirm { background: linear-gradient(135deg, var(--accent), var(--accent-dim)); border: none; color: var(--bg-main); }
-        .modal-error { color: var(--red); font-size: 11px; margin-top: 10px; min-height: 16px; }
+        .modal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:20px}
+        .modal.on{display:flex}
+        .modal-box{background:var(--bg2);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:28px 24px;width:340px;max-width:100%;text-align:center}
+        .modal-box h3{font-size:15px;margin-bottom:5px;color:var(--gold)}
+        .modal-box p{font-size:11px;color:var(--txt3);margin-bottom:18px}
+        .m-pin{display:flex;gap:6px;justify-content:center;margin-bottom:16px;direction:ltr}
+        .m-pin input{width:40px;height:46px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--txt);font-family:var(--mono);font-size:17px;font-weight:700;text-align:center;outline:none;-webkit-text-security:disc}
+        .m-pin input:focus{border-color:var(--gold)}
+        .m-acts{display:flex;gap:8px}
+        .m-acts button{flex:1;padding:10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+        .m-cancel{background:none;border:1px solid var(--border);color:var(--txt3)}
+        .m-confirm{background:linear-gradient(135deg,var(--gold),var(--gold-dim));border:none;color:#000}
+        .m-err{color:var(--red);font-size:10px;margin-top:8px;min-height:14px}
 
-        .loading { text-align: center; color: var(--text-muted); flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
-        @keyframes spin { to{transform:rotate(360deg)} }
-        .footer { text-align: center; padding: 8px; font-size: 10px; color: var(--text-muted); border-top: 1px solid var(--border); letter-spacing: 1px; }
+        .footer{text-align:center;padding:6px;font-size:9px;color:var(--txt3);border-top:1px solid var(--border);flex-shrink:0;letter-spacing:1px;display:none;padding-bottom:calc(6px + var(--safe-b))}
+
+        /* ══════ DESKTOP ══════ */
+        @media(min-width:900px){
+            .tabs{display:none}
+            .topbar{padding:12px 28px}
+            .topbar-logo{font-size:20px}
+            .infobar{padding:6px 28px}
+            .board{padding:20px 28px}
+            .meth-grid{grid-template-columns:repeat(4,1fr)}
+            .meth{padding:16px 28px}
+            .drawer{width:560px;right:-560px;padding:28px 28px calc(28px + var(--safe-b))}
+        }
+        @media(max-width:899px){
+            .board-grid{grid-template-columns:1fr}
+            .col-wrap{display:none}
+            .col-wrap.active{display:flex}
+            .col-head{display:none}
+        }
+        @media(max-width:500px){
+            .meth-grid{grid-template-columns:1fr}
+            .bb{grid-template-columns:1fr}
+        }
     </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen" class="login-screen">
+<!-- ═══ LOGIN ═══ -->
+<div id="login" class="login">
     <div class="login-box">
-        <div class="login-logo"><span>Q5</span> SIGNAL</div>
-        <div class="login-tagline">Contrarian Intelligence</div>
-        <label class="login-label">הזן קוד גישה</label>
-        <div class="pin-input" id="pin-container">
+        <div class="login-logo"><b>Q5</b> SIGNAL</div>
+        <div class="login-sub">Contrarian Intelligence</div>
+        <div class="login-label">הזן קוד גישה</div>
+        <div class="pin-row" id="pin-box">
             <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
             <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
             <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
@@ -203,64 +235,79 @@
             <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
             <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
         </div>
-        <button class="login-btn" id="login-btn" onclick="tryLogin()">כניסה למערכת</button>
-        <div class="login-error" id="login-error"></div>
+        <button class="login-btn" onclick="tryLogin()">כניסה למערכת</button>
+        <div class="login-msg" id="login-msg"></div>
     </div>
 </div>
 
-<!-- APP -->
+<!-- ═══ APP ═══ -->
 <div id="app" class="app">
-    <header>
-        <div>
-            <div class="logo">Q5 <span>//</span> SIGNAL MATRIX</div>
-            <div class="logo-sub">Contrarian Intelligence System</div>
-        </div>
-        <div class="controls">
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="topbar-logo"><b>Q5</b> SIGNAL</div>
+        <div class="topbar-right">
             <span id="status"></span>
-            <span class="timestamp" id="last-update"></span>
-            <span class="timestamp" id="scanned"></span>
-            <button class="btn" id="run-btn" onclick="showRunModal()">SCAN</button>
+            <button class="btn-s" id="run-btn" onclick="showRunModal()">SCAN</button>
             <button class="btn-ghost" onclick="logout()">יציאה</button>
         </div>
-    </header>
-
-    <div class="toolbar" id="toolbar">
-        <label>ארכיון:</label>
-        <select id="history-select" onchange="loadHistoryDate(this.value)">
-            <option value="">ניתוח נוכחי</option>
-        </select>
-        <span class="history-badge" id="history-badge">ARCHIVE MODE</span>
-        <div class="toolbar-spacer"></div>
-        <button class="toolbar-btn" onclick="toggleMethodology()">מתודולוגיה</button>
     </div>
 
-    <div class="methodology-panel" id="methodology-panel">
+    <!-- Info Bar -->
+    <div class="infobar" id="infobar">
+        <span id="ts-info"></span>
+        <span id="scan-info"></span>
+        <div class="info-spacer"></div>
+        <label>ארכיון:</label>
+        <select id="hist-sel" onchange="loadHistory(this.value)">
+            <option value="">נוכחי</option>
+        </select>
+        <span class="arch-badge" id="arch-badge">ARCHIVE</span>
+        <button class="info-btn" onclick="toggleMeth()">מתודולוגיה</button>
+    </div>
+
+    <!-- Methodology -->
+    <div class="meth" id="meth">
         <div class="meth-title">פילוסופיית ניתוח קונטרריאנית</div>
         <div class="meth-grid">
-            <div class="meth-card"><h4>יירוט טקטי</h4><p>ארביטראז' סמנטי — ניצול פערי מחיר מרעש תקשורתי. פאניקה סמנטית, מלכודות שורט, אנומליות מחזורים, וחנק היצע צף.</p></div>
-            <div class="meth-card"><h4>תקיפת קטליזטור</h4><p>רכיבה על אירועי קיצון — מניות לפני קטליזטור שהשוק מתמחר בחסר. אופק אירוע, זרימת אופציות, פעילות אינסיידרים, שינוי נרטיב.</p></div>
-            <div class="meth-card"><h4>מארב אסטרטגי</h4><p>מעקב כסף מוסדי — הצטברות שקטה, חוסרים באספקה, מיצוי קונצנזוס אנליסטים, ורוח גבית מאקרו נסתרת.</p></div>
-            <div class="meth-card"><h4>נכסי ברזל</h4><p>חפיר כלכלי בלתי ניתן לשכפול — כוח מיקוח, אסימטריית חוב, פרדוקס ESG, ומנת משכל הקצאת הון.</p></div>
+            <div class="meth-card"><h4>יירוט טקטי</h4><p>ארביטראז' סמנטי — ניצול פערי מחיר מרעש תקשורתי. פאניקה, מלכודות שורט, אנומליות נפח.</p></div>
+            <div class="meth-card"><h4>תקיפת קטליזטור</h4><p>רכיבה על אירועי קיצון — מניות לפני קטליזטור שהשוק מתמחר בחסר.</p></div>
+            <div class="meth-card"><h4>מארב אסטרטגי</h4><p>מעקב כסף מוסדי — הצטברות שקטה, חוסרים באספקה, מיצוי אנליסטים.</p></div>
+            <div class="meth-card"><h4>נכסי ברזל</h4><p>חפיר כלכלי בלתי ניתן לשכפול — כוח מיקוח, אסימטריית חוב, ESG הפוך.</p></div>
         </div>
     </div>
 
-    <div id="loading" class="loading"><div class="spinner"></div><div>טוען נתוני מודיעין...</div></div>
-    <div class="board" id="board" style="display:none;"></div>
+    <!-- Mobile Tab Nav -->
+    <div class="tabs" id="tabs">
+        <button class="tab active" data-col="day_trading" onclick="switchTab('day_trading')">יירוט טקטי</button>
+        <button class="tab" data-col="swing" onclick="switchTab('swing')">תקיפת קטליזטור</button>
+        <button class="tab" data-col="position" onclick="switchTab('position')">מארב אסטרטגי</button>
+        <button class="tab" data-col="investment" onclick="switchTab('investment')">נכסי ברזל</button>
+    </div>
 
+    <!-- Main Content -->
+    <div class="content" id="content">
+        <div id="loading" class="loading"><div class="spinner"></div><div>טוען נתוני מודיעין...</div></div>
+        <div class="board" id="board" style="display:none">
+            <div class="board-grid" id="board-grid"></div>
+        </div>
+    </div>
+
+    <div class="footer" id="footer"></div>
+
+    <!-- Drawer -->
     <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
     <div class="drawer" id="drawer">
-        <button class="close-btn" onclick="closeDrawer()">&#x00D7;</button>
-        <div id="drawer-content"></div>
+        <div class="close-x"><button onclick="closeDrawer()">&#x00D7;</button></div>
+        <div id="drawer-c"></div>
     </div>
-    <div id="footer" class="footer" style="display:none;"></div>
 </div>
 
-<!-- RUN MODAL -->
-<div id="run-modal" class="modal-overlay">
+<!-- ═══ RUN MODAL ═══ -->
+<div id="run-modal" class="modal">
     <div class="modal-box">
         <h3>הרצת סריקה חדשה</h3>
         <p>הסריקה תיקח כ-4 דקות. הזן קוד לאישור:</p>
-        <div class="modal-pin" id="modal-pin">
+        <div class="m-pin" id="m-pin">
             <input type="text" maxlength="1" inputmode="numeric" autocomplete="off">
             <input type="text" maxlength="1" inputmode="numeric" autocomplete="off">
             <input type="text" maxlength="1" inputmode="numeric" autocomplete="off">
@@ -268,106 +315,263 @@
             <input type="text" maxlength="1" inputmode="numeric" autocomplete="off">
             <input type="text" maxlength="1" inputmode="numeric" autocomplete="off">
         </div>
-        <div class="modal-actions">
-            <button class="modal-confirm" onclick="confirmRun()">אשר</button>
-            <button class="modal-cancel" onclick="closeRunModal()">ביטול</button>
+        <div class="m-acts">
+            <button class="m-confirm" onclick="confirmRun()">אשר</button>
+            <button class="m-cancel" onclick="closeRunModal()">ביטול</button>
         </div>
-        <div class="modal-error" id="modal-error"></div>
+        <div class="m-err" id="m-err"></div>
     </div>
 </div>
 
 <script>
-// ═══ AUTH ═══
-let VALID_HASH="",SESSION_HOURS=24,MAX_ATTEMPTS=5,LOCKOUT_MINUTES=15,attempts=0,lockedUntil=0;
-(async()=>{try{const r=await fetch("config.json?v="+Date.now());const c=await r.json();VALID_HASH=c.auth.pin_hash;MAX_ATTEMPTS=c.auth.max_attempts||5;LOCKOUT_MINUTES=c.auth.lockout_minutes||15;SESSION_HOURS=c.auth.session_hours||24}catch(e){console.error("Config:",e)}})();
-async function sha256(m){const d=new TextEncoder().encode(m);const h=await crypto.subtle.digest("SHA-256",d);return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,"0")).join("")}
-(function(){const s=getSession();if(s&&s.expires>Date.now())showApp();else{document.getElementById("login-screen").classList.remove("hidden");setupPinInputs()}})();
-function getSession(){try{const r=sessionStorage.getItem("q5_session");return r?JSON.parse(r):null}catch{return null}}
-function setSession(){sessionStorage.setItem("q5_session",JSON.stringify({ts:Date.now(),expires:Date.now()+(SESSION_HOURS*3600000)}))}
-function setupPinInputs(){const inputs=document.querySelectorAll(".pin-input input");inputs.forEach((inp,i)=>{inp.addEventListener("input",function(){this.value=this.value.replace(/[^0-9]/g,"");if(this.value&&i<inputs.length-1)inputs[i+1].focus();if(i===inputs.length-1&&this.value)tryLogin()});inp.addEventListener("keydown",function(e){if(e.key==="Backspace"&&!this.value&&i>0){inputs[i-1].focus();inputs[i-1].value=""}if(e.key==="Enter")tryLogin()});inp.addEventListener("paste",function(e){e.preventDefault();const p=(e.clipboardData||window.clipboardData).getData("text").replace(/[^0-9]/g,"");for(let j=0;j<Math.min(p.length,inputs.length);j++)inputs[j].value=p[j];if(p.length>=inputs.length){inputs[inputs.length-1].focus();tryLogin()}})});inputs[0].focus()}
-async function tryLogin(){const now=Date.now();if(now<lockedUntil){document.getElementById("login-error").innerHTML='<span class="login-lockout">נעילה. נסה בעוד '+Math.ceil((lockedUntil-now)/60000)+' דקות</span>';return}const inputs=document.querySelectorAll(".pin-input input");let pin="";inputs.forEach(inp=>pin+=inp.value);if(pin.length!==6){document.getElementById("login-error").textContent="הזן 6 ספרות";return}const hash=await sha256(pin);if(hash===VALID_HASH){setSession();showApp()}else{attempts++;if(attempts>=MAX_ATTEMPTS){lockedUntil=Date.now()+(LOCKOUT_MINUTES*60000);document.getElementById("login-error").innerHTML='<span class="login-lockout">נעילה ל-'+LOCKOUT_MINUTES+' דקות</span>';attempts=0}else{document.getElementById("login-error").textContent="קוד שגוי ("+(MAX_ATTEMPTS-attempts)+" נותרו)"}inputs.forEach(inp=>{inp.value="";inp.classList.add("error")});setTimeout(()=>inputs.forEach(inp=>inp.classList.remove("error")),500);inputs[0].focus()}}
-function showApp(){document.getElementById("login-screen").classList.add("hidden");document.getElementById("app").classList.add("visible");loadData()}
-function logout(){sessionStorage.removeItem("q5_session");location.reload()}
+/* ═══════════════════════════════════════
+   AUTH
+   ═══════════════════════════════════════ */
+let HASH="",S_HRS=24,MAX_ATT=5,LOCK_MIN=15,att=0,lockUntil=0;
+(async()=>{try{const r=await fetch("config.json?v="+Date.now());const c=await r.json();HASH=c.auth.pin_hash;MAX_ATT=c.auth.max_attempts||5;LOCK_MIN=c.auth.lockout_minutes||15;S_HRS=c.auth.session_hours||24}catch(e){console.error("Config:",e)}})();
 
-// ═══ CONFIG ═══
-const colsConfig={
+async function sha256(m){const d=new TextEncoder().encode(m);const h=await crypto.subtle.digest("SHA-256",d);return[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join("")}
+
+// Session check
+(function(){const s=getSess();if(s&&s.exp>Date.now())showApp();else{document.getElementById("login").classList.remove("hide");initPins("pin-box")}})();
+
+function getSess(){try{const r=sessionStorage.getItem("q5s");return r?JSON.parse(r):null}catch{return null}}
+function setSess(){sessionStorage.setItem("q5s",JSON.stringify({ts:Date.now(),exp:Date.now()+(S_HRS*36e5)}))}
+
+function initPins(id){
+    const box=document.getElementById(id);
+    const ins=[...box.querySelectorAll("input")];
+    ins.forEach((inp,i)=>{
+        inp.addEventListener("input",function(){
+            this.value=this.value.replace(/\D/g,"");
+            if(this.value&&i<ins.length-1)ins[i+1].focus();
+            if(i===ins.length-1&&this.value){if(id==="pin-box")tryLogin();else confirmRun()}
+        });
+        inp.addEventListener("keydown",function(e){
+            if(e.key==="Backspace"&&!this.value&&i>0){ins[i-1].focus();ins[i-1].value=""}
+            if(e.key==="Enter"){if(id==="pin-box")tryLogin();else confirmRun()}
+            if(e.key==="Escape"&&id==="m-pin")closeRunModal();
+        });
+        inp.addEventListener("paste",function(e){
+            e.preventDefault();
+            const p=(e.clipboardData||window.clipboardData).getData("text").replace(/\D/g,"");
+            for(let j=0;j<Math.min(p.length,ins.length);j++)ins[j].value=p[j];
+            if(p.length>=ins.length){ins[ins.length-1].focus();if(id==="pin-box")tryLogin();else confirmRun()}
+        });
+    });
+    ins[0].focus();
+}
+
+async function tryLogin(){
+    const now=Date.now();
+    if(now<lockUntil){document.getElementById("login-msg").innerHTML='<span class="lock">נעילה. נסה בעוד '+Math.ceil((lockUntil-now)/6e4)+' דקות</span>';return}
+    const ins=[...document.querySelectorAll("#pin-box input")];
+    let pin="";ins.forEach(i=>pin+=i.value);
+    if(pin.length!==6){document.getElementById("login-msg").textContent="הזן 6 ספרות";return}
+    const h=await sha256(pin);
+    if(h===HASH){setSess();showApp()}
+    else{att++;if(att>=MAX_ATT){lockUntil=Date.now()+(LOCK_MIN*6e4);document.getElementById("login-msg").innerHTML='<span class="lock">נעילה ל-'+LOCK_MIN+' דקות</span>';att=0}else{document.getElementById("login-msg").textContent="קוד שגוי ("+(MAX_ATT-att)+" נותרו)"}
+    ins.forEach(i=>{i.value="";i.classList.add("err")});setTimeout(()=>ins.forEach(i=>i.classList.remove("err")),500);ins[0].focus()}
+}
+function showApp(){document.getElementById("login").classList.add("hide");document.getElementById("app").classList.add("on");loadData()}
+function logout(){sessionStorage.removeItem("q5s");location.reload()}
+
+/* ═══════════════════════════════════════
+   CONFIG
+   ═══════════════════════════════════════ */
+const COLS={
     day_trading:{title:"יירוט טקטי",desc:"ארביטראז' סמנטי — ניצול פאניקה (0-24h)",cls:"col--day"},
     swing:{title:"תקיפת קטליזטור",desc:"Event-Driven — תמחור חסר (ימים-שבועות)",cls:"col--swing"},
     position:{title:"מארב אסטרטגי",desc:"צווארי בקבוק — כסף מוסדי (שבועות-חודשים)",cls:"col--position"},
     investment:{title:"נכסי ברזל",desc:"חפיר כלכלי — שליטת עומק (שנים)",cls:"col--investment"},
 };
-const xrayDictionary={
+const XR_DICT={
     semantic_panic:"מדד הפאניקה הסמנטית",short_trap:"מלכודת שורטיסטים",volume_abnormality:"אנומליית מחזורים",float_choke:"חנק היצע צף",
     event_horizon:"אופק האירוע",options_flow:"זרימת כסף חכם",insider_moves:"פעילות בעלי עניין",narrative_shift:"שינוי נרטיב",
     institutional_stealth:"איסוף מוסדי שקט",supply_bottleneck:"צווארי בקבוק באספקה",analyst_exhaustion:"מיצוי אנליסטים",macro_tailwind:"רוח גבית מאקרו",
     hostage_power:"תופס ערובה",debt_asymmetry:"אסימטריית חוב",esg_premium:"פרדוקס ESG",capital_iq:"מנת משכל הון",
 };
-const COLUMN_METHODOLOGY={
+const COL_METH={
     day_trading:"זיהוי פערי מחיר מרעש תקשורתי. פאניקה סמנטית, מלכודות שורט, אנומליות נפח, חנק היצע צף.",
     swing:"מניות לפני קטליזטור שהשוק מתמחר בחסר. אופק אירועים, זרימת אופציות, אינסיידרים, שינוי נרטיב.",
     position:"כניסה שקטה של כסף מוסדי. הצטברות, צווארי בקבוק, מיצוי אנליסטים, רוח גבית מאקרו.",
     investment:"חפיר בלתי ניתן לשכפול. כוח מיקוח, אסימטריית חוב, פרדוקס ESG, הקצאת הון חכמה.",
 };
 
-let DATA=null,HISTORY_INDEX=[],viewingHistory=false;
+let DATA=null,activeTab="day_trading",viewHist=false;
 
-// ═══ DATA ═══
-async function loadData(){try{const r=await fetch("master_data.json?v="+Date.now());if(!r.ok)throw new Error(r.status);DATA=await r.json();render();loadHistoryIndex()}catch(e){document.getElementById("loading").innerHTML='<div style="color:var(--red)">שגיאה בטעינת נתונים</div><div style="margin-top:8px;font-size:12px;color:var(--text-muted)">'+e.message+'</div>'}}
-async function loadHistoryIndex(){try{const r=await fetch("history/index.json?v="+Date.now());if(!r.ok)return;HISTORY_INDEX=await r.json();if(HISTORY_INDEX.length>0){const sel=document.getElementById("history-select");HISTORY_INDEX.forEach(e=>{const o=document.createElement("option");o.value=e.file;o.textContent=e.date;sel.appendChild(o)});document.getElementById("toolbar").classList.add("show")}}catch(e){}}
-async function loadHistoryDate(f){if(!f){viewingHistory=false;document.getElementById("history-badge").classList.remove("show");try{const r=await fetch("master_data.json?v="+Date.now());DATA=await r.json();render()}catch(e){}return}try{const r=await fetch(f+"?v="+Date.now());if(!r.ok)throw new Error(r.status);DATA=await r.json();viewingHistory=true;document.getElementById("history-badge").classList.add("show");render()}catch(e){alert("שגיאה בטעינת ארכיון")}}
-function toggleMethodology(){document.getElementById("methodology-panel").classList.toggle("open")}
+/* ═══════════════════════════════════════
+   DATA LOADING
+   ═══════════════════════════════════════ */
+async function loadData(){
+    try{
+        const r=await fetch("master_data.json?v="+Date.now());
+        if(!r.ok)throw new Error(r.status);
+        DATA=await r.json();
+        render();
+        loadHistIndex();
+    }catch(e){
+        document.getElementById("loading").innerHTML='<div style="color:var(--red)">שגיאה בטעינת נתונים</div><div style="margin-top:8px;font-size:11px;color:var(--txt3)">'+e.message+'</div>';
+    }
+}
+async function loadHistIndex(){
+    try{
+        const r=await fetch("history/index.json?v="+Date.now());
+        if(!r.ok)return;
+        const idx=await r.json();
+        if(idx.length>0){
+            const sel=document.getElementById("hist-sel");
+            idx.forEach(e=>{const o=document.createElement("option");o.value=e.file;o.textContent=e.date;sel.appendChild(o)});
+            document.getElementById("infobar").classList.add("on");
+        }
+    }catch(e){}
+}
+async function loadHistory(f){
+    if(!f){viewHist=false;document.getElementById("arch-badge").classList.remove("on");try{const r=await fetch("master_data.json?v="+Date.now());DATA=await r.json();render()}catch(e){}return}
+    try{const r=await fetch(f+"?v="+Date.now());if(!r.ok)throw 0;DATA=await r.json();viewHist=true;document.getElementById("arch-badge").classList.add("on");render()}catch(e){alert("שגיאה בטעינת ארכיון")}
+}
+function toggleMeth(){document.getElementById("meth").classList.toggle("on")}
 
-// ═══ RENDER ═══
-function render(){
-    document.getElementById("loading").style.display="none";
-    const board=document.getElementById("board");board.style.display="grid";
-    const m=DATA.meta||{};const s=m.market_status||"unknown";
-    const sl={open:"שוק פתוח",closed:"שוק סגור",pre_market:"טרום מסחר",after_hours:"אחרי שעות",weekend:"סופ\"ש"};
-    document.getElementById("status").innerHTML='<span class="badge '+s+'">'+(sl[s]||s)+'</span>';
-    if(m.generated_at)document.getElementById("last-update").textContent=new Date(m.generated_at).toLocaleString("he-IL");
-    if(m.radar_stats){document.getElementById("scanned").textContent=m.radar_stats.total_scanned+" נסרקו";const ft=document.getElementById("footer");ft.style.display="block";ft.textContent="Q5 SIGNAL // "+m.radar_stats.total_scanned+" scanned / "+m.radar_stats.selected_for_analysis+" analyzed / v"+(m.pipeline_version||"1")}
-    const matrix=DATA.matrix||{};board.innerHTML="";
-    Object.keys(colsConfig).forEach(colId=>{
-        const colDiv=document.createElement("div");colDiv.className="column "+(colsConfig[colId].cls||"");
-        const picks=(matrix[colId]||{}).top_picks||[];
-        colDiv.innerHTML='<div class="col-header"><div class="col-title">'+colsConfig[colId].title+'</div><div class="col-desc">'+colsConfig[colId].desc+'</div><div class="col-count">'+picks.length+'/3</div></div>';
-        if(!picks.length){colDiv.innerHTML+='<div class="empty-col">אין נתונים</div>'}else{
-            picks.forEach((stock,idx)=>{const sc=(stock.composite_score||{}).total||0;const cls=sc>=70?"hi":sc>=45?"mid":"lo";
-                const card=document.createElement("div");card.className="card";card.onclick=()=>openDrawer(colId,idx);
-                card.innerHTML='<div class="card-top"><div><div class="card-ticker">'+(stock.ticker||"?")+'</div><div class="card-company">'+(stock.company_name||"")+'</div></div><div class="card-score '+cls+'">'+sc+'</div></div>'+(stock.thesis_summary?'<div class="card-thesis">'+stock.thesis_summary+'</div>':'');
-                colDiv.appendChild(card)})
-        }board.appendChild(colDiv)})
+/* ═══════════════════════════════════════
+   TAB NAVIGATION (mobile)
+   ═══════════════════════════════════════ */
+function switchTab(col){
+    activeTab=col;
+    document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.col===col));
+    document.querySelectorAll(".col-wrap").forEach(w=>w.classList.toggle("active",w.dataset.col===col));
+    // Scroll content to top
+    document.getElementById("content").scrollTop=0;
 }
 
-// ═══ DRAWER ═══
+/* ═══════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════ */
+function render(){
+    document.getElementById("loading").style.display="none";
+    const board=document.getElementById("board");board.style.display="block";
+    const grid=document.getElementById("board-grid");grid.innerHTML="";
+    const m=DATA.meta||{};
+    const s=m.market_status||"unknown";
+    const sMap={open:"שוק פתוח",closed:"שוק סגור",pre_market:"טרום מסחר",after_hours:"אחרי שעות",weekend:"סופ\"ש"};
+    document.getElementById("status").innerHTML='<span class="badge '+s+'">'+(sMap[s]||s)+'</span>';
+
+    if(m.generated_at)document.getElementById("ts-info").textContent=new Date(m.generated_at).toLocaleString("he-IL");
+    if(m.radar_stats)document.getElementById("scan-info").textContent=m.radar_stats.total_scanned+" נסרקו";
+
+    // Show infobar if we have data
+    document.getElementById("infobar").classList.add("on");
+
+    if(m.radar_stats){const ft=document.getElementById("footer");ft.style.display="block";ft.textContent="Q5 SIGNAL // "+m.radar_stats.total_scanned+" scanned / "+(m.radar_stats.selected_for_analysis||"?")+" analyzed / v"+(m.pipeline_version||"1")}
+
+    const matrix=DATA.matrix||{};
+
+    Object.keys(COLS).forEach(colId=>{
+        const col=document.createElement("div");
+        col.className="col-wrap "+(COLS[colId].cls||"");
+        col.dataset.col=colId;
+        // On mobile, only show active tab
+        if(colId===activeTab)col.classList.add("active");
+
+        const picks=(matrix[colId]||{}).top_picks||[];
+
+        // Column header (desktop only, hidden on mobile via CSS)
+        col.innerHTML='<div class="col-head"><div class="col-title">'+COLS[colId].title+'</div><div class="col-desc">'+COLS[colId].desc+'</div><div class="col-count">'+picks.length+'/3</div></div>';
+
+        if(!picks.length){
+            col.innerHTML+='<div class="empty-col">אין נתונים</div>';
+        }else{
+            picks.forEach((stock,idx)=>{
+                const sc=(stock.composite_score||{}).total||0;
+                const cls=sc>=70?"hi":sc>=45?"mid":"lo";
+                const card=document.createElement("div");card.className="card";
+                card.onclick=()=>openDrawer(colId,idx);
+                card.innerHTML='<div class="card-top"><div><div class="card-ticker">'+(stock.ticker||"?")+'</div><div class="card-co">'+(stock.company_name||"")+'</div></div><div class="card-sc '+cls+'">'+sc+'</div></div>'+(stock.thesis_summary?'<div class="card-thesis">'+stock.thesis_summary+'</div>':'');
+                col.appendChild(card);
+            });
+        }
+        grid.appendChild(col);
+    });
+}
+
+/* ═══════════════════════════════════════
+   DRAWER
+   ═══════════════════════════════════════ */
 function openDrawer(colKey,idx){
     const p=DATA.matrix[colKey].top_picks[idx];if(!p)return;
     const xray=p.xray||{};const sc=(p.composite_score||{}).total||0;
-    let h='<div class="d-header"><div class="d-ticker">'+p.ticker+'</div><div class="d-meta">'+(p.company_name||"")+(p.sector?" // "+p.sector:"")+'</div>';
+
+    let h='<div class="d-head"><div class="d-ticker">'+p.ticker+'</div><div class="d-meta">'+(p.company_name||"")+(p.sector?" // "+p.sector:"")+'</div>';
     if(p.thesis_summary)h+='<div class="d-thesis">'+p.thesis_summary+'</div>';
     h+='</div><div class="d-score">ציון מרוכב: <strong>'+sc+'</strong> / 100</div>';
-    if(p.company_description){h+='<div class="d-section"><div class="d-section-title">על החברה</div><div class="d-section-body">'+p.company_description+'</div></div>'}
-    const ar=p.analyst_ratings||{};
-    if(ar.consensus||ar.summary){h+='<div class="d-section"><div class="d-section-title">שעון אנליסטים</div>';
-        if(ar.consensus){let tc="hold";if(ar.consensus.includes("קנייה")||ar.consensus.toLowerCase().includes("buy"))tc="buy";else if(ar.consensus.includes("מכירה")||ar.consensus.toLowerCase().includes("sell"))tc="sell";h+='<div class="analyst-consensus"><span class="analyst-tag '+tc+'">'+ar.consensus+'</span></div>'}
-        if(ar.summary)h+='<div class="d-section-body">'+ar.summary+'</div>';
-        if(ar.bull_case||ar.bear_case){h+='<div class="bull-bear">';if(ar.bull_case)h+='<div class="bull-case"><strong style="color:var(--green)">BULL</strong>'+ar.bull_case+'</div>';if(ar.bear_case)h+='<div class="bear-case"><strong style="color:var(--red)">BEAR</strong>'+ar.bear_case+'</div>';h+='</div>'}h+='</div>'}
-    h+='<div class="xray-grid">';
-    Object.keys(xray).forEach(key=>{const param=xray[key]||{};const ps=param.score||0;const cls=ps>=70?"hi":ps>=45?"mid":"lo";
-        h+='<div class="xray-item '+cls+'" onclick="this.classList.toggle(\'open\')"><div class="x-head"><span class="x-title">'+(xrayDictionary[key]||key)+'</span><span class="x-score '+cls+'">'+ps+'</span></div><div class="x-desc">'+(param.analysis||"—")+'</div></div>'});
-    h+='</div>';
-    const mt=COLUMN_METHODOLOGY[colKey]||"";
-    if(mt)h+='<div class="d-methodology"><div class="d-methodology-title">מתודולוגיה — '+colsConfig[colKey].title+'</div><div class="d-methodology-body">'+mt+'</div></div>';
-    document.getElementById("drawer-content").innerHTML=h;document.getElementById("drawer").classList.add("open");document.getElementById("overlay").classList.add("active")}
-function closeDrawer(){document.getElementById("drawer").classList.remove("open");document.getElementById("overlay").classList.remove("active")}
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
 
-// ═══ RUN ═══
-function showRunModal(){document.getElementById("run-modal").classList.add("show");document.getElementById("modal-error").textContent="";const inputs=document.querySelectorAll("#modal-pin input");inputs.forEach(inp=>inp.value="");setupModalPinInputs();inputs[0].focus()}
-function closeRunModal(){document.getElementById("run-modal").classList.remove("show")}
-function setupModalPinInputs(){const inputs=document.querySelectorAll("#modal-pin input");inputs.forEach((inp,i)=>{inp.oninput=function(){this.value=this.value.replace(/[^0-9]/g,"");if(this.value&&i<inputs.length-1)inputs[i+1].focus();if(i===inputs.length-1&&this.value)confirmRun()};inp.onkeydown=function(e){if(e.key==="Backspace"&&!this.value&&i>0){inputs[i-1].focus();inputs[i-1].value=""}if(e.key==="Enter")confirmRun();if(e.key==="Escape")closeRunModal()}})}
-async function confirmRun(){const inputs=document.querySelectorAll("#modal-pin input");let pin="";inputs.forEach(inp=>pin+=inp.value);if(pin.length!==6){document.getElementById("modal-error").textContent="הזן 6 ספרות";return}const hash=await sha256(pin);if(hash!==VALID_HASH){document.getElementById("modal-error").textContent="קוד שגוי";inputs.forEach(inp=>inp.value="");inputs[0].focus();return}closeRunModal();triggerWorkflow()}
-async function triggerWorkflow(){const btn=document.getElementById("run-btn");btn.textContent="SCANNING...";btn.classList.add("running");btn.disabled=true;try{const _e="d1NlUDUwMmdVMWptVkk5OHV2bFpOSmJjMHZkRnRteDJ2bDREX3BoZw==";const _d=atob(_e).split("").reverse().join("");const resp=await fetch("https://api.github.com/repos/itzhak-iab/Q5-Matrix/actions/workflows/daily_matrix.yml/dispatches",{method:"POST",headers:{"Authorization":"token "+_d,"Accept":"application/vnd.github+json"},body:JSON.stringify({ref:"main"})});if(resp.status===204||resp.ok){btn.textContent="SCAN RUNNING — ~4 MIN";btn.classList.remove("running");setTimeout(()=>{btn.textContent="REFRESHING...";location.reload()},5*60*1000)}else throw new Error("Status "+resp.status)}catch(e){btn.textContent="ERROR — RETRY";btn.classList.remove("running");btn.disabled=false;console.error("Trigger:",e)}}
+    // Company description
+    if(p.company_description){h+='<div class="d-sec"><div class="d-sec-t">על החברה</div><div class="d-sec-b">'+p.company_description+'</div></div>'}
+
+    // Analyst ratings
+    const ar=p.analyst_ratings||{};
+    if(ar.consensus||ar.summary){
+        h+='<div class="d-sec"><div class="d-sec-t">שעון אנליסטים</div>';
+        if(ar.consensus){let tc="hold";if(ar.consensus.includes("קנייה")||ar.consensus.toLowerCase().includes("buy"))tc="buy";else if(ar.consensus.includes("מכירה")||ar.consensus.toLowerCase().includes("sell"))tc="sell";h+='<div class="an-con"><span class="an-tag '+tc+'">'+ar.consensus+'</span></div>'}
+        if(ar.summary)h+='<div class="d-sec-b">'+ar.summary+'</div>';
+        if(ar.bull_case||ar.bear_case){h+='<div class="bb">';if(ar.bull_case)h+='<div class="bull"><strong style="color:var(--green)">BULL</strong>'+ar.bull_case+'</div>';if(ar.bear_case)h+='<div class="bear"><strong style="color:var(--red)">BEAR</strong>'+ar.bear_case+'</div>';h+='</div>'}
+        h+='</div>';
+    }
+
+    // X-Ray
+    h+='<div class="xr-grid">';
+    Object.keys(xray).forEach(key=>{
+        const param=xray[key]||{};const ps=param.score||0;const cls=ps>=70?"hi":ps>=45?"mid":"lo";
+        h+='<div class="xr '+cls+'" onclick="this.classList.toggle(\'open\')"><div class="xr-h"><span class="xr-t">'+(XR_DICT[key]||key)+'</span><span class="xr-s '+cls+'">'+ps+'</span></div><div class="xr-d">'+(param.analysis||"—")+'</div></div>';
+    });
+    h+='</div>';
+
+    // Per-column methodology
+    const mt=COL_METH[colKey]||"";
+    if(mt)h+='<div class="d-meth"><div class="d-meth-t">מתודולוגיה — '+COLS[colKey].title+'</div><div class="d-meth-b">'+mt+'</div></div>';
+
+    document.getElementById("drawer-c").innerHTML=h;
+    document.getElementById("drawer").classList.add("on");
+    document.getElementById("overlay").classList.add("on");
+    document.body.style.overflow="hidden";
+}
+function closeDrawer(){
+    document.getElementById("drawer").classList.remove("on");
+    document.getElementById("overlay").classList.remove("on");
+    document.body.style.overflow="";
+}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDrawer();closeRunModal()}});
+
+/* ═══════════════════════════════════════
+   RUN WORKFLOW
+   ═══════════════════════════════════════ */
+function showRunModal(){document.getElementById("run-modal").classList.add("on");document.getElementById("m-err").textContent="";[...document.querySelectorAll("#m-pin input")].forEach(i=>i.value="");initPins("m-pin")}
+function closeRunModal(){document.getElementById("run-modal").classList.remove("on")}
+
+async function confirmRun(){
+    const ins=[...document.querySelectorAll("#m-pin input")];
+    let pin="";ins.forEach(i=>pin+=i.value);
+    if(pin.length!==6){document.getElementById("m-err").textContent="הזן 6 ספרות";return}
+    const h=await sha256(pin);
+    if(h!==HASH){document.getElementById("m-err").textContent="קוד שגוי";ins.forEach(i=>i.value="");ins[0].focus();return}
+    closeRunModal();triggerWorkflow();
+}
+
+async function triggerWorkflow(){
+    const btn=document.getElementById("run-btn");
+    btn.textContent="SCANNING...";btn.classList.add("running");btn.disabled=true;
+    try{
+        const _e="d1NlUDUwMmdVMWptVkk5OHV2bFpOSmJjMHZkRnRteDJ2bDREX3BoZw==";
+        const _d=atob(_e).split("").reverse().join("");
+        const resp=await fetch("https://api.github.com/repos/itzhak-iab/Q5-Matrix/actions/workflows/daily_matrix.yml/dispatches",{
+            method:"POST",headers:{"Authorization":"token "+_d,"Accept":"application/vnd.github+json"},body:JSON.stringify({ref:"main"})
+        });
+        if(resp.status===204||resp.ok){
+            btn.textContent="RUNNING ~4MIN";
+            btn.classList.remove("running");
+            setTimeout(()=>{btn.textContent="REFRESHING...";location.reload()},5*60*1000);
+        }else throw new Error("Status "+resp.status);
+    }catch(e){btn.textContent="ERROR";btn.classList.remove("running");btn.disabled=false;console.error("Trigger:",e)}
+}
 </script>
 </body>
 </html>
