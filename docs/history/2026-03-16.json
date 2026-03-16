@@ -1,12 +1,12 @@
 {
   "meta": {
-    "generated_at": "2026-03-16T11:32:01.655860+00:00",
-    "market_status": "pre_market",
+    "generated_at": "2026-03-16T15:48:54.459209+00:00",
+    "market_status": "open",
     "pipeline_version": "2.2",
     "radar_stats": {
       "total_scanned": 84,
       "with_data": 83,
-      "selected_for_analysis": 11
+      "selected_for_analysis": 8
     },
     "run_mode": "full",
     "columns_updated": [
@@ -20,174 +20,326 @@
     "day_trading": {
       "top_picks": [
         {
-          "ticker": "MOS",
-          "company_name": "חברת מוזאיק",
-          "sector": "חומרי גלם בסיסיים",
+          "ticker": "NNE",
+          "company_name": "NANO Nuclear Energy Inc.",
+          "sector": "Industrials",
           "price": {
-            "current": 29.31
+            "current": 21.385
           },
           "composite_score": {
-            "total": 71
+            "total": 0
           },
-          "action_signal": "לונג תוך-יומי",
-          "thesis_summary": "חברת מוזאיק מציגה הזדמנות ללונג תוך-יומי על רקע פאניקה סמנטית ופוטנציאל למלכודת שורטיסטים. שווי החברה נסחר במכפיל הון/שוק נמוך (0.77), קרוב לשפל של 52 שבועות, מה שמרמז על פסימיות יתר בשוק. תזרים המזומנים השלילי והרווחיות הנמוכה יצרו כנראה סנטימנט שלילי, אך פוטנציאל להתאוששות במחזור החקלאי או חדשות חיוביות יכול להוביל לסקוויז שורט מהיר.",
-          "company_description": "חברת מוזאיק, באמצעות חברות הבת שלה, מייצרת ומשווקת דשני פוספט ואשלג מרוכזים לגידולי יבול. החברה מפעילה מכרות ומתקני ייצור המייצרים חומרי הזנה מרוכזים, וכן כורה, מעבדת ומוכרת אשלג. היא משרתת מפיצים, קמעונאים ולקוחות תעשייתיים ברחבי העולם, עם פעילות בארה\"ב, ברזיל, סין ומדינות נוספות.",
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
           "analyst_ratings": {
-            "consensus": "החזק/קנייה",
-            "summary": "רבים מהאנליסטים ממליצים על החזקה, עם מספר קטן יותר של המלצות קנייה ומכירה. יעד המחיר הממוצע מצביע על פוטנציאל עלייה מתון של כ-9% מהמחיר הנוכחי.",
-            "bull_case": "תאוששות במחירי הסחורות החקלאיות ושיפור בתזרים המזומנים החופשי עשויים להוביל לעליית מחיר המניה מעבר ליעד הממוצע.",
-            "bear_case": "המשך תזרים מזומנים שלילי וחולשה בשוקי החקלאות העולמיים עלולים להפעיל לחץ נוסף על המניה ולדחוף אותה מתחת לשפל של 52 שבועות."
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
           },
           "xray": {
             "semantic_panic": {
-              "score": 80,
-              "analysis": "המניה נסחרת קרוב לשפל של 52 שבועות עם מכפיל הון/שוק נמוך של 0.77, מה שמעיד על סנטימנט שלילי חזק. פסימיות זו נובעת ככל הנראה מתזרים מזומנים חופשי שלילי ורווחיות נמוכה, אך ייתכן שהשוק מגיב בהגזמה לבעיות אלו ויוצר הזדמנות קנייה קונטרריאנית תוך-יומית."
+              "score": 0,
+              "analysis": "לא זמין"
             },
             "short_trap": {
-              "score": 75,
-              "analysis": "תזרים המזומנים השלילי והחוב המתון-גבוה עשויים למשוך שורטיסטים למניה. עם זאת, אם השוק מתמחר תרחיש קודר מדי, כל שינוי חיובי בסנטימנט או חדשות ספציפיות (כמו עלייה במחירי סחורות חקלאיות) עלול ללכוד את השורטיסטים ולגרום לסקוויז מהיר תוך-יומי."
+              "score": 0,
+              "analysis": "לא זמין"
             },
             "volume_abnormality": {
-              "score": 70,
-              "analysis": "בהיותה חברה בתחום חומרי הגלם החקלאיים, MOS חשופה לתנודתיות גבוהה הקשורה למחירי סחורות ואירועים גלובליים. כל שינוי מהותי בסנטימנט או פרסום חדשותי יכול להוביל לעלייה חדה במחזורי המסחר בפתיחת היום ולתנועות מחיר משמעותיות תוך-יומיות."
+              "score": 0,
+              "analysis": "לא זמין"
             },
             "float_choke": {
-              "score": 60,
-              "analysis": "למרות שווי שוק בינוני-גדול של 9.3 מיליארד דולר, היצע מניות צף (Float) יכול להיות מוגבל אם חלק ניכר מהמניות מוחזק בידי מוסדות לטווח ארוך או על ידי גורמים פנימיים. יחד עם פוטנציאל לסנטימנט משתנה, היצע צף נמוך יחסית יכול להגביר את התנודתיות התוך-יומית ולאפשר תנועות מחיר חדות."
+              "score": 0,
+              "analysis": "לא זמין"
+            }
+          }
+        },
+        {
+          "ticker": "INTC",
+          "company_name": "Intel Corporation",
+          "sector": "Technology",
+          "price": {
+            "current": 48.58
+          },
+          "composite_score": {
+            "total": 0
+          },
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
+          "analyst_ratings": {
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
+          },
+          "xray": {
+            "semantic_panic": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "short_trap": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "volume_abnormality": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "float_choke": {
+              "score": 0,
+              "analysis": "לא זמין"
+            }
+          }
+        },
+        {
+          "ticker": "MOS",
+          "company_name": "The Mosaic Company",
+          "sector": "Basic Materials",
+          "price": {
+            "current": 28.049
+          },
+          "composite_score": {
+            "total": 0
+          },
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
+          "analyst_ratings": {
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
+          },
+          "xray": {
+            "semantic_panic": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "short_trap": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "volume_abnormality": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "float_choke": {
+              "score": 0,
+              "analysis": "לא זמין"
             }
           }
         }
       ]
     },
     "swing": {
-      "top_picks": []
-    },
-    "position": {
       "top_picks": [
         {
-          "ticker": "CLF",
-          "company_name": "קליבלנד-קליפס בע\"מ",
-          "sector": "חומרי גלם בסיסיים",
+          "ticker": "NNE",
+          "company_name": "NANO Nuclear Energy Inc.",
+          "sector": "Industrials",
           "price": {
-            "current": 8.46
+            "current": 21.385
           },
           "composite_score": {
-            "total": 59
+            "total": 0
           },
-          "action_signal": "כניסה אסטרטגית",
-          "thesis_summary": "שורה תחתונה: מניית קליבלנד-קליפס מהווה הזדמנות קונטרריאנית אטרקטיבית לכניסה אסטרטגית, במיוחד לאור יחס סיכוי-סיכון מצוין ומחיר הנמוך משמעותית מיעד האנליסטים. החברה נסחרת קרוב לשפל של 52 שבועות, עם סנטימנט אנליסטים ספקני ורוחות גב מאקרו שטרם תומחרו במלואן בתחום הפלדה. פוטנציאל העלייה ליעד האנליסטים עומד על כ-58%, בעוד שהסיכון לשפל של 52 שבועות נמוך יותר, כ-33%.",
-          "company_description": "קליבלנד-קליפס בע\"מ היא יצרנית פלדה מובילה בארצות הברית ובקנדה, המציעה מגוון רחב של מוצרי פלדה מגולגלים חם וקר, מצופים ומוצרי פלדה מיוחדים. החברה עוסקת גם בכריית עפרות ברזל, ייצור כדורים וברזל מופחת ישיר, ועיבוד גרוטאות ברזל. היא משרתת בעיקר את תעשיות הרכב, התשתיות והייצור, ונחשבת לשחקן מפתח בתעשיית חומרי הגלם הבסיסיים.",
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
           "analyst_ratings": {
-            "consensus": "החזק",
-            "summary": "קונצנזוס האנליסטים נוטה ל\"החזק\" (8 מתוך 12), עם מספר המלצות \"קנייה\" ו\"מכירה חזקה\" בודדות. הסנטימנט הכללי מעיד על חוסר התלהבות וספקנות מסוימת לגבי המניה, אך ללא המלצת מכירה גורפת.",
-            "bull_case": "פוטנציאל לזינוק בביקוש לפלדה עקב השקעות בתשתיות ומדיניות תומכת, לצד תמחור חסר של נכסי החברה ביחס למתחרים.",
-            "bear_case": "חולשה מתמשכת בביצועים פיננסיים, חוב גבוה, ומגמות שליליות במחירי הסחורות עלולות להכביד על המניה ולפגוע ברווחיותה."
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
           },
           "xray": {
-            "institutional_stealth": {
-              "score": 20,
-              "analysis": "פעילות האינסיידרים האחרונה כוללת מכירות מהותיות של מניות על ידי המנכ\"ל (3 מיליון מניות) ומנהל התפעול (200 אלף מניות) בפברואר 2026. למרות רכישה קטנה של דירקטור, המכירות הגדולות מצביעות על היעדר צבירה שקטה משמעותית של מוסדיים או אינסיידרים בשוק הפתוח."
+            "event_horizon": {
+              "score": 0,
+              "analysis": "לא זמין"
             },
-            "supply_bottleneck": {
-              "score": 60,
-              "analysis": "כחברה מובילה בתחום הפלדה, קליבלנד-קליפס חשופה לצווארי בקבוק פוטנציאליים באספקה עקב גורמים גלובליים כמו מדיניות סחר ועלויות אנרגיה. תוכניות ממשלתיות להשקעה בתשתיות עשויות להגביר את הביקוש לפלדה וליצור חוסר אספקה שידחוף מחירים כלפי מעלה."
+            "options_flow": {
+              "score": 0,
+              "analysis": "לא זמין"
             },
-            "analyst_exhaustion": {
-              "score": 75,
-              "analysis": "קונצנזוס האנליסטים נוטה ל\"החזק\" (8 מתוך 12) וכולל המלצת \"מכירה חזקה\" אחת, מה שמעיד על ספקנות מסוימת וחוסר התלהבות. המניה נסחרת קרוב לשפל של 52 שבועות, מצב שבו לעיתים קרובות אנליסטים מגיעים למיצוי שלילי ומספק הזדמנות היפוך קונטרריאנית."
+            "insider_moves": {
+              "score": 0,
+              "analysis": "לא זמין"
             },
-            "macro_tailwind": {
-              "score": 80,
-              "analysis": "מגמות מאקרו כמו השקעות בתשתיות, צמיחה כלכלית ויוזמות לייצור מקומי (reshoring) מעניקות רוח גבית חזקה לביקוש לפלדה. לחצי אינפלציה עשויים גם הם לתמוך במחירי סחורות, ומחיר המניה הנוכחי נמוך, מה שמעיד שהשוק טרם תמחר באופן מלא את ההשפעות החיוביות הללו."
+            "narrative_shift": {
+              "score": 0,
+              "analysis": "לא זמין"
+            }
+          }
+        },
+        {
+          "ticker": "NTR",
+          "company_name": "Nutrien Ltd.",
+          "sector": "Basic Materials",
+          "price": {
+            "current": 78.47
+          },
+          "composite_score": {
+            "total": 0
+          },
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
+          "analyst_ratings": {
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
+          },
+          "xray": {
+            "event_horizon": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "options_flow": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "insider_moves": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "narrative_shift": {
+              "score": 0,
+              "analysis": "לא זמין"
+            }
+          }
+        },
+        {
+          "ticker": "MOS",
+          "company_name": "The Mosaic Company",
+          "sector": "Basic Materials",
+          "price": {
+            "current": 28.049
+          },
+          "composite_score": {
+            "total": 0
+          },
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
+          "analyst_ratings": {
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
+          },
+          "xray": {
+            "event_horizon": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "options_flow": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "insider_moves": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "narrative_shift": {
+              "score": 0,
+              "analysis": "לא זמין"
             }
           }
         }
       ]
     },
+    "position": {
+      "top_picks": []
+    },
     "investment": {
       "top_picks": [
-        {
-          "ticker": "BMY",
-          "company_name": "Bristol-Myers Squibb Company",
-          "sector": "Healthcare",
-          "price": {
-            "current": 59.08
-          },
-          "composite_score": {
-            "total": 0
-          },
-          "action_signal": "ניתוח נכשל",
-          "thesis_summary": "ניתוח לא זמין — נסה שנית",
-          "company_description": "",
-          "analyst_ratings": {
-            "consensus": "לא זמין",
-            "summary": "",
-            "bull_case": "",
-            "bear_case": ""
-          },
-          "xray": {
-            "hostage_power": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "debt_asymmetry": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "esg_premium": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "capital_iq": {
-              "score": 0,
-              "analysis": "לא זמין"
-            }
-          }
-        },
-        {
-          "ticker": "T",
-          "company_name": "AT&T Inc.",
-          "sector": "Communication Services",
-          "price": {
-            "current": 27.72
-          },
-          "composite_score": {
-            "total": 0
-          },
-          "action_signal": "ניתוח נכשל",
-          "thesis_summary": "ניתוח לא זמין — נסה שנית",
-          "company_description": "",
-          "analyst_ratings": {
-            "consensus": "לא זמין",
-            "summary": "",
-            "bull_case": "",
-            "bear_case": ""
-          },
-          "xray": {
-            "hostage_power": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "debt_asymmetry": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "esg_premium": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "capital_iq": {
-              "score": 0,
-              "analysis": "לא זמין"
-            }
-          }
-        },
         {
           "ticker": "MO",
           "company_name": "Altria Group, Inc.",
           "sector": "Consumer Defensive",
           "price": {
-            "current": 67.89
+            "current": 67.875
+          },
+          "composite_score": {
+            "total": 0
+          },
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
+          "analyst_ratings": {
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
+          },
+          "xray": {
+            "hostage_power": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "debt_asymmetry": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "esg_premium": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "capital_iq": {
+              "score": 0,
+              "analysis": "לא זמין"
+            }
+          }
+        },
+        {
+          "ticker": "LMT",
+          "company_name": "Lockheed Martin Corporation",
+          "sector": "Industrials",
+          "price": {
+            "current": 643.57
+          },
+          "composite_score": {
+            "total": 0
+          },
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
+          "analyst_ratings": {
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
+          },
+          "xray": {
+            "hostage_power": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "debt_asymmetry": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "esg_premium": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "capital_iq": {
+              "score": 0,
+              "analysis": "לא זמין"
+            }
+          }
+        },
+        {
+          "ticker": "DE",
+          "company_name": "Deere & Company",
+          "sector": "Industrials",
+          "price": {
+            "current": 576.84
           },
           "composite_score": {
             "total": 0
