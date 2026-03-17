@@ -1,103 +1,106 @@
 {
   "meta": {
-    "generated_at": "2026-03-17T06:32:07.747692+00:00",
-    "market_status": "closed",
+    "generated_at": "2026-03-17T15:47:45.774638+00:00",
+    "market_status": "open",
     "pipeline_version": "2.2",
     "radar_stats": {
       "total_scanned": 84,
       "with_data": 83,
-      "selected_for_analysis": 3
+      "selected_for_analysis": 10
     },
-    "run_mode": "partial",
+    "run_mode": "full",
     "columns_updated": [
-      "day_trading"
+      "day_trading",
+      "swing",
+      "position",
+      "investment"
     ]
   },
   "matrix": {
     "day_trading": {
       "top_picks": [
         {
-          "ticker": "NTR",
-          "company_name": "Nutrien Ltd.",
-          "sector": "Basic Materials",
-          "price": {
-            "current": 77.79
-          },
-          "composite_score": {
-            "total": 0
-          },
-          "action_signal": "ניתוח נכשל",
-          "thesis_summary": "ניתוח לא זמין — נסה שנית",
-          "company_description": "",
-          "analyst_ratings": {
-            "consensus": "לא זמין",
-            "summary": "",
-            "bull_case": "",
-            "bear_case": ""
-          },
-          "xray": {
-            "semantic_panic": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "short_trap": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "volume_abnormality": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "float_choke": {
-              "score": 0,
-              "analysis": "לא זמין"
-            }
-          }
-        },
-        {
-          "ticker": "MOS",
-          "company_name": "The Mosaic Company",
-          "sector": "Basic Materials",
-          "price": {
-            "current": 27.67
-          },
-          "composite_score": {
-            "total": 0
-          },
-          "action_signal": "ניתוח נכשל",
-          "thesis_summary": "ניתוח לא זמין — נסה שנית",
-          "company_description": "",
-          "analyst_ratings": {
-            "consensus": "לא זמין",
-            "summary": "",
-            "bull_case": "",
-            "bear_case": ""
-          },
-          "xray": {
-            "semantic_panic": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "short_trap": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "volume_abnormality": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "float_choke": {
-              "score": 0,
-              "analysis": "לא זמין"
-            }
-          }
-        },
-        {
           "ticker": "NNE",
           "company_name": "NANO Nuclear Energy Inc.",
           "sector": "Industrials",
           "price": {
-            "current": 21.96
+            "current": 21.0401
+          },
+          "composite_score": {
+            "total": 0
+          },
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
+          "analyst_ratings": {
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
+          },
+          "xray": {
+            "semantic_panic": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "short_trap": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "volume_abnormality": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "float_choke": {
+              "score": 0,
+              "analysis": "לא זמין"
+            }
+          }
+        },
+        {
+          "ticker": "INTC",
+          "company_name": "Intel Corporation",
+          "sector": "Technology",
+          "price": {
+            "current": 44.155
+          },
+          "composite_score": {
+            "total": 0
+          },
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
+          "analyst_ratings": {
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
+          },
+          "xray": {
+            "semantic_panic": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "short_trap": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "volume_abnormality": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "float_choke": {
+              "score": 0,
+              "analysis": "לא זמין"
+            }
+          }
+        },
+        {
+          "ticker": "BA",
+          "company_name": "The Boeing Company",
+          "sector": "Industrials",
+          "price": {
+            "current": 210.855
           },
           "composite_score": {
             "total": 0
@@ -135,11 +138,49 @@
     "swing": {
       "top_picks": [
         {
+          "ticker": "INTC",
+          "company_name": "Intel Corporation",
+          "sector": "Technology",
+          "price": {
+            "current": 44.155
+          },
+          "composite_score": {
+            "total": 0
+          },
+          "action_signal": "ניתוח נכשל",
+          "thesis_summary": "ניתוח לא זמין — נסה שנית",
+          "company_description": "",
+          "analyst_ratings": {
+            "consensus": "לא זמין",
+            "summary": "",
+            "bull_case": "",
+            "bear_case": ""
+          },
+          "xray": {
+            "event_horizon": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "options_flow": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "insider_moves": {
+              "score": 0,
+              "analysis": "לא זמין"
+            },
+            "narrative_shift": {
+              "score": 0,
+              "analysis": "לא זמין"
+            }
+          }
+        },
+        {
           "ticker": "NNE",
           "company_name": "NANO Nuclear Energy Inc.",
           "sector": "Industrials",
           "price": {
-            "current": 21.385
+            "current": 21.0401
           },
           "composite_score": {
             "total": 0
@@ -173,49 +214,11 @@
           }
         },
         {
-          "ticker": "NTR",
-          "company_name": "Nutrien Ltd.",
-          "sector": "Basic Materials",
+          "ticker": "PYPL",
+          "company_name": "PayPal Holdings, Inc.",
+          "sector": "Financial Services",
           "price": {
-            "current": 78.47
-          },
-          "composite_score": {
-            "total": 0
-          },
-          "action_signal": "ניתוח נכשל",
-          "thesis_summary": "ניתוח לא זמין — נסה שנית",
-          "company_description": "",
-          "analyst_ratings": {
-            "consensus": "לא זמין",
-            "summary": "",
-            "bull_case": "",
-            "bear_case": ""
-          },
-          "xray": {
-            "event_horizon": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "options_flow": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "insider_moves": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "narrative_shift": {
-              "score": 0,
-              "analysis": "לא זמין"
-            }
-          }
-        },
-        {
-          "ticker": "MOS",
-          "company_name": "The Mosaic Company",
-          "sector": "Basic Materials",
-          "price": {
-            "current": 28.049
+            "current": 46.43
           },
           "composite_score": {
             "total": 0
@@ -254,122 +257,7 @@
       "top_picks": []
     },
     "investment": {
-      "top_picks": [
-        {
-          "ticker": "MO",
-          "company_name": "Altria Group, Inc.",
-          "sector": "Consumer Defensive",
-          "price": {
-            "current": 67.875
-          },
-          "composite_score": {
-            "total": 0
-          },
-          "action_signal": "ניתוח נכשל",
-          "thesis_summary": "ניתוח לא זמין — נסה שנית",
-          "company_description": "",
-          "analyst_ratings": {
-            "consensus": "לא זמין",
-            "summary": "",
-            "bull_case": "",
-            "bear_case": ""
-          },
-          "xray": {
-            "hostage_power": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "debt_asymmetry": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "esg_premium": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "capital_iq": {
-              "score": 0,
-              "analysis": "לא זמין"
-            }
-          }
-        },
-        {
-          "ticker": "LMT",
-          "company_name": "Lockheed Martin Corporation",
-          "sector": "Industrials",
-          "price": {
-            "current": 643.57
-          },
-          "composite_score": {
-            "total": 0
-          },
-          "action_signal": "ניתוח נכשל",
-          "thesis_summary": "ניתוח לא זמין — נסה שנית",
-          "company_description": "",
-          "analyst_ratings": {
-            "consensus": "לא זמין",
-            "summary": "",
-            "bull_case": "",
-            "bear_case": ""
-          },
-          "xray": {
-            "hostage_power": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "debt_asymmetry": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "esg_premium": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "capital_iq": {
-              "score": 0,
-              "analysis": "לא זמין"
-            }
-          }
-        },
-        {
-          "ticker": "DE",
-          "company_name": "Deere & Company",
-          "sector": "Industrials",
-          "price": {
-            "current": 576.84
-          },
-          "composite_score": {
-            "total": 0
-          },
-          "action_signal": "ניתוח נכשל",
-          "thesis_summary": "ניתוח לא זמין — נסה שנית",
-          "company_description": "",
-          "analyst_ratings": {
-            "consensus": "לא זמין",
-            "summary": "",
-            "bull_case": "",
-            "bear_case": ""
-          },
-          "xray": {
-            "hostage_power": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "debt_asymmetry": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "esg_premium": {
-              "score": 0,
-              "analysis": "לא זמין"
-            },
-            "capital_iq": {
-              "score": 0,
-              "analysis": "לא זמין"
-            }
-          }
-        }
-      ]
+      "top_picks": []
     }
   }
 }
