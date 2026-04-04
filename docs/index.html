@@ -301,6 +301,9 @@
    AUTH
    ═══════════════════════════════════════ */
 let HASH="",S_HRS=24,MAX_ATT=5,LOCK_MIN=15,att=0,lockUntil=0;
+const WATCHLIST=["ASML","PLTR","MELI","URNM","FCX","ISRG","PWR","XYL","STNG","SMH","LNG","SOXX","QQQ","SPY","MU"];
+let DATA=null,currentFilter="all";
+
 (async()=>{try{const r=await fetch("config.json?v="+Date.now());const c=await r.json();HASH=c.auth.pin_hash;MAX_ATT=c.auth.max_attempts||5;LOCK_MIN=c.auth.lockout_minutes||15;S_HRS=c.auth.session_hours||24}catch(e){console.error("Config:",e)}})();
 
 async function sha256(m){const d=new TextEncoder().encode(m);const h=await crypto.subtle.digest("SHA-256",d);return[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join("")}
@@ -347,12 +350,6 @@ async function tryLogin(){
 }
 function showApp(){document.getElementById("login").classList.add("hide");document.getElementById("app").classList.add("on");loadData();buildTickerPicks()}
 function logout(){sessionStorage.removeItem("cats");location.reload()}
-
-/* ═══════════════════════════════════════
-   WATCHLIST
-   ═══════════════════════════════════════ */
-const WATCHLIST=["ASML","PLTR","MELI","URNM","FCX","ISRG","PWR","XYL","STNG","SMH","LNG","SOXX","QQQ","SPY","MU"];
-let DATA=null,currentFilter="all";
 
 function buildTickerPicks(){
     const c=document.getElementById("m-picks");
