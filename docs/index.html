@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#060608">
-    <title>Q5 SIGNAL</title>
+    <meta name="theme-color" content="#08090c">
+    <title>CATALYST</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #060608; --bg2: #0e0e12; --bg3: #151519; --bg4: #1a1a22;
-            --border: #222230; --border-h: #d4af37;
-            --gold: #d4af37; --gold-dim: #a08628; --gold-glow: rgba(212,175,55,0.15);
-            --txt: #e8e8ec; --txt2: #9a9ab0; --txt3: #5a5a72;
+            --bg: #08090c; --bg2: #0f1117; --bg3: #161821; --bg4: #1c1e2a;
+            --border: #232538; --border-h: #00d4ff;
+            --accent: #00d4ff; --accent-dim: #0099bb; --accent-glow: rgba(0,212,255,0.12);
+            --txt: #e4e6ef; --txt2: #9498b3; --txt3: #565a75;
             --green: #2dd4a8; --red: #f0506e; --amber: #f5a623; --purple: #8b7cf6;
             --mono: 'SF Mono','JetBrains Mono','Fira Code',monospace;
-            --r: 10px;
+            --r: 12px;
             --safe-b: env(safe-area-inset-bottom, 0px);
         }
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -27,15 +27,14 @@
         .login{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center}
         .login.hide{display:none}
         .login-box{width:340px;max-width:88vw;text-align:center}
-        .login-logo{font-size:32px;font-weight:900;letter-spacing:3px;margin-bottom:2px}
-        .login-logo b{color:var(--gold)}
+        .login-logo{font-size:36px;font-weight:900;letter-spacing:4px;margin-bottom:2px;background:linear-gradient(135deg,var(--accent),#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .login-sub{font-size:10px;color:var(--txt3);letter-spacing:5px;text-transform:uppercase;margin-bottom:36px}
         .pin-row{display:flex;gap:8px;justify-content:center;margin-bottom:24px;direction:ltr}
         .pin-row input{width:44px;height:54px;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;color:var(--txt);font-family:var(--mono);font-size:20px;font-weight:700;text-align:center;outline:none;transition:.2s;-webkit-text-security:disc}
-        .pin-row input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow)}
+        .pin-row input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
         .pin-row input.err{border-color:var(--red);animation:shake .4s}
         @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-        .login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:1px}
+        .login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#6366f1);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:1px}
         .login-msg{color:var(--red);font-size:12px;margin-top:12px;min-height:18px}
         .login-msg.lock{color:var(--amber)}
         .login-label{font-size:12px;color:var(--txt2);margin-bottom:12px}
@@ -45,9 +44,8 @@
         .app.on{display:flex}
 
         /* ─── TOP BAR ─── */
-        .topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;gap:8px;min-height:52px}
-        .topbar-logo{font-size:17px;font-weight:900;letter-spacing:2px;white-space:nowrap}
-        .topbar-logo b{color:var(--gold)}
+        .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;gap:8px;min-height:54px}
+        .topbar-logo{font-size:18px;font-weight:900;letter-spacing:3px;background:linear-gradient(135deg,var(--accent),#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
         .badge{padding:3px 10px;border-radius:16px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
         .badge.open{background:rgba(45,212,168,.1);color:var(--green);border:1px solid rgba(45,212,168,.2)}
@@ -55,8 +53,8 @@
         .badge.pre_market{background:rgba(245,166,35,.1);color:var(--amber);border:1px solid rgba(245,166,35,.2)}
         .badge.after_hours{background:rgba(139,124,246,.1);color:var(--purple);border:1px solid rgba(139,124,246,.2)}
         .badge.weekend{background:rgba(90,90,114,.1);color:var(--txt3);border:1px solid rgba(90,90,114,.2)}
-        .btn-s{background:transparent;color:var(--gold);border:1px solid rgba(212,175,55,.4);padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
-        .btn-s:hover{background:var(--gold);color:#000}
+        .btn-s{background:transparent;color:var(--accent);border:1px solid rgba(0,212,255,.4);padding:6px 14px;border-radius:8px;cursor:pointer;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+        .btn-s:hover{background:var(--accent);color:#000}
         .btn-s.running{background:var(--amber);border-color:var(--amber);color:#000;animation:pulse 1.5s ease infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
         .btn-ghost{background:none;border:1px solid var(--border);color:var(--txt3);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:10px;white-space:nowrap}
@@ -66,164 +64,147 @@
         .infobar{display:none;padding:6px 16px;background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;color:var(--txt3);flex-shrink:0;gap:10px;align-items:center;flex-wrap:wrap}
         .infobar.on{display:flex}
         .infobar select{background:var(--bg3);border:1px solid var(--border);color:var(--txt);padding:4px 8px;border-radius:6px;font-size:11px;font-family:var(--mono);cursor:pointer;outline:none}
-        .infobar select:focus{border-color:var(--gold)}
         .arch-badge{color:var(--amber);font-weight:700;display:none;font-size:10px}
         .arch-badge.on{display:inline}
         .info-spacer{flex:1}
-        .info-btn{background:none;border:1px solid var(--border);color:var(--txt3);padding:3px 10px;border-radius:6px;font-size:10px;cursor:pointer}
-        .info-btn:hover{border-color:var(--gold);color:var(--gold)}
 
-        /* ─── TAB NAV (mobile category switcher) ─── */
-        .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-        .tabs::-webkit-scrollbar{display:none}
-        .tab{flex:1;min-width:0;padding:10px 6px;text-align:center;font-size:11px;font-weight:700;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap;background:transparent;border-top:none;border-left:none;border-right:none}
-        .tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-        .tab[data-col="day_trading"].active{color:var(--red);border-bottom-color:var(--red)}
-        .tab[data-col="swing"].active{color:var(--amber);border-bottom-color:var(--amber)}
-        .tab[data-col="position"].active{color:var(--purple);border-bottom-color:var(--purple)}
-        .tab[data-col="investment"].active{color:var(--green);border-bottom-color:var(--green)}
+        /* ─── FILTER BAR ─── */
+        .filter-bar{display:flex;gap:6px;padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+        .filter-bar::-webkit-scrollbar{display:none}
+        .fbtn{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--txt3);white-space:nowrap;transition:.2s}
+        .fbtn.active{background:var(--accent-glow);border-color:var(--accent);color:var(--accent)}
+        .fbtn:hover{border-color:var(--accent-dim)}
 
-        /* ─── CONTENT AREA ─── */
+        /* ─── CONTENT ─── */
         .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
         .content::-webkit-scrollbar{width:4px}
         .content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-        /* ─── METHODOLOGY PANEL ─── */
-        .meth{display:none;padding:16px;background:var(--bg2);border-bottom:1px solid var(--border)}
-        .meth.on{display:block}
-        .meth-title{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px;letter-spacing:1px}
-        .meth-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-        .meth-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px}
-        .meth-card h4{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:4px}
-        .meth-card p{font-size:10.5px;color:var(--txt2);line-height:1.6}
-
         /* ─── LOADING ─── */
         .loading{text-align:center;color:var(--txt3);padding:60px 20px}
-        .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px}
+        .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px}
         @keyframes spin{to{transform:rotate(360deg)}}
 
-        /* ─── BOARD (Desktop: 4-col grid / Mobile: single column per tab) ─── */
-        .board{padding:12px}
-        .board-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-        .col-wrap{display:flex;flex-direction:column;gap:8px}
-        .col-head{padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);position:relative;overflow:hidden}
-        .col-head::after{content:'';position:absolute;top:0;right:0;left:0;height:2px}
-        .col--day .col-head::after{background:linear-gradient(90deg,var(--red),transparent)}
-        .col--swing .col-head::after{background:linear-gradient(90deg,var(--amber),transparent)}
-        .col--position .col-head::after{background:linear-gradient(90deg,var(--purple),transparent)}
-        .col--investment .col-head::after{background:linear-gradient(90deg,var(--green),transparent)}
-        .col-title{font-size:14px;font-weight:700;letter-spacing:.5px}
-        .col-desc{font-size:10px;color:var(--txt3);margin-top:2px}
-        .col-count{position:absolute;top:10px;left:14px;font-size:9px;color:var(--txt3);font-family:var(--mono)}
+        /* ─── STOCK LIST ─── */
+        .stock-list{padding:12px 16px;display:flex;flex-direction:column;gap:10px;max-width:720px;margin:0 auto;width:100%}
 
         /* ─── CARD ─── */
-        .card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;transition:.2s;position:relative}
-        .card:hover{border-color:rgba(212,175,55,.3);background:var(--bg4)}
-        .card:active{transform:scale(.98)}
-        .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-        .card-ticker{font-size:18px;font-weight:900;font-family:var(--mono);letter-spacing:1px}
-        .card-co{font-size:10px;color:var(--txt3);margin-top:1px}
-        .card-sc{min-width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:15px;font-weight:900}
-        .card-sc.hi{background:rgba(45,212,168,.1);color:var(--green);border:1px solid rgba(45,212,168,.2)}
-        .card-sc.mid{background:rgba(245,166,35,.1);color:var(--amber);border:1px solid rgba(245,166,35,.2)}
-        .card-sc.lo{background:rgba(240,80,110,.1);color:var(--red);border:1px solid rgba(240,80,110,.2)}
-        .card-signal{display:inline-block;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px;margin-top:6px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.25);color:var(--gold)}
-        .card-thesis{font-size:11.5px;line-height:1.55;color:var(--txt2);border-top:1px solid var(--border);padding-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-        .empty-col{text-align:center;padding:40px 20px;color:var(--txt3);font-size:13px;line-height:1.8}
-        .empty-col .empty-icon{font-size:28px;margin-bottom:10px;opacity:.4}
-        .empty-col .empty-title{font-size:13px;font-weight:700;color:var(--txt2);margin-bottom:4px}
-        .empty-col .empty-sub{font-size:11px;color:var(--txt3)}
+        .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+        .card:hover{border-color:rgba(0,212,255,.25);background:var(--bg3)}
+        .card:active{transform:scale(.985)}
+        .card::before{content:'';position:absolute;top:0;right:0;left:0;height:2px}
+        .card.bullish::before{background:linear-gradient(90deg,var(--green),transparent)}
+        .card.bearish::before{background:linear-gradient(90deg,var(--red),transparent)}
+        .card.neutral::before{background:linear-gradient(90deg,var(--txt3),transparent)}
+
+        .card-row1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+        .card-left{display:flex;align-items:center;gap:10px}
+        .card-ticker{font-size:20px;font-weight:900;font-family:var(--mono);letter-spacing:1px}
+        .card-price{font-family:var(--mono);font-size:12px;color:var(--txt2)}
+        .card-change{font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;font-family:var(--mono)}
+        .card-change.up{background:rgba(45,212,168,.1);color:var(--green)}
+        .card-change.down{background:rgba(240,80,110,.1);color:var(--red)}
+        .card-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+        .card-conf{min-width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;font-weight:900}
+        .card-conf.hi{background:rgba(45,212,168,.1);color:var(--green);border:1px solid rgba(45,212,168,.2)}
+        .card-conf.mid{background:rgba(245,166,35,.1);color:var(--amber);border:1px solid rgba(245,166,35,.2)}
+        .card-conf.lo{background:rgba(240,80,110,.1);color:var(--red);border:1px solid rgba(240,80,110,.2)}
+
+        .card-row2{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+        .card-signal{display:inline-block;padding:3px 10px;border-radius:5px;font-size:10.5px;font-weight:700;letter-spacing:.3px}
+        .card-signal.bullish{background:rgba(45,212,168,.08);border:1px solid rgba(45,212,168,.25);color:var(--green)}
+        .card-signal.bearish{background:rgba(240,80,110,.08);border:1px solid rgba(240,80,110,.25);color:var(--red)}
+        .card-signal.neutral{background:rgba(139,124,246,.08);border:1px solid rgba(139,124,246,.25);color:var(--purple)}
+        .card-co{font-size:10.5px;color:var(--txt3)}
+
+        .card-bottom{font-size:12px;line-height:1.6;color:var(--txt2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state{text-align:center;padding:60px 20px;color:var(--txt3)}
 
         /* ─── OVERLAY & DRAWER ─── */
         .overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;z-index:100;opacity:0;transition:opacity .3s;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
         .overlay.on{display:block;opacity:1}
-        .drawer{position:fixed;top:0;right:-100%;width:100%;max-width:560px;height:100dvh;height:100vh;background:var(--bg);border-left:1px solid rgba(212,175,55,.15);z-index:101;transition:right .3s cubic-bezier(.16,1,.3,1);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 16px calc(20px + var(--safe-b));box-shadow:-8px 0 32px rgba(0,0,0,.5)}
+        .drawer{position:fixed;top:0;right:-100%;width:100%;max-width:580px;height:100dvh;height:100vh;background:var(--bg);border-left:1px solid rgba(0,212,255,.1);z-index:101;transition:right .3s cubic-bezier(.16,1,.3,1);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 16px calc(20px + var(--safe-b));box-shadow:-8px 0 32px rgba(0,0,0,.5)}
         .drawer.on{right:0}
         .drawer::-webkit-scrollbar{width:3px}
         .drawer::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
         .close-x{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-start;padding-bottom:8px}
         .close-x button{background:var(--bg2);border:1px solid var(--border);color:var(--txt2);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center}
-        .close-x button:hover{color:var(--txt)}
-        .d-head{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-        .d-ticker{font-size:26px;font-weight:900;color:var(--gold);font-family:var(--mono);letter-spacing:2px}
+
+        /* ─── DRAWER CONTENT ─── */
+        .d-head{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+        .d-ticker{font-size:28px;font-weight:900;font-family:var(--mono);letter-spacing:2px;background:linear-gradient(135deg,var(--accent),#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .d-meta{font-size:12px;color:var(--txt2);margin-top:3px}
-        .d-thesis{font-size:13px;line-height:1.7;color:var(--txt);padding:12px 14px;background:rgba(212,175,55,.04);border-radius:var(--r);border-right:3px solid var(--gold);margin-top:12px}
-        .d-signal{display:inline-block;padding:5px 16px;border-radius:6px;font-size:13px;font-weight:700;letter-spacing:.5px;background:rgba(212,175,55,.1);border:1.5px solid rgba(212,175,55,.3);color:var(--gold);margin-bottom:14px}
-        .d-score{font-size:11px;color:var(--txt3);margin-bottom:16px}
-        .d-score strong{font-size:22px;color:var(--gold);font-family:var(--mono)}
+        .d-price{font-family:var(--mono);font-size:14px;margin-top:6px}
+        .d-signal{display:inline-block;padding:5px 16px;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.5px;margin:10px 0}
+        .d-signal.bullish{background:rgba(45,212,168,.1);border:1.5px solid rgba(45,212,168,.3);color:var(--green)}
+        .d-signal.bearish{background:rgba(240,80,110,.1);border:1.5px solid rgba(240,80,110,.3);color:var(--red)}
+        .d-signal.neutral{background:rgba(139,124,246,.1);border:1.5px solid rgba(139,124,246,.3);color:var(--purple)}
+        .d-conf{font-size:11px;color:var(--txt3);margin-bottom:14px}
+        .d-conf strong{font-size:22px;font-family:var(--mono)}
+        .d-conf strong.hi{color:var(--green)}.d-conf strong.mid{color:var(--amber)}.d-conf strong.lo{color:var(--red)}
 
-        /* ─── DRAWER SECTIONS ─── */
-        .d-sec{margin-bottom:12px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
-        .d-sec-t{font-size:11px;font-weight:700;margin-bottom:6px;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
-        .d-sec-b{font-size:12px;color:var(--txt2);line-height:1.7}
-        .an-con{display:flex;gap:6px;margin-bottom:8px}
-        .an-tag{padding:3px 10px;border-radius:16px;font-size:10px;font-weight:700}
-        .an-tag.buy{background:rgba(45,212,168,.12);color:var(--green)}
-        .an-tag.hold{background:rgba(245,166,35,.12);color:var(--amber)}
-        .an-tag.sell{background:rgba(240,80,110,.12);color:var(--red)}
-        .bb{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-        .bb div{padding:8px 10px;border-radius:var(--r);font-size:11px;line-height:1.5}
-        .bb .bull{background:rgba(45,212,168,.04);border-right:2px solid var(--green)}
-        .bb .bear{background:rgba(240,80,110,.04);border-right:2px solid var(--red)}
-        .bb strong{display:block;margin-bottom:3px;font-size:9px;text-transform:uppercase;letter-spacing:1px}
+        .d-bl{font-size:14px;line-height:1.7;color:var(--txt);padding:12px 14px;background:rgba(0,212,255,.04);border-radius:var(--r);border-right:3px solid var(--accent);margin-bottom:16px;font-weight:500}
 
-        /* ─── X-RAY ITEMS ─── */
-        .xr-grid{display:grid;gap:8px;margin-bottom:12px}
-        .xr{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:.15s;position:relative}
-        .xr:hover{background:var(--bg3)}
-        .xr::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;border-radius:0 var(--r) var(--r) 0}
-        .xr.hi::before{background:var(--green)}.xr.mid::before{background:var(--amber)}.xr.lo::before{background:var(--red)}
-        .xr-h{display:flex;justify-content:space-between;align-items:center}
-        .xr-t{font-size:11px;font-weight:600;color:var(--txt2)}
-        .xr-s{font-family:var(--mono);font-size:13px;font-weight:900}
-        .xr-s.hi{color:var(--green)}.xr-s.mid{color:var(--amber)}.xr-s.lo{color:var(--red)}
-        .xr-d{font-size:11.5px;line-height:1.65;color:var(--txt2);margin-top:8px;display:none;padding-top:8px;border-top:1px solid var(--border)}
-        .xr.open .xr-d{display:block}
+        .d-sec{margin-bottom:12px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
+        .d-sec-t{font-size:11px;font-weight:700;margin-bottom:8px;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+        .d-sec-b{font-size:12.5px;color:var(--txt2);line-height:1.75}
 
-        .d-meth{margin-top:12px;padding:10px 12px;background:rgba(139,124,246,.04);border:1px solid rgba(139,124,246,.12);border-radius:var(--r)}
-        .d-meth-t{font-size:10px;font-weight:700;color:var(--purple);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase}
-        .d-meth-b{font-size:11px;color:var(--txt2);line-height:1.6}
+        /* ─── CATALYST ITEMS ─── */
+        .cat-item{padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;position:relative;overflow:hidden}
+        .cat-item::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;border-radius:0 var(--r) var(--r) 0}
+        .cat-item.pos::before{background:var(--green)}.cat-item.neg::before{background:var(--red)}.cat-item.unk::before{background:var(--amber)}
+        .cat-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+        .cat-title{font-size:12px;font-weight:700;color:var(--txt)}
+        .cat-type{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+        .cat-type.earnings{background:rgba(0,212,255,.1);color:var(--accent)}
+        .cat-type.regulatory{background:rgba(240,80,110,.1);color:var(--red)}
+        .cat-type.macro{background:rgba(245,166,35,.1);color:var(--amber)}
+        .cat-type.business{background:rgba(45,212,168,.1);color:var(--green)}
+        .cat-type.sector{background:rgba(139,124,246,.1);color:var(--purple)}
+        .cat-desc{font-size:11.5px;color:var(--txt2);line-height:1.6}
+        .cat-tf{font-size:10px;color:var(--txt3);margin-top:4px}
+
+        /* ─── Q&A ─── */
+        .qa{padding:12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:.15s}
+        .qa:hover{background:var(--bg4)}
+        .qa-q{font-size:12.5px;font-weight:700;color:var(--txt);margin-bottom:6px}
+        .qa-a{font-size:12px;color:var(--txt2);line-height:1.65;display:none}
+        .qa.open .qa-a{display:block}
+        .qa-imp{display:inline-block;font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;margin-top:6px}
+        .qa-imp.pos{background:rgba(45,212,168,.1);color:var(--green)}
+        .qa-imp.neg{background:rgba(240,80,110,.1);color:var(--red)}
+        .qa-imp.neut{background:rgba(139,124,246,.1);color:var(--purple)}
 
         /* ─── MODAL ─── */
         .modal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:20px}
         .modal.on{display:flex}
-        .modal-box{background:var(--bg2);border:1px solid rgba(212,175,55,.2);border-radius:14px;padding:28px 24px;width:340px;max-width:100%;text-align:center}
-        .modal-box h3{font-size:15px;margin-bottom:5px;color:var(--gold)}
-        .modal-box p{font-size:11px;color:var(--txt3);margin-bottom:18px}
+        .modal-box{background:var(--bg2);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:28px 24px;width:360px;max-width:100%;text-align:center}
+        .modal-box h3{font-size:15px;margin-bottom:5px;color:var(--accent)}
+        .modal-box p{font-size:11px;color:var(--txt3);margin-bottom:14px}
+        .m-picks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px}
+        .m-pick{padding:5px 10px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--txt3);font-family:var(--mono);transition:.2s}
+        .m-pick.active{background:var(--accent-glow);border-color:var(--accent);color:var(--accent)}
         .m-pin{display:flex;gap:6px;justify-content:center;margin-bottom:16px;direction:ltr}
         .m-pin input{width:40px;height:46px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--txt);font-family:var(--mono);font-size:17px;font-weight:700;text-align:center;outline:none;-webkit-text-security:disc}
-        .m-pin input:focus{border-color:var(--gold)}
+        .m-pin input:focus{border-color:var(--accent)}
         .m-acts{display:flex;gap:8px}
         .m-acts button{flex:1;padding:10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
         .m-cancel{background:none;border:1px solid var(--border);color:var(--txt3)}
-        .m-confirm{background:linear-gradient(135deg,var(--gold),var(--gold-dim));border:none;color:#000}
+        .m-confirm{background:linear-gradient(135deg,var(--accent),#6366f1);border:none;color:#fff}
         .m-err{color:var(--red);font-size:10px;margin-top:8px;min-height:14px}
 
         .footer{text-align:center;padding:6px;font-size:9px;color:var(--txt3);border-top:1px solid var(--border);flex-shrink:0;letter-spacing:1px;display:none;padding-bottom:calc(6px + var(--safe-b))}
-        .col-pick{padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--txt3);transition:.2s}
-        .col-pick.active{background:rgba(212,175,55,.12);border-color:var(--gold);color:var(--gold)}
-        .col-pick:hover{border-color:var(--gold-dim)}
 
         /* ══════ DESKTOP ══════ */
         @media(min-width:900px){
-            .tabs{display:none}
             .topbar{padding:12px 28px}
-            .topbar-logo{font-size:20px}
+            .topbar-logo{font-size:22px}
             .infobar{padding:6px 28px}
-            .board{padding:20px 28px}
-            .meth-grid{grid-template-columns:repeat(4,1fr)}
-            .meth{padding:16px 28px}
-            .drawer{width:560px;right:-560px;padding:28px 28px calc(28px + var(--safe-b))}
-        }
-        @media(max-width:899px){
-            .board-grid{grid-template-columns:1fr}
-            .col-wrap{display:none}
-            .col-wrap.active{display:flex}
-            .col-head{display:none}
-        }
-        @media(max-width:500px){
-            .meth-grid{grid-template-columns:1fr}
-            .bb{grid-template-columns:1fr}
+            .filter-bar{padding:10px 28px}
+            .stock-list{padding:16px 28px}
+            .drawer{width:580px;right:-580px;padding:28px}
         }
     </style>
 </head>
@@ -232,8 +213,8 @@
 <!-- ═══ LOGIN ═══ -->
 <div id="login" class="login">
     <div class="login-box">
-        <div class="login-logo"><b>Q5</b> SIGNAL</div>
-        <div class="login-sub">Contrarian Intelligence</div>
+        <div class="login-logo">CATALYST</div>
+        <div class="login-sub">Stock Intelligence</div>
         <div class="login-label">הזן קוד גישה</div>
         <div class="pin-row" id="pin-box">
             <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
@@ -243,16 +224,15 @@
             <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
             <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
         </div>
-        <button class="login-btn" onclick="tryLogin()">כניסה למערכת</button>
+        <button class="login-btn" onclick="tryLogin()">כניסה</button>
         <div class="login-msg" id="login-msg"></div>
     </div>
 </div>
 
 <!-- ═══ APP ═══ -->
 <div id="app" class="app">
-    <!-- Top Bar -->
     <div class="topbar">
-        <div class="topbar-logo"><b>Q5</b> SIGNAL</div>
+        <div class="topbar-logo">CATALYST</div>
         <div class="topbar-right">
             <span id="status"></span>
             <button class="btn-s" id="run-btn" onclick="showRunModal()">SCAN</button>
@@ -260,49 +240,30 @@
         </div>
     </div>
 
-    <!-- Info Bar -->
     <div class="infobar" id="infobar">
         <span id="ts-info"></span>
         <span id="scan-info"></span>
         <div class="info-spacer"></div>
         <label>ארכיון:</label>
-        <select id="hist-sel" onchange="loadHistory(this.value)">
-            <option value="">נוכחי</option>
-        </select>
+        <select id="hist-sel" onchange="loadHistory(this.value)"><option value="">נוכחי</option></select>
         <span class="arch-badge" id="arch-badge">ARCHIVE</span>
-        <button class="info-btn" onclick="toggleMeth()">מתודולוגיה</button>
     </div>
 
-    <!-- Methodology -->
-    <div class="meth" id="meth">
-        <div class="meth-title">פילוסופיית ניתוח קונטרריאנית</div>
-        <div class="meth-grid">
-            <div class="meth-card"><h4>מסחר יומי</h4><p>Intraday בלבד — כניסה ויציאה באותו יום מסחר. פאניקה סמנטית, מלכודות שורט, אנומליות נפח.</p></div>
-            <div class="meth-card"><h4>סווינג</h4><p>ימים עד שבועות — רכיבה על קטליזטור שהשוק מתמחר בחסר. אופציות, אינסיידרים, נרטיב.</p></div>
-            <div class="meth-card"><h4>השקעה קצר-בינוני</h4><p>שבועות עד חודשים — מעקב כסף מוסדי, הצטברות שקטה, צווארי בקבוק באספקה.</p></div>
-            <div class="meth-card"><h4>השקעה לטווח ארוך</h4><p>חודשים עד שנים — חפיר כלכלי בלתי ניתן לשכפול, כוח מיקוח, אסימטריית חוב.</p></div>
-        </div>
+    <!-- Filter Bar -->
+    <div class="filter-bar" id="filter-bar">
+        <button class="fbtn active" data-filter="all" onclick="setFilter('all',this)">הכל</button>
+        <button class="fbtn" data-filter="bullish" onclick="setFilter('bullish',this)">חיובי</button>
+        <button class="fbtn" data-filter="bearish" onclick="setFilter('bearish',this)">שלילי</button>
+        <button class="fbtn" data-filter="high" onclick="setFilter('high',this)">ביטחון גבוה</button>
     </div>
 
-    <!-- Mobile Tab Nav -->
-    <div class="tabs" id="tabs">
-        <button class="tab active" data-col="day_trading" onclick="switchTab('day_trading')">מסחר יומי</button>
-        <button class="tab" data-col="swing" onclick="switchTab('swing')">סווינג</button>
-        <button class="tab" data-col="position" onclick="switchTab('position')">קצר-בינוני</button>
-        <button class="tab" data-col="investment" onclick="switchTab('investment')">טווח ארוך</button>
-    </div>
-
-    <!-- Main Content -->
     <div class="content" id="content">
         <div id="loading" class="loading"><div class="spinner"></div><div>טוען נתוני מודיעין...</div></div>
-        <div class="board" id="board" style="display:none">
-            <div class="board-grid" id="board-grid"></div>
-        </div>
+        <div class="stock-list" id="stock-list" style="display:none"></div>
     </div>
 
     <div class="footer" id="footer"></div>
 
-    <!-- Drawer -->
     <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
     <div class="drawer" id="drawer">
         <div class="close-x"><button onclick="closeDrawer()">&#x00D7;</button></div>
@@ -313,16 +274,12 @@
 <!-- ═══ RUN MODAL ═══ -->
 <div id="run-modal" class="modal">
     <div class="modal-box">
-        <h3>הרצת סריקה חדשה</h3>
-        <p>בחר קטגוריה או סרוק הכל:</p>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px">
-            <button class="col-pick active" data-val="" onclick="pickCol(this)">הכל</button>
-            <button class="col-pick" data-val="day_trading" onclick="pickCol(this)">מסחר יומי</button>
-            <button class="col-pick" data-val="swing" onclick="pickCol(this)">סווינג</button>
-            <button class="col-pick" data-val="position" onclick="pickCol(this)">קצר-בינוני</button>
-            <button class="col-pick" data-val="investment" onclick="pickCol(this)">טווח ארוך</button>
+        <h3>הרצת סריקה</h3>
+        <p>בחר טיקר ספציפי או סרוק הכל:</p>
+        <div class="m-picks" id="m-picks">
+            <button class="m-pick active" data-val="" onclick="pickTicker(this)">הכל</button>
         </div>
-        <p style="font-size:10px;color:var(--txt3);margin-bottom:12px" id="m-time">~4 דקות. הזן קוד לאישור:</p>
+        <p style="font-size:10px;color:var(--txt3);margin-bottom:10px" id="m-time">הזן קוד לאישור:</p>
         <div class="m-pin" id="m-pin">
             <input type="text" maxlength="1" inputmode="numeric" autocomplete="off">
             <input type="text" maxlength="1" inputmode="numeric" autocomplete="off">
@@ -348,11 +305,10 @@ let HASH="",S_HRS=24,MAX_ATT=5,LOCK_MIN=15,att=0,lockUntil=0;
 
 async function sha256(m){const d=new TextEncoder().encode(m);const h=await crypto.subtle.digest("SHA-256",d);return[...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join("")}
 
-// Session check
 (function(){const s=getSess();if(s&&s.exp>Date.now())showApp();else{document.getElementById("login").classList.remove("hide");initPins("pin-box")}})();
 
-function getSess(){try{const r=sessionStorage.getItem("q5s");return r?JSON.parse(r):null}catch{return null}}
-function setSess(){sessionStorage.setItem("q5s",JSON.stringify({ts:Date.now(),exp:Date.now()+(S_HRS*36e5)}))}
+function getSess(){try{const r=sessionStorage.getItem("cats");return r?JSON.parse(r):null}catch{return null}}
+function setSess(){sessionStorage.setItem("cats",JSON.stringify({ts:Date.now(),exp:Date.now()+(S_HRS*36e5)}))}
 
 function initPins(id){
     const box=document.getElementById(id);
@@ -389,35 +345,22 @@ async function tryLogin(){
     else{att++;if(att>=MAX_ATT){lockUntil=Date.now()+(LOCK_MIN*6e4);document.getElementById("login-msg").innerHTML='<span class="lock">נעילה ל-'+LOCK_MIN+' דקות</span>';att=0}else{document.getElementById("login-msg").textContent="קוד שגוי ("+(MAX_ATT-att)+" נותרו)"}
     ins.forEach(i=>{i.value="";i.classList.add("err")});setTimeout(()=>ins.forEach(i=>i.classList.remove("err")),500);ins[0].focus()}
 }
-function showApp(){document.getElementById("login").classList.add("hide");document.getElementById("app").classList.add("on");loadData()}
-function logout(){sessionStorage.removeItem("q5s");location.reload()}
+function showApp(){document.getElementById("login").classList.add("hide");document.getElementById("app").classList.add("on");loadData();buildTickerPicks()}
+function logout(){sessionStorage.removeItem("cats");location.reload()}
 
 /* ═══════════════════════════════════════
-   CONFIG
+   WATCHLIST
    ═══════════════════════════════════════ */
-const COLS={
-    day_trading:{title:"מסחר יומי",desc:"Intraday בלבד — כניסה ויציאה באותו יום",cls:"col--day"},
-    swing:{title:"סווינג",desc:"ימים עד שבועות — רכיבה על קטליזטור",cls:"col--swing"},
-    position:{title:"טווח קצר-בינוני",desc:"שבועות עד חודשים — כסף חכם ואיתותים מוסדיים",cls:"col--position"},
-    investment:{title:"טווח ארוך",desc:"חודשים עד שנים — חפיר כלכלי ושליטת עומק",cls:"col--investment"},
-};
-const XR_DICT={
-    semantic_panic:"מדד הפאניקה הסמנטית",short_trap:"מלכודת שורטיסטים",volume_abnormality:"אנומליית מחזורים",float_choke:"חנק היצע צף",
-    event_horizon:"אופק האירוע",options_flow:"זרימת כסף חכם",insider_moves:"פעילות בעלי עניין",narrative_shift:"שינוי נרטיב",
-    institutional_stealth:"איסוף מוסדי שקט",supply_bottleneck:"צווארי בקבוק באספקה",analyst_exhaustion:"מיצוי אנליסטים",macro_tailwind:"רוח גבית מאקרו",
-    hostage_power:"תופס ערובה",debt_asymmetry:"אסימטריית חוב",esg_premium:"פרדוקס ESG",capital_iq:"מנת משכל הון",
-};
-const COL_METH={
-    day_trading:"מסחר תוך-יומי בלבד — כניסה ויציאה באותו יום. פאניקה סמנטית, מלכודות שורט, אנומליות נפח, חנק היצע צף.",
-    swing:"מניות לפני קטליזטור שהשוק מתמחר בחסר. אופק: ימים עד שבועות. אירועים, אופציות, אינסיידרים, נרטיב.",
-    position:"כניסה שקטה של כסף מוסדי. אופק: שבועות-חודשים. הצטברות, צווארי בקבוק, מיצוי אנליסטים, מאקרו.",
-    investment:"חפיר בלתי ניתן לשכפול. אופק: חודשים-שנים. כוח מיקוח, אסימטריית חוב, ESG, הקצאת הון.",
-};
+const WATCHLIST=["ASML","PLTR","MELI","URNM","FCX","ISRG","PWR","XYL","STNG","SMH","LNG","SOXX","QQQ","SPY","MU"];
+let DATA=null,currentFilter="all";
 
-let DATA=null,activeTab="day_trading",viewHist=false;
+function buildTickerPicks(){
+    const c=document.getElementById("m-picks");
+    WATCHLIST.forEach(t=>{const b=document.createElement("button");b.className="m-pick";b.dataset.val=t;b.textContent=t;b.onclick=()=>pickTicker(b);c.appendChild(b)});
+}
 
 /* ═══════════════════════════════════════
-   DATA LOADING
+   DATA
    ═══════════════════════════════════════ */
 async function loadData(){
     try{
@@ -443,20 +386,18 @@ async function loadHistIndex(){
     }catch(e){}
 }
 async function loadHistory(f){
-    if(!f){viewHist=false;document.getElementById("arch-badge").classList.remove("on");try{const r=await fetch("master_data.json?v="+Date.now());DATA=await r.json();render()}catch(e){}return}
-    try{const r=await fetch(f+"?v="+Date.now());if(!r.ok)throw 0;DATA=await r.json();viewHist=true;document.getElementById("arch-badge").classList.add("on");render()}catch(e){alert("שגיאה בטעינת ארכיון")}
+    if(!f){document.getElementById("arch-badge").classList.remove("on");try{const r=await fetch("master_data.json?v="+Date.now());DATA=await r.json();render()}catch(e){}return}
+    try{const r=await fetch(f+"?v="+Date.now());if(!r.ok)throw 0;DATA=await r.json();document.getElementById("arch-badge").classList.add("on");render()}catch(e){alert("שגיאה בטעינת ארכיון")}
 }
-function toggleMeth(){document.getElementById("meth").classList.toggle("on")}
 
 /* ═══════════════════════════════════════
-   TAB NAVIGATION (mobile)
+   FILTER
    ═══════════════════════════════════════ */
-function switchTab(col){
-    activeTab=col;
-    document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.col===col));
-    document.querySelectorAll(".col-wrap").forEach(w=>w.classList.toggle("active",w.dataset.col===col));
-    // Scroll content to top
-    document.getElementById("content").scrollTop=0;
+function setFilter(f,el){
+    currentFilter=f;
+    document.querySelectorAll(".fbtn").forEach(b=>b.classList.remove("active"));
+    el.classList.add("active");
+    render();
 }
 
 /* ═══════════════════════════════════════
@@ -464,90 +405,113 @@ function switchTab(col){
    ═══════════════════════════════════════ */
 function render(){
     document.getElementById("loading").style.display="none";
-    const board=document.getElementById("board");board.style.display="block";
-    const grid=document.getElementById("board-grid");grid.innerHTML="";
+    const list=document.getElementById("stock-list");list.style.display="flex";list.innerHTML="";
     const m=DATA.meta||{};
     const s=m.market_status||"unknown";
     const sMap={open:"שוק פתוח",closed:"שוק סגור",pre_market:"טרום מסחר",after_hours:"אחרי שעות",weekend:"סופ\"ש"};
     document.getElementById("status").innerHTML='<span class="badge '+s+'">'+(sMap[s]||s)+'</span>';
 
     if(m.generated_at)document.getElementById("ts-info").textContent=new Date(m.generated_at).toLocaleString("he-IL");
-    if(m.radar_stats)document.getElementById("scan-info").textContent=m.radar_stats.total_scanned+" נסרקו";
-
-    // Show infobar if we have data
+    if(m.total_tickers)document.getElementById("scan-info").textContent=m.total_tickers+" מניות";
     document.getElementById("infobar").classList.add("on");
 
-    if(m.radar_stats){const ft=document.getElementById("footer");ft.style.display="block";ft.textContent="Q5 SIGNAL // "+m.radar_stats.total_scanned+" scanned / "+(m.radar_stats.selected_for_analysis||"?")+" analyzed / v"+(m.pipeline_version||"1")}
+    const ft=document.getElementById("footer");ft.style.display="block";ft.textContent="CATALYST // "+(m.total_tickers||"?")+" stocks / v"+(m.pipeline_version||"3");
 
-    const matrix=DATA.matrix||{};
+    let stocks=DATA.stocks||[];
 
-    Object.keys(COLS).forEach(colId=>{
-        const col=document.createElement("div");
-        col.className="col-wrap "+(COLS[colId].cls||"");
-        col.dataset.col=colId;
-        // On mobile, only show active tab
-        if(colId===activeTab)col.classList.add("active");
+    // Filter
+    if(currentFilter==="bullish")stocks=stocks.filter(s=>s.direction==="bullish");
+    else if(currentFilter==="bearish")stocks=stocks.filter(s=>s.direction==="bearish");
+    else if(currentFilter==="high")stocks=stocks.filter(s=>(s.confidence||0)>=70);
 
-        const picks=(matrix[colId]||{}).top_picks||[];
+    if(!stocks.length){
+        list.innerHTML='<div class="empty-state"><div style="font-size:28px;opacity:.3;margin-bottom:10px">—</div><div style="font-size:13px">אין תוצאות לפילטר הנוכחי</div></div>';
+        return;
+    }
 
-        // Column header (desktop only, hidden on mobile via CSS)
-        col.innerHTML='<div class="col-head"><div class="col-title">'+COLS[colId].title+'</div><div class="col-desc">'+COLS[colId].desc+'</div><div class="col-count">'+picks.length+'/3</div></div>';
-
-        if(!picks.length){
-            col.innerHTML+='<div class="empty-col"><div class="empty-icon">—</div><div class="empty-title">אין כרגע הזדמנויות בתוחלת חיובית</div><div class="empty-sub">שמירה על נזילות. Cash is a position.</div></div>';
-        }else{
-            picks.forEach((stock,idx)=>{
-                const sc=(stock.composite_score||{}).total||0;
-                const cls=sc>=70?"hi":sc>=45?"mid":"lo";
-                const sig=stock.action_signal||"";
-                const card=document.createElement("div");card.className="card";
-                card.onclick=()=>openDrawer(colId,idx);
-                card.innerHTML='<div class="card-top"><div><div class="card-ticker">'+(stock.ticker||"?")+'</div><div class="card-co">'+(stock.company_name||"")+'</div>'+(sig?'<div class="card-signal">'+sig+'</div>':'')+'</div><div class="card-sc '+cls+'">'+sc+'</div></div>'+(stock.thesis_summary?'<div class="card-thesis">'+stock.thesis_summary+'</div>':'');
-                col.appendChild(card);
-            });
-        }
-        grid.appendChild(col);
+    stocks.forEach((stock,idx)=>{
+        const conf=stock.confidence||0;
+        const cls=conf>=70?"hi":conf>=45?"mid":"lo";
+        const dir=stock.direction||"neutral";
+        const chg=stock.change_pct||0;
+        const card=document.createElement("div");
+        card.className="card "+dir;
+        card.onclick=()=>openDrawer(stock);
+        card.innerHTML=`
+            <div class="card-row1">
+                <div class="card-left">
+                    <div class="card-ticker">${stock.ticker||"?"}</div>
+                    <div>
+                        <span class="card-price">$${(stock.price||0).toLocaleString()}</span>
+                        <span class="card-change ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</span>
+                    </div>
+                </div>
+                <div class="card-right">
+                    <div class="card-conf ${cls}">${conf}</div>
+                </div>
+            </div>
+            <div class="card-row2">
+                <span class="card-signal ${dir}">${stock.signal||""}</span>
+                <span class="card-co">${stock.company_name||""}</span>
+            </div>
+            <div class="card-bottom">${stock.bottom_line||""}</div>`;
+        list.appendChild(card);
     });
 }
 
 /* ═══════════════════════════════════════
    DRAWER
    ═══════════════════════════════════════ */
-function openDrawer(colKey,idx){
-    const p=DATA.matrix[colKey].top_picks[idx];if(!p)return;
-    const xray=p.xray||{};const sc=(p.composite_score||{}).total||0;
+function openDrawer(s){
+    const dir=s.direction||"neutral";
+    const conf=s.confidence||0;
+    const cls=conf>=70?"hi":conf>=45?"mid":"lo";
+    const chg=s.change_pct||0;
 
-    let h='<div class="d-head"><div class="d-ticker">'+p.ticker+'</div><div class="d-meta">'+(p.company_name||"")+(p.sector?" // "+p.sector:"")+'</div>';
-    if(p.thesis_summary)h+='<div class="d-thesis">'+p.thesis_summary+'</div>';
-    h+='</div>';
-    const sig=p.action_signal||"";
-    if(sig)h+='<div class="d-signal">'+sig+'</div><br>';
-    h+='<div class="d-score">ציון מרוכב: <strong>'+sc+'</strong> / 100</div>';
+    let h=`<div class="d-head">
+        <div class="d-ticker">${s.ticker}</div>
+        <div class="d-meta">${s.company_name||""}${s.sector?" // "+s.sector:""}</div>
+        <div class="d-price">$${(s.price||0).toLocaleString()} <span class="card-change ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</span></div>
+    </div>`;
 
-    // Company description
-    if(p.company_description){h+='<div class="d-sec"><div class="d-sec-t">על החברה</div><div class="d-sec-b">'+p.company_description+'</div></div>'}
+    h+=`<div class="d-signal ${dir}">${s.signal||""}</div>`;
+    h+=`<div class="d-conf">ביטחון: <strong class="${cls}">${conf}</strong> / 100</div>`;
 
-    // Analyst ratings
-    const ar=p.analyst_ratings||{};
-    if(ar.consensus||ar.summary){
-        h+='<div class="d-sec"><div class="d-sec-t">שעון אנליסטים</div>';
-        if(ar.consensus){let tc="hold";if(ar.consensus.includes("קנייה")||ar.consensus.toLowerCase().includes("buy"))tc="buy";else if(ar.consensus.includes("מכירה")||ar.consensus.toLowerCase().includes("sell"))tc="sell";h+='<div class="an-con"><span class="an-tag '+tc+'">'+ar.consensus+'</span></div>'}
-        if(ar.summary)h+='<div class="d-sec-b">'+ar.summary+'</div>';
-        if(ar.bull_case||ar.bear_case){h+='<div class="bb">';if(ar.bull_case)h+='<div class="bull"><strong style="color:var(--green)">BULL</strong>'+ar.bull_case+'</div>';if(ar.bear_case)h+='<div class="bear"><strong style="color:var(--red)">BEAR</strong>'+ar.bear_case+'</div>';h+='</div>'}
-        h+='</div>';
+    // Bottom line
+    if(s.bottom_line)h+=`<div class="d-bl">${s.bottom_line}</div>`;
+
+    // Earnings insight
+    if(s.earnings_insight)h+=`<div class="d-sec"><div class="d-sec-t">דוח רבעוני אחרון</div><div class="d-sec-b">${s.earnings_insight}</div></div>`;
+
+    // Catalysts
+    const cats=s.catalysts||[];
+    if(cats.length){
+        h+=`<div class="d-sec"><div class="d-sec-t">קטליזטורים</div>`;
+        cats.forEach(c=>{
+            const impCls=c.impact==="חיובי"?"pos":c.impact==="שלילי"?"neg":"unk";
+            const typeCls=c.type||"business";
+            h+=`<div class="cat-item ${impCls}">
+                <div class="cat-head"><span class="cat-title">${c.title||""}</span><span class="cat-type ${typeCls}">${c.type||""}</span></div>
+                <div class="cat-desc">${c.description||""}</div>
+                <div class="cat-tf">${c.timeframe||""} // ${c.impact||""}</div>
+            </div>`;
+        });
+        h+=`</div>`;
     }
 
-    // X-Ray
-    h+='<div class="xr-grid">';
-    Object.keys(xray).forEach(key=>{
-        const param=xray[key]||{};const ps=param.score||0;const cls=ps>=70?"hi":ps>=45?"mid":"lo";
-        h+='<div class="xr '+cls+'" onclick="this.classList.toggle(\'open\')"><div class="xr-h"><span class="xr-t">'+(XR_DICT[key]||key)+'</span><span class="xr-s '+cls+'">'+ps+'</span></div><div class="xr-d">'+(param.analysis||"—")+'</div></div>';
-    });
-    h+='</div>';
-
-    // Per-column methodology
-    const mt=COL_METH[colKey]||"";
-    if(mt)h+='<div class="d-meth"><div class="d-meth-t">מתודולוגיה — '+COLS[colKey].title+'</div><div class="d-meth-b">'+mt+'</div></div>';
+    // Q&A
+    const qs=s.questions||[];
+    if(qs.length){
+        h+=`<div class="d-sec"><div class="d-sec-t">שאלות מפתח</div>`;
+        qs.forEach(q=>{
+            const impCls=q.implication==="חיובי"?"pos":q.implication==="שלילי"?"neg":"neut";
+            h+=`<div class="qa" onclick="this.classList.toggle('open')">
+                <div class="qa-q">${q.question||""}</div>
+                <div class="qa-a">${q.answer||""}<br><span class="qa-imp ${impCls}">${q.implication||""}</span></div>
+            </div>`;
+        });
+        h+=`</div>`;
+    }
 
     document.getElementById("drawer-c").innerHTML=h;
     document.getElementById("drawer").classList.add("on");
@@ -564,16 +528,14 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDrawer();close
 /* ═══════════════════════════════════════
    RUN WORKFLOW
    ═══════════════════════════════════════ */
-let selectedCol=""; // "" = all columns
-function pickCol(el){
-    document.querySelectorAll(".col-pick").forEach(b=>b.classList.remove("active"));
+let selectedTicker="";
+function pickTicker(el){
+    document.querySelectorAll(".m-pick").forEach(b=>b.classList.remove("active"));
     el.classList.add("active");
-    selectedCol=el.dataset.val;
-    const t=document.getElementById("m-time");
-    t.textContent=selectedCol?("~2 דקות. הזן קוד לאישור:"):("~4 דקות. הזן קוד לאישור:");
+    selectedTicker=el.dataset.val;
 }
 
-function showRunModal(){document.getElementById("run-modal").classList.add("on");document.getElementById("m-err").textContent="";selectedCol="";document.querySelectorAll(".col-pick").forEach(b=>b.classList.toggle("active",!b.dataset.val));[...document.querySelectorAll("#m-pin input")].forEach(i=>i.value="");initPins("m-pin")}
+function showRunModal(){document.getElementById("run-modal").classList.add("on");document.getElementById("m-err").textContent="";selectedTicker="";document.querySelectorAll(".m-pick").forEach(b=>b.classList.toggle("active",!b.dataset.val));[...document.querySelectorAll("#m-pin input")].forEach(i=>i.value="");initPins("m-pin")}
 function closeRunModal(){document.getElementById("run-modal").classList.remove("on")}
 
 async function confirmRun(){
@@ -582,24 +544,23 @@ async function confirmRun(){
     if(pin.length!==6){document.getElementById("m-err").textContent="הזן 6 ספרות";return}
     const h=await sha256(pin);
     if(h!==HASH){document.getElementById("m-err").textContent="קוד שגוי";ins.forEach(i=>i.value="");ins[0].focus();return}
-    closeRunModal();triggerWorkflow(selectedCol);
+    closeRunModal();triggerWorkflow(selectedTicker);
 }
 
-async function triggerWorkflow(column){
+async function triggerWorkflow(ticker){
     const btn=document.getElementById("run-btn");
-    const colLabel=column?COLS[column]?.title:"הכל";
     btn.textContent="SCANNING...";btn.classList.add("running");btn.disabled=true;
     try{
         const _e="d1NlUDUwMmdVMWptVkk5OHV2bFpOSmJjMHZkRnRteDJ2bDREX3BoZw==";
         const _d=atob(_e).split("").reverse().join("");
         const body={ref:"main"};
-        if(column)body.inputs={column:column};
+        if(ticker)body.inputs={ticker:ticker};
         const resp=await fetch("https://api.github.com/repos/itzhak-iab/Q5-Matrix/actions/workflows/daily_matrix.yml/dispatches",{
             method:"POST",headers:{"Authorization":"token "+_d,"Accept":"application/vnd.github+json"},body:JSON.stringify(body)
         });
         if(resp.status===204||resp.ok){
-            const wait=column?3:5;
-            btn.textContent="RUNNING ~"+(column?"2":"4")+"MIN";
+            const wait=ticker?2:4;
+            btn.textContent="RUNNING ~"+wait+"MIN";
             btn.classList.remove("running");
             setTimeout(()=>{btn.textContent="REFRESHING...";location.reload()},wait*60*1000);
         }else throw new Error("Status "+resp.status);

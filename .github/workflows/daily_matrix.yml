@@ -1,33 +1,29 @@
-name: Q5 Matrix — Daily Contrarian Analysis
+name: CATALYST — Stock Catalyst Intelligence
 
 on:
-  # Manual trigger from GitHub UI or API (the "Run Analysis" button)
   workflow_dispatch:
     inputs:
-      column:
-        description: 'Run specific column (leave empty for all). Options: day_trading, swing, position, investment'
+      ticker:
+        description: 'Run specific ticker(s), comma-separated (leave empty for all). Example: ASML,PLTR'
         required: false
         default: ''
         type: string
 
-  # Automatic: Every day at 12:00 UTC = 07:00 ET (2 hours before market open)
   schedule:
-    - cron: '0 12 * * 1-5'  # Monday-Friday only
+    - cron: '0 12 * * 1-5'  # Monday-Friday at 12:00 UTC
 
 permissions:
-  contents: write  # Needed to commit master_data.json back to the repo
+  contents: write
 
 jobs:
-  run-matrix:
+  run-catalyst:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
     steps:
-      # 1. Checkout the repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Python
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
@@ -35,35 +31,31 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'backend/requirements.txt'
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: pip install -r backend/requirements.txt
 
-      # 4. Run the Matrix Engine
-      # GEMINI_API_KEY comes from GitHub Secrets — NEVER in the code
-      - name: Run Matrix Backend
+      - name: Run CATALYST Engine
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          COLUMN="${{ github.event.inputs.column }}"
-          if [ -n "$COLUMN" ]; then
-            echo "Running single column: $COLUMN"
-            python backend/macro_agent.py --column "$COLUMN"
+          TICKER="${{ github.event.inputs.ticker }}"
+          if [ -n "$TICKER" ]; then
+            echo "Running for: $TICKER"
+            python backend/macro_agent.py --ticker "$TICKER"
           else
-            echo "Running all columns"
+            echo "Running full scan"
             python backend/macro_agent.py
           fi
 
-      # 5. Commit the updated JSON to the repo (so GitHub Pages serves fresh data)
       - name: Commit updated data
         run: |
-          git config user.name "Q5-Matrix Bot"
-          git config user.email "bot@q5-matrix.local"
+          git config user.name "CATALYST Bot"
+          git config user.email "bot@catalyst.local"
           git add docs/master_data.json docs/history/
-          COLUMN="${{ github.event.inputs.column }}"
-          MSG="Update matrix data"
-          if [ -n "$COLUMN" ]; then
-            MSG="Update matrix — $COLUMN only"
+          TICKER="${{ github.event.inputs.ticker }}"
+          MSG="CATALYST update"
+          if [ -n "$TICKER" ]; then
+            MSG="CATALYST — $TICKER"
           fi
           git diff --staged --quiet || git commit -m "$MSG — $(date -u '+%Y-%m-%d %H:%M UTC')"
           git pull --rebase origin main || true
