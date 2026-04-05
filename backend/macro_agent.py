@@ -446,7 +446,7 @@ class CatalystEngine:
 - analysis_type: "{analysis_type}" (סוג הניתוח)
 - market: "US" (ברירת מחדל) או "IL" (לטיקרים ישראליים)
 - buzz_alert: ניתוח מניפולציות — בדוק מי מייצר את הבאז ולמה, הפרד בין עובדות לשיווק, זהה השפעת הרעש על השוק
-- sources: **חובה** — רשימת 3-5 URLs מלאים ופעילים (חייבים להתחיל ב-https://). אסור טקסט חופשי, רק URLs
+- sources: **חובה קריטית** — רשימת 3-5 URLs מלאים ופעילים. כל URL **חייב** להתחיל ב-https://. **אסור בשום מצב** להשאיר מערך ריק או לכתוב טקסט חופשי. השתמש בתבניות: finance.yahoo.com/quote/TICKER/, seekingalpha.com/symbol/TICKER, finviz.com/quote.ashx?t=TICKER, sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=TICKER&type=10-Q
 - catalysts: 1-5 קטליזטורים (כולל סוגים חדשים: technical, squeeze)
 - questions: 2-3 שאלות עם implication
 - ETFs (SMH, SOXX, QQQ, SPY): נתח ברמת האינדקס עם שאלות ריכוזיות ונזילות
@@ -616,14 +616,58 @@ def _extract_all_objects(text: str) -> List[str]:
 # ==============================================================
 # PYDANTIC VALIDATION
 # ==============================================================
+def ensure_sources(stock: Dict) -> Dict:
+    """Ensure every stock has real URL sources. Generate fallback URLs if missing."""
+    ticker = stock.get("ticker", "")
+    if not ticker:
+        return stock
+
+    existing = stock.get("sources", [])
+    # Filter: keep only actual URLs
+    valid_urls = [s for s in existing if isinstance(s, str) and s.startswith("https://")]
+
+    if len(valid_urls) >= 3:
+        stock["sources"] = valid_urls
+        return stock
+
+    # Generate standard source URLs for this ticker
+    fallback_urls = [
+        f"https://finance.yahoo.com/quote/{ticker}/",
+        f"https://finviz.com/quote.ashx?t={ticker}",
+        f"https://seekingalpha.com/symbol/{ticker}",
+        f"https://www.marketwatch.com/investing/stock/{ticker}",
+        f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={ticker}&type=10-Q",
+    ]
+
+    # Israeli tickers: add TASE reference
+    market = stock.get("market", "US")
+    if market == "IL":
+        fallback_urls.insert(0, f"https://www.google.com/finance/quote/{ticker}:NASDAQ")
+
+    # Merge: keep valid existing URLs first, then fill from fallbacks
+    merged = list(valid_urls)
+    for url in fallback_urls:
+        if len(merged) >= 5:
+            break
+        if url not in merged:
+            merged.append(url)
+
+    stock["sources"] = merged
+    return stock
+
+
 def validate_stock(raw: Dict) -> Dict:
     """Validate a single stock analysis against the Pydantic model."""
     try:
         obj = StockAnalysis(**raw)
-        return obj.model_dump()
+        result = obj.model_dump()
     except Exception as e:
         log.warning(f"  Validation issue for {raw.get('ticker', '?')}: {e}")
-        return raw  # Return raw data, still usable
+        result = raw  # Return raw data, still usable
+
+    # Always ensure sources exist
+    result = ensure_sources(result)
+    return result
 
 
 # ==============================================================
