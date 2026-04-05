@@ -257,7 +257,7 @@ class CatalystEngine:
                         contents=prompt,
                         config=genai_types.GenerateContentConfig(
                             temperature=temperature,
-                            max_output_tokens=10000,
+                            max_output_tokens=16000,
                         ),
                     )
                     return response.text or ""
@@ -265,7 +265,7 @@ class CatalystEngine:
                     model = genai_sdk.GenerativeModel(Config.GEMINI_MODEL)
                     response = model.generate_content(
                         prompt,
-                        generation_config={"temperature": temperature, "max_output_tokens": 10000},
+                        generation_config={"temperature": temperature, "max_output_tokens": 16000},
                     )
                     return response.text or ""
             except Exception as e:
@@ -600,20 +600,45 @@ def main():
         response = engine.call_gemini(prompt, temperature=0.6)
         result = extract_json(response)
 
+        batch_results = {}
         if result and "stocks" in result:
             for stock_raw in result["stocks"]:
                 validated = validate_stock(stock_raw)
-                # Inject live price data
                 ticker = validated.get("ticker", "")
                 if ticker in valid_data:
                     validated["price"] = valid_data[ticker].get("price", 0)
                     validated["change_pct"] = valid_data[ticker].get("change_pct", 0)
-                all_analyses.append(validated)
+                batch_results[ticker] = validated
                 log.info(f"    ✓ {ticker}: {validated.get('signal', '?')} ({validated.get('direction', '?')})")
         else:
             log.error(f"  ✗ Failed to parse batch. Raw: {response[:300]}")
-            # Fallback for this batch
-            for t in batch_tickers:
+
+        # Check for missing tickers — retry individually
+        missing = [t for t in batch_tickers if t not in batch_results]
+        if missing:
+            log.warning(f"  ⚠ Missing from batch: {', '.join(missing)} — retrying individually")
+            for mt in missing:
+                try:
+                    time.sleep(2)
+                    retry_prompt = engine.build_analysis_prompt([valid_data[mt]])
+                    retry_resp = engine.call_gemini(retry_prompt, temperature=0.6)
+                    retry_result = extract_json(retry_resp)
+                    if retry_result and "stocks" in retry_result and retry_result["stocks"]:
+                        validated = validate_stock(retry_result["stocks"][0])
+                        validated["price"] = valid_data[mt].get("price", 0)
+                        validated["change_pct"] = valid_data[mt].get("change_pct", 0)
+                        batch_results[mt] = validated
+                        log.info(f"    ✓ {mt} (retry): {validated.get('signal', '?')}")
+                    else:
+                        log.error(f"    ✗ {mt} retry failed")
+                except Exception as e:
+                    log.error(f"    ✗ {mt} retry error: {e}")
+
+        # Add results or fallback
+        for t in batch_tickers:
+            if t in batch_results:
+                all_analyses.append(batch_results[t])
+            else:
                 all_analyses.append({
                     "ticker": t,
                     "company_name": valid_data[t].get("company_name", t),
