@@ -161,6 +161,16 @@
         .d-sources-list li:last-child{border-bottom:none}
         .d-sources-list a{color:var(--accent);text-decoration:none}
         .d-sources-list a:hover{text-decoration:underline}
+        .ac-wrap{position:relative}
+        .ac-list{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--accent-dim);border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;z-index:10;display:none;scrollbar-width:thin}
+        .ac-list.on{display:block}
+        .ac-item{padding:8px 10px;font-size:11px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);direction:ltr;text-align:left}
+        .ac-item:last-child{border-bottom:none}
+        .ac-item:hover,.ac-item.sel{background:var(--accent-glow)}
+        .ac-sym{font-family:var(--mono);font-weight:700;color:var(--accent);font-size:12px}
+        .ac-name{color:var(--txt2);font-size:10px;text-align:right;direction:rtl;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .ac-scanning{text-align:center;padding:20px;color:var(--accent);font-size:13px;font-weight:600}
+        .ac-scanning .spinner{margin:0 auto 10px}
         .d-rescan{width:100%;padding:10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--accent),#6366f1);border:none;color:#fff;letter-spacing:1px;margin-bottom:12px;transition:.2s}
         .d-rescan:hover{opacity:.85}
         .d-rescan:disabled{opacity:.5;cursor:not-allowed}
@@ -307,16 +317,17 @@
                 <button class="m-market-btn" data-market="IL" onclick="selectMarket('IL',this)">🇮🇱 שוק ישראלי</button>
             </div>
         </div>
-        <div class="m-input-group">
-            <label>סמל טיקר (Ticker)</label>
-            <input type="text" id="add-ticker-input" placeholder="לדוגמה: AAPL" autocomplete="off" maxlength="10">
+        <div class="m-input-group ac-wrap">
+            <label>הקלד טיקר או שם חברה</label>
+            <input type="text" id="add-ticker-input" placeholder="AAPL, Tesla, תעשיות..." autocomplete="off" maxlength="40">
+            <div class="ac-list" id="ac-list"></div>
         </div>
-        <div class="m-input-group">
-            <label>שם החברה (עברית)</label>
-            <input type="text" id="add-name-input" placeholder="לדוגמה: אפל" autocomplete="off" maxlength="50">
+        <div class="m-input-group" id="name-group" style="display:none">
+            <label>שם החברה</label>
+            <input type="text" id="add-name-input" placeholder="" autocomplete="off" maxlength="50" readonly>
         </div>
         <div class="m-acts">
-            <button class="m-confirm" onclick="confirmAddTicker()">הוסף למעקב</button>
+            <button class="m-confirm" onclick="confirmAddTicker()">הוסף וסרוק</button>
             <button class="m-cancel" onclick="closeAddTickerModal()">ביטול</button>
         </div>
         <div class="m-err" id="add-err"></div>
@@ -651,22 +662,151 @@ async function triggerWorkflow(ticker,analysisType){
     }catch(e){btn.textContent="ERROR";btn.classList.remove("running");btn.disabled=false;console.error("Trigger:",e)}
 }
 
+// ── Ticker Dictionary for Autocomplete ──
+const TICKER_DB=[
+// US — Mega/Large cap
+{s:"AAPL",n:"אפל",m:"US"},{s:"MSFT",n:"מיקרוסופט",m:"US"},{s:"GOOGL",n:"אלפבית (גוגל)",m:"US"},{s:"AMZN",n:"אמזון",m:"US"},
+{s:"NVDA",n:"אנבידיה",m:"US"},{s:"META",n:"מטא (פייסבוק)",m:"US"},{s:"TSLA",n:"טסלה",m:"US"},{s:"BRK.B",n:"ברקשייר האת'וואי",m:"US"},
+{s:"JPM",n:"ג'יי.פי מורגן",m:"US"},{s:"V",n:"ויזה",m:"US"},{s:"JNJ",n:"ג'ונסון אנד ג'ונסון",m:"US"},{s:"WMT",n:"וולמארט",m:"US"},
+{s:"MA",n:"מאסטרקארד",m:"US"},{s:"PG",n:"פרוקטר אנד גמבל",m:"US"},{s:"UNH",n:"יונייטדהלת'",m:"US"},{s:"HD",n:"הום דיפו",m:"US"},
+{s:"DIS",n:"דיסני",m:"US"},{s:"BAC",n:"בנק אוף אמריקה",m:"US"},{s:"XOM",n:"אקסון מוביל",m:"US"},{s:"KO",n:"קוקה קולה",m:"US"},
+{s:"PEP",n:"פפסיקו",m:"US"},{s:"ABBV",n:"אבווי",m:"US"},{s:"COST",n:"קוסטקו",m:"US"},{s:"MRK",n:"מרק",m:"US"},
+{s:"AVGO",n:"ברודקום",m:"US"},{s:"LLY",n:"אלי לילי",m:"US"},{s:"TMO",n:"תרמו פישר",m:"US"},{s:"ADBE",n:"אדובי",m:"US"},
+{s:"CRM",n:"סיילספורס",m:"US"},{s:"NFLX",n:"נטפליקס",m:"US"},{s:"AMD",n:"AMD",m:"US"},{s:"INTC",n:"אינטל",m:"US"},
+{s:"ORCL",n:"אורקל",m:"US"},{s:"CSCO",n:"סיסקו",m:"US"},{s:"ACN",n:"אקסנצ'ר",m:"US"},{s:"TXN",n:"טקסס אינסטרומנטס",m:"US"},
+{s:"QCOM",n:"קוואלקום",m:"US"},{s:"NOW",n:"סרוויסנאו",m:"US"},{s:"UBER",n:"אובר",m:"US"},{s:"ABNB",n:"אירבנב",m:"US"},
+{s:"SQ",n:"בלוק (סקוור)",m:"US"},{s:"SHOP",n:"שופיפיי",m:"US"},{s:"SNAP",n:"סנאפצ'ט",m:"US"},{s:"COIN",n:"קוינבייס",m:"US"},
+{s:"RIVN",n:"ריביאן",m:"US"},{s:"LCID",n:"לוסיד",m:"US"},{s:"NIO",n:"ניאו",m:"US"},{s:"BABA",n:"עליבאבא",m:"US"},
+{s:"BA",n:"בואינג",m:"US"},{s:"GS",n:"גולדמן סאקס",m:"US"},{s:"MS",n:"מורגן סטנלי",m:"US"},{s:"C",n:"סיטיגרופ",m:"US"},
+{s:"GM",n:"ג'נרל מוטורס",m:"US"},{s:"F",n:"פורד",m:"US"},{s:"GE",n:"ג'נרל אלקטריק",m:"US"},{s:"CAT",n:"קטרפילר",m:"US"},
+{s:"DE",n:"דיר אנד קומפני",m:"US"},{s:"RTX",n:"RTX (ריית'און)",m:"US"},{s:"LMT",n:"לוקהיד מרטין",m:"US"},{s:"NOC",n:"נורת'רופ גרומן",m:"US"},
+{s:"CVX",n:"שברון",m:"US"},{s:"COP",n:"קונוקו פיליפס",m:"US"},{s:"SLB",n:"שלומברגר",m:"US"},{s:"NEE",n:"נקסטרה אנרג'י",m:"US"},
+{s:"SO",n:"סאותרן קומפני",m:"US"},{s:"DUK",n:"דיוק אנרג'י",m:"US"},{s:"T",n:"AT&T",m:"US"},{s:"VZ",n:"וריזון",m:"US"},
+{s:"TMUS",n:"טי-מובייל",m:"US"},{s:"PFE",n:"פייזר",m:"US"},{s:"BMY",n:"בריסטול מאיירס",m:"US"},{s:"GILD",n:"גלעד",m:"US"},
+{s:"AMGN",n:"אמג'ן",m:"US"},{s:"BIIB",n:"ביוג'ן",m:"US"},{s:"MRNA",n:"מודרנה",m:"US"},{s:"REGN",n:"רג'נרון",m:"US"},
+{s:"PANW",n:"פאלו אלטו נטוורקס",m:"US"},{s:"CRWD",n:"קראודסטרייק",m:"US"},{s:"ZS",n:"זי-סקיילר",m:"US"},{s:"SNOW",n:"סנואופלייק",m:"US"},
+{s:"DDOG",n:"דאטאדוג",m:"US"},{s:"NET",n:"קלאודפלייר",m:"US"},{s:"MDB",n:"מונגו DB",m:"US"},{s:"PLTR",n:"פלנטיר",m:"US"},
+{s:"ARM",n:"ARM הולדינגס",m:"US"},{s:"SMCI",n:"סופר מיקרו",m:"US"},{s:"DELL",n:"דל טכנולוגיות",m:"US"},{s:"HPE",n:"HPE",m:"US"},
+{s:"MU",n:"מיקרון טכנולוגי",m:"US"},{s:"ASML",n:"ASML החזקות בע\"מ",m:"US"},{s:"TSM",n:"TSMC",m:"US"},{s:"MELI",n:"מרקדו ליברה",m:"US"},
+{s:"ISRG",n:"אינטואיטיב סרג'יקל",m:"US"},{s:"PWR",n:"קוואנטה סרוויסס",m:"US"},{s:"XYL",n:"זיילם",m:"US"},{s:"STNG",n:"סקורפיו טנקרס",m:"US"},
+{s:"LNG",n:"שנייר אנרג'י",m:"US"},{s:"FCX",n:"פריפורט מקמורן",m:"US"},{s:"URNM",n:"ספרוט יורניום מיינרס ETF",m:"US"},
+{s:"SMH",n:"VanEck Semiconductor ETF",m:"US"},{s:"SOXX",n:"iShares Semiconductor ETF",m:"US"},
+{s:"QQQ",n:"Invesco QQQ (נאסד\"ק 100)",m:"US"},{s:"SPY",n:"SPDR S&P 500 ETF",m:"US"},
+{s:"VOO",n:"Vanguard S&P 500 ETF",m:"US"},{s:"VTI",n:"Vanguard Total Stock Market",m:"US"},
+{s:"IWM",n:"iShares Russell 2000",m:"US"},{s:"DIA",n:"SPDR Dow Jones ETF",m:"US"},
+{s:"ARKK",n:"ARK Innovation ETF",m:"US"},{s:"XLF",n:"Financial Select SPDR",m:"US"},
+{s:"XLE",n:"Energy Select SPDR",m:"US"},{s:"XLK",n:"Technology Select SPDR",m:"US"},
+{s:"XLV",n:"Health Care Select SPDR",m:"US"},{s:"GLD",n:"SPDR Gold Shares",m:"US"},
+{s:"SLV",n:"iShares Silver Trust",m:"US"},{s:"TLT",n:"iShares 20+ Year Treasury",m:"US"},
+// Israel
+{s:"TEVA",n:"טבע תעשיות פרמצבטיות",m:"IL"},{s:"ICL",n:"כיל (ICL)",m:"IL"},{s:"NICE",n:"נייס מערכות",m:"IL"},
+{s:"CHKP",n:"צ'ק פוינט",m:"IL"},{s:"MNDY",n:"מאנדיי.קום",m:"IL"},{s:"CYBR",n:"סייבר ארק",m:"IL"},
+{s:"WIX",n:"וויקס",m:"IL"},{s:"FVRR",n:"פייבר",m:"IL"},{s:"GLBE",n:"גלובל-אי",m:"IL"},
+{s:"DXCM",n:"דקסקום",m:"IL"},{s:"SEDG",n:"סולאראדג'",m:"IL"},{s:"ENLT",n:"אנלייט אנרגיה",m:"IL"},
+{s:"ESLT",n:"אלביט מערכות",m:"IL"},{s:"SILC",n:"סיליקום",m:"IL"},{s:"KRNT",n:"קרנית דיגיטל",m:"IL"},
+{s:"RSKD",n:"ריסקיפייד",m:"IL"},{s:"TARO",n:"טארו פרמצבטיקה",m:"IL"},{s:"RDWR",n:"רדוור",m:"IL"},
+{s:"GILT",n:"גילת רשתות לווין",m:"IL"},{s:"CGEN",n:"קומפיוג'ן",m:"IL"},{s:"CMCT",n:"כמקט",m:"IL"},
+{s:"BEZQ",n:"בזק",m:"IL"},{s:"PTNR",n:"פרטנר תקשורת",m:"IL"},{s:"CEL",n:"סלקום",m:"IL"},
+{s:"LUMI",n:"לומי",m:"IL"},{s:"HARL",n:"הראל",m:"IL"},{s:"MGDL",n:"מגדל ביטוח",m:"IL"},
+{s:"DSCT",n:"דיסקונט",m:"IL"},{s:"LUMI",n:"לאומי",m:"IL"},{s:"POLI",n:"פועלים",m:"IL"},
+{s:"AZRG",n:"עזריאלי",m:"IL"},{s:"AMOT",n:"אמות השקעות",m:"IL"},{s:"MZTF",n:"מזרחי טפחות",m:"IL"},
+];
+
+let acSel=-1;
+
 function showAddTickerModal(){
     document.getElementById("add-ticker-modal").classList.add("on");
     document.getElementById("add-err").textContent="";
     document.getElementById("add-ticker-input").value="";
     document.getElementById("add-name-input").value="";
+    document.getElementById("name-group").style.display="none";
+    document.getElementById("ac-list").classList.remove("on");
     selectedMarket="US";
     document.querySelectorAll(".m-market-btn").forEach(b=>b.classList.remove("active"));
     document.querySelector('[data-market="US"]').classList.add("active");
-    document.getElementById("add-ticker-input").focus();
+    acSel=-1;
+    const inp=document.getElementById("add-ticker-input");
+    inp.readOnly=false;
+    inp.focus();
 }
-function closeAddTickerModal(){document.getElementById("add-ticker-modal").classList.remove("on")}
+function closeAddTickerModal(){document.getElementById("add-ticker-modal").classList.remove("on");document.getElementById("ac-list").classList.remove("on")}
 
 function selectMarket(m,el){
     selectedMarket=m;
     document.querySelectorAll(".m-market-btn").forEach(b=>b.classList.remove("active"));
     el.classList.add("active");
+    document.getElementById("add-ticker-input").value="";
+    document.getElementById("add-name-input").value="";
+    document.getElementById("name-group").style.display="none";
+    document.getElementById("add-ticker-input").readOnly=false;
+    filterAC("");
+}
+
+// Autocomplete logic
+(function(){
+    const inp=document.getElementById("add-ticker-input");
+    if(!inp)return;
+    inp.addEventListener("input",function(){
+        acSel=-1;
+        filterAC(this.value.trim());
+    });
+    inp.addEventListener("keydown",function(e){
+        const list=document.getElementById("ac-list");
+        const items=list.querySelectorAll(".ac-item");
+        if(e.key==="ArrowDown"){e.preventDefault();acSel=Math.min(acSel+1,items.length-1);highlightAC(items)}
+        else if(e.key==="ArrowUp"){e.preventDefault();acSel=Math.max(acSel-1,0);highlightAC(items)}
+        else if(e.key==="Enter"&&acSel>=0&&items[acSel]){e.preventDefault();items[acSel].click()}
+        else if(e.key==="Escape"){list.classList.remove("on")}
+    });
+    document.addEventListener("click",function(e){
+        if(!e.target.closest(".ac-wrap"))document.getElementById("ac-list").classList.remove("on");
+    });
+})();
+
+function filterAC(q){
+    const list=document.getElementById("ac-list");
+    if(!q||q.length<1){list.classList.remove("on");return}
+    const upper=q.toUpperCase();
+    const lower=q.toLowerCase();
+    // Filter by selected market + query match on symbol or name
+    let matches=TICKER_DB.filter(t=>{
+        if(selectedMarket&&t.m!==selectedMarket)return false;
+        return t.s.toUpperCase().includes(upper)||t.n.includes(q)||t.n.toLowerCase().includes(lower);
+    });
+    // Sort: exact symbol prefix first, then by symbol length
+    matches.sort((a,b)=>{
+        const aExact=a.s.toUpperCase().startsWith(upper)?0:1;
+        const bExact=b.s.toUpperCase().startsWith(upper)?0:1;
+        if(aExact!==bExact)return aExact-bExact;
+        return a.s.length-b.s.length;
+    });
+    matches=matches.slice(0,10);
+    if(!matches.length){list.classList.remove("on");return}
+    list.innerHTML="";
+    matches.forEach((t,i)=>{
+        const d=document.createElement("div");
+        d.className="ac-item";
+        d.innerHTML=`<span class="ac-sym">${t.s}</span><span class="ac-name">${t.n}</span>`;
+        d.onclick=()=>selectAC(t);
+        list.appendChild(d);
+    });
+    list.classList.add("on");
+}
+
+function highlightAC(items){
+    items.forEach((it,i)=>it.classList.toggle("sel",i===acSel));
+    if(items[acSel])items[acSel].scrollIntoView({block:"nearest"});
+}
+
+function selectAC(t){
+    document.getElementById("add-ticker-input").value=t.s;
+    document.getElementById("add-ticker-input").readOnly=true;
+    document.getElementById("add-name-input").value=t.n;
+    document.getElementById("name-group").style.display="block";
+    document.getElementById("ac-list").classList.remove("on");
+    // Auto-select market
+    selectedMarket=t.m;
+    document.querySelectorAll(".m-market-btn").forEach(b=>b.classList.toggle("active",b.dataset.market===t.m));
 }
 
 function confirmAddTicker(){
@@ -675,8 +815,8 @@ function confirmAddTicker(){
     const errEl=document.getElementById("add-err");
     errEl.textContent="";
 
-    if(!ticker||ticker.length===0){errEl.textContent="הזן סמל טיקר";return}
-    if(!name||name.length===0){errEl.textContent="הזן שם חברה";return}
+    if(!ticker||ticker.length===0){errEl.textContent="בחר טיקר מהרשימה";return}
+    if(!name||name.length===0){errEl.textContent="בחר טיקר מהרשימה";return}
 
     const custom=getCustomTickers();
     if(custom.some(c=>c.symbol===ticker)||WATCHLIST.slice(0,15).includes(ticker)){
@@ -689,9 +829,39 @@ function confirmAddTicker(){
 
     if(!WATCHLIST.includes(ticker))WATCHLIST.push(ticker);
 
-    buildTickerPicks();
     closeAddTickerModal();
+
+    // Show scanning state on a temporary card
+    const placeholder={
+        ticker:ticker,company_name:name,sector:"",signal:"סורק...",direction:"neutral",
+        confidence:0,price:0,change_pct:0,bottom_line:"סריקה ראשונית בתהליך — טווח קצר + טווח ארוך...",
+        analysis_type:"",market:selectedMarket,catalysts:[],questions:[],sources:[]
+    };
+    if(!DATA)DATA={stocks:[],meta:{}};
+    DATA.stocks.push(placeholder);
     render();
+
+    // Trigger both short AND long analysis
+    triggerDualScan(ticker);
+}
+
+async function triggerDualScan(ticker){
+    try{
+        const _e="d1NlUDUwMmdVMWptVkk5OHV2bFpOSmJjMHZkRnRteDJ2bDREX3BoZw==";
+        const _d=atob(_e).split("").reverse().join("");
+        const headers={"Authorization":"token "+_d,"Accept":"application/vnd.github+json"};
+        const url="https://api.github.com/repos/itzhak-iab/CATALYST/actions/workflows/daily_matrix.yml/dispatches";
+
+        // Fire short analysis
+        await fetch(url,{method:"POST",headers,body:JSON.stringify({ref:"main",inputs:{ticker:ticker,analysis_type:"short"}})});
+        // Small delay to avoid race
+        await new Promise(r=>setTimeout(r,2000));
+        // Fire long analysis
+        await fetch(url,{method:"POST",headers,body:JSON.stringify({ref:"main",inputs:{ticker:ticker,analysis_type:"long"}})});
+
+        // Auto-reload after both should be done (~3 min)
+        setTimeout(()=>location.reload(),180000);
+    }catch(e){console.error("Dual scan error:",e)}
 }
 </script>
 </body>
