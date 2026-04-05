@@ -64,13 +64,7 @@
         .btn-ghost{background:none;border:1px solid var(--border);color:var(--txt3);padding:5px 10px;border-radius:8px;cursor:pointer;font-size:10px;white-space:nowrap;transition:.2s}
         .btn-ghost:hover{border-color:var(--red);color:var(--red)}
 
-        /* ── Info Bar ── */
-        .infobar{display:none;padding:5px 20px;background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;color:var(--txt3);flex-shrink:0;gap:10px;align-items:center;flex-wrap:wrap}
-        .infobar.on{display:flex}
-        .infobar select{background:var(--bg3);border:1px solid var(--border);color:var(--txt);padding:4px 8px;border-radius:6px;font-size:11px;font-family:var(--mono);cursor:pointer;outline:none}
-        .arch-badge{color:var(--amber);font-weight:700;display:none;font-size:10px}
-        .arch-badge.on{display:inline}
-        .info-spacer{flex:1}
+        /* (infobar removed) */
 
         /* ── Main Layout ── */
         .main-layout{flex:1;display:flex;overflow:hidden;position:relative}
@@ -111,11 +105,7 @@
         .cat-header-title{font-size:20px;font-weight:900;display:flex;align-items:center;gap:10px}
         .cat-header-icon{font-size:22px}
         .cat-header-count{font-size:12px;color:var(--txt3);font-family:var(--mono)}
-        .filter-bar{display:flex;gap:6px;padding:6px 24px 14px;overflow-x:auto;scrollbar-width:none}
-        .filter-bar::-webkit-scrollbar{display:none}
-        .fbtn{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--txt3);white-space:nowrap;transition:.2s}
-        .fbtn.active{background:var(--accent-glow);border-color:var(--accent);color:var(--accent)}
-        .fbtn:hover{border-color:var(--accent-dim)}
+        /* (filter bar removed) */
         .stock-grid{padding:0 24px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;max-width:1200px}
 
         /* ── Stock Card ── */
@@ -305,7 +295,7 @@
             .btn-menu{display:flex}
             .stock-grid{grid-template-columns:1fr;padding:0 14px 20px}
             .cat-header{padding:14px}
-            .filter-bar{padding:6px 14px 10px}
+            /* (filter bar mobile removed) */
             .tp-header{padding:14px}
             .tp-body{padding:14px 14px 30px}
             .tp-ticker{font-size:24px}
@@ -350,18 +340,10 @@
         <div class="topbar-right">
             <span id="status"></span>
             <button class="btn-icon" onclick="showAddTickerModal()" title="הוסף טיקר">+</button>
-            <button class="btn-s" id="run-btn" onclick="showRunModal()">SCAN</button>
             <button class="btn-ghost" onclick="logout()">יציאה</button>
         </div>
     </div>
-    <div class="infobar" id="infobar">
-        <span id="ts-info"></span>
-        <span id="scan-info"></span>
-        <div class="info-spacer"></div>
-        <label>ארכיון:</label>
-        <select id="hist-sel" onchange="loadHistory(this.value)"><option value="">נוכחי</option></select>
-        <span class="arch-badge" id="arch-badge">ARCHIVE</span>
-    </div>
+    <!-- infobar removed -->
     <div class="main-layout">
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
@@ -375,14 +357,7 @@
             <div id="loading" class="loading"><div class="spinner"></div><div>טוען נתוני מודיעין...</div></div>
             <div id="cat-view">
                 <div class="cat-header"><div class="cat-header-title"><span class="cat-header-icon" id="cat-icon">📋</span><span id="cat-title">כל המניות</span></div><span class="cat-header-count" id="cat-count"></span></div>
-                <div class="filter-bar" id="filter-bar">
-                    <button class="fbtn active" data-filter="all" onclick="setFilter('all',this)">הכל</button>
-                    <button class="fbtn" data-filter="bullish" onclick="setFilter('bullish',this)">חיובי</button>
-                    <button class="fbtn" data-filter="bearish" onclick="setFilter('bearish',this)">שלילי</button>
-                    <button class="fbtn" data-filter="high" onclick="setFilter('high',this)">ביטחון גבוה</button>
-                    <button class="fbtn" data-filter="us" onclick="setFilter('us',this)">🇺🇸</button>
-                    <button class="fbtn" data-filter="il" onclick="setFilter('il',this)">🇮🇱</button>
-                </div>
+                <!-- filter bar removed -->
                 <div class="stock-grid" id="stock-grid"></div>
             </div>
             <div class="ticker-page" id="ticker-page">
@@ -398,23 +373,7 @@
 <!-- Category Assign Dropdown -->
 <div class="cat-assign-drop" id="cat-assign-drop"></div>
 
-<!-- Run Modal -->
-<div id="run-modal" class="modal">
-    <div class="modal-box">
-        <h3>סריקה כללית — כל הטיקרים</h3>
-        <div class="m-section">
-            <div class="m-section-title">סוג ניתוח</div>
-            <div class="m-analysis-opts">
-                <button class="m-analysis-opt active" data-type="short" onclick="selectAnalysisType('short',this)"><div>⏱ טווח קצר</div><div class="m-analysis-desc">גיאופוליטי, רגולטורי, דוחות, תקלות, חילופי אנשים</div></button>
-                <button class="m-analysis-opt" data-type="long" onclick="selectAnalysisType('long',this)"><div>📅 טווח ארוך</div><div class="m-analysis-desc">מבנה עסקי, תחרות, חדשנות, יציבות פיננסית</div></button>
-            </div>
-        </div>
-        <p style="font-size:10px;color:var(--txt3);margin-bottom:10px">הזן קוד לאישור:</p>
-        <div class="m-pin" id="m-pin"><input type="text" maxlength="1" inputmode="numeric" autocomplete="off"><input type="text" maxlength="1" inputmode="numeric" autocomplete="off"><input type="text" maxlength="1" inputmode="numeric" autocomplete="off"><input type="text" maxlength="1" inputmode="numeric" autocomplete="off"><input type="text" maxlength="1" inputmode="numeric" autocomplete="off"><input type="text" maxlength="1" inputmode="numeric" autocomplete="off"></div>
-        <div class="m-acts"><button class="m-confirm" onclick="confirmRun()">אשר</button><button class="m-cancel" onclick="closeRunModal()">ביטול</button></div>
-        <div class="m-err" id="m-err"></div>
-    </div>
-</div>
+<!-- Run Modal removed -->
 
 <!-- Add Ticker Modal -->
 <div id="add-ticker-modal" class="modal">
@@ -461,7 +420,7 @@
 <script>
 let HASH="",S_HRS=24,MAX_ATT=5,LOCK_MIN=15,att=0,lockUntil=0;
 const WATCHLIST=["ASML","PLTR","MELI","URNM","FCX","ISRG","PWR","XYL","STNG","SMH","LNG","SOXX","QQQ","SPY","MU"];
-let DATA=null,currentFilter="all",selectedAnalysisType="short",selectedMarket="US";
+let DATA=null,selectedMarket="US";
 let currentCategory="__all__",currentTickerPage=null,currentTickerTab="short",editingCategoryId=null;
 
 const DEFAULT_CATEGORIES=[
@@ -492,9 +451,9 @@ function setSess(){sessionStorage.setItem("cats",JSON.stringify({ts:Date.now(),e
 function initPins(id){
     const box=document.getElementById(id);const ins=[...box.querySelectorAll("input")];
     ins.forEach((inp,i)=>{
-        inp.addEventListener("input",function(){this.value=this.value.replace(/\D/g,"");if(this.value&&i<ins.length-1)ins[i+1].focus();if(i===ins.length-1&&this.value){if(id==="pin-box")tryLogin();else confirmRun()}});
-        inp.addEventListener("keydown",function(e){if(e.key==="Backspace"&&!this.value&&i>0){ins[i-1].focus();ins[i-1].value=""}if(e.key==="Enter"){if(id==="pin-box")tryLogin();else confirmRun()}if(e.key==="Escape"&&id==="m-pin")closeRunModal()});
-        inp.addEventListener("paste",function(e){e.preventDefault();const p=(e.clipboardData||window.clipboardData).getData("text").replace(/\D/g,"");for(let j=0;j<Math.min(p.length,ins.length);j++)ins[j].value=p[j];if(p.length>=ins.length){ins[ins.length-1].focus();if(id==="pin-box")tryLogin();else confirmRun()}});
+        inp.addEventListener("input",function(){this.value=this.value.replace(/\D/g,"");if(this.value&&i<ins.length-1)ins[i+1].focus();if(i===ins.length-1&&this.value)tryLogin()});
+        inp.addEventListener("keydown",function(e){if(e.key==="Backspace"&&!this.value&&i>0){ins[i-1].focus();ins[i-1].value=""}if(e.key==="Enter")tryLogin()});
+        inp.addEventListener("paste",function(e){e.preventDefault();const p=(e.clipboardData||window.clipboardData).getData("text").replace(/\D/g,"");for(let j=0;j<Math.min(p.length,ins.length);j++)ins[j].value=p[j];if(p.length>=ins.length){ins[ins.length-1].focus();tryLogin()}});
     });ins[0].focus();
 }
 
@@ -513,11 +472,10 @@ function loadCustomTickers(){try{const ct=localStorage.getItem("custom_tickers")
 function getCustomTickers(){try{const ct=localStorage.getItem("custom_tickers");return ct?JSON.parse(ct):[]}catch{return[]}}
 
 async function loadData(){
-    try{const r=await fetch("master_data.json?v="+Date.now());if(!r.ok)throw new Error(r.status);DATA=await r.json();renderSidebar();render();loadHistIndex()}
+    try{const r=await fetch("master_data.json?v="+Date.now());if(!r.ok)throw new Error(r.status);DATA=await r.json();renderSidebar();render()}
     catch(e){document.getElementById("loading").innerHTML='<div style="color:var(--red)">שגיאה בטעינת נתונים</div><div style="margin-top:8px;font-size:11px;color:var(--txt3)">'+e.message+'</div>'}
 }
-async function loadHistIndex(){try{const r=await fetch("history/index.json?v="+Date.now());if(!r.ok)return;const idx=await r.json();if(idx.length>0){const sel=document.getElementById("hist-sel");idx.forEach(e=>{const o=document.createElement("option");o.value=e.file;o.textContent=e.date;sel.appendChild(o)});document.getElementById("infobar").classList.add("on")}}catch(e){}}
-async function loadHistory(f){if(!f){document.getElementById("arch-badge").classList.remove("on");try{const r=await fetch("master_data.json?v="+Date.now());DATA=await r.json();render()}catch(e){}return}try{const r=await fetch(f+"?v="+Date.now());if(!r.ok)throw 0;DATA=await r.json();document.getElementById("arch-badge").classList.add("on");render()}catch(e){alert("שגיאה בטעינת ארכיון")}}
+/* loadHistIndex and loadHistory removed */
 
 // ── Sidebar ──
 function renderSidebar(){
@@ -550,7 +508,7 @@ function renderSidebar(){
 function toggleSidebar(){document.getElementById("sidebar").classList.toggle("mobile-on");document.getElementById("mobile-overlay").classList.toggle("on")}
 function closeSidebar(){document.getElementById("sidebar").classList.remove("mobile-on");document.getElementById("mobile-overlay").classList.remove("on")}
 
-function setFilter(f,el){currentFilter=f;document.querySelectorAll(".fbtn").forEach(b=>b.classList.remove("active"));el.classList.add("active");render()}
+/* setFilter removed */
 function goHome(){currentTickerPage=null;document.getElementById("ticker-page").classList.remove("on");document.getElementById("cat-view").style.display="";render();closeSidebar()}
 
 function render(){
@@ -558,9 +516,7 @@ function render(){
     const m=DATA.meta||{};const s=m.market_status||"unknown";
     const sMap={open:"שוק פתוח",closed:"שוק סגור",pre_market:"טרום מסחר",after_hours:"אחרי שעות",weekend:"סופ\"ש"};
     document.getElementById("status").innerHTML='<span class="badge '+s+'">'+(sMap[s]||s)+'</span>';
-    if(m.generated_at)document.getElementById("ts-info").textContent=new Date(m.generated_at).toLocaleString("he-IL");
-    if(m.total_tickers)document.getElementById("scan-info").textContent=m.total_tickers+" מניות";
-    document.getElementById("infobar").classList.add("on");
+    /* infobar references removed */
     const ft=document.getElementById("footer");ft.style.display="block";ft.textContent="CATALYST // "+(m.total_tickers||"?")+" stocks / v"+(m.pipeline_version||"3");
 
     if(currentTickerPage)return;
@@ -571,11 +527,7 @@ function render(){
     else if(currentCategory==="__uncat__"){document.getElementById("cat-icon").textContent="📌";document.getElementById("cat-title").textContent="ללא קטגוריה";stocks=stocks.filter(s=>!getTickerCategory(s.ticker))}
     else{const cat=cats.find(c=>c.id===currentCategory);if(cat){document.getElementById("cat-icon").textContent=cat.icon;document.getElementById("cat-title").textContent=cat.name;const ct=getCategoryTickers(cat.id);stocks=stocks.filter(s=>ct.includes(s.ticker))}}
 
-    if(currentFilter==="bullish")stocks=stocks.filter(s=>s.direction==="bullish");
-    else if(currentFilter==="bearish")stocks=stocks.filter(s=>s.direction==="bearish");
-    else if(currentFilter==="high")stocks=stocks.filter(s=>(s.confidence||0)>=70);
-    else if(currentFilter==="us")stocks=stocks.filter(s=>(s.market||"US")==="US");
-    else if(currentFilter==="il")stocks=stocks.filter(s=>(s.market||"US")==="IL");
+    /* filters removed */
 
     document.getElementById("cat-count").textContent=stocks.length+" מניות";
     const grid=document.getElementById("stock-grid");grid.innerHTML="";
@@ -657,12 +609,11 @@ function removeCustomTicker(ticker){
 
 // ── Workflow ──
 async function triggerWorkflow(ticker,analysisType){
-    const btn=document.getElementById("run-btn");btn.textContent="SCANNING...";btn.classList.add("running");btn.disabled=true;
     try{const _e="d1NlUDUwMmdVMWptVkk5OHV2bFpOSmJjMHZkRnRteDJ2bDREX3BoZw==";const _d=atob(_e).split("").reverse().join("");
         const body={ref:"main",inputs:{analysis_type:analysisType||"short"}};if(ticker)body.inputs.ticker=ticker;
         const resp=await fetch("https://api.github.com/repos/itzhak-iab/CATALYST/actions/workflows/daily_matrix.yml/dispatches",{method:"POST",headers:{"Authorization":"token "+_d,"Accept":"application/vnd.github+json"},body:JSON.stringify(body)});
-        if(resp.status===204||resp.ok){const w=ticker?2:4;btn.textContent="RUNNING ~"+w+"MIN";btn.classList.remove("running");setTimeout(()=>{btn.textContent="REFRESHING...";location.reload()},w*60*1000)}else throw new Error("Status "+resp.status);
-    }catch(e){btn.textContent="ERROR";btn.classList.remove("running");btn.disabled=false;console.error("Trigger:",e)}
+        if(resp.status===204||resp.ok){console.log("Workflow dispatched:",ticker||"all",analysisType)}else throw new Error("Status "+resp.status);
+    }catch(e){console.error("Trigger:",e);throw e}
 }
 
 async function triggerDualScan(ticker){
@@ -675,12 +626,7 @@ async function triggerDualScan(ticker){
     }catch(e){console.error("Dual scan:",e)}
 }
 
-// ── Run Modal ──
-let selectedTicker="";
-function selectAnalysisType(t,el){selectedAnalysisType=t;document.querySelectorAll(".m-analysis-opt").forEach(b=>b.classList.remove("active"));el.classList.add("active")}
-function showRunModal(){document.getElementById("run-modal").classList.add("on");document.getElementById("m-err").textContent="";selectedTicker="";selectedAnalysisType="short";document.querySelectorAll(".m-analysis-opt").forEach(b=>b.classList.toggle("active",b.dataset.type==="short"));[...document.querySelectorAll("#m-pin input")].forEach(i=>i.value="");initPins("m-pin")}
-function closeRunModal(){document.getElementById("run-modal").classList.remove("on")}
-async function confirmRun(){const ins=[...document.querySelectorAll("#m-pin input")];let pin="";ins.forEach(i=>pin+=i.value);if(pin.length!==6){document.getElementById("m-err").textContent="הזן 6 ספרות";return}const h=await sha256(pin);if(h!==HASH){document.getElementById("m-err").textContent="קוד שגוי";ins.forEach(i=>i.value="");ins[0].focus();return}closeRunModal();triggerWorkflow(selectedTicker,selectedAnalysisType)}
+/* Run Modal removed — scans are triggered per-ticker only */
 
 // ── Category Assign ──
 function showCatAssign(e,ticker){
@@ -786,14 +732,19 @@ function selectAC(t){document.getElementById("add-ticker-input").value=t.s;docum
 function confirmAddTicker(){
     const ticker=document.getElementById("add-ticker-input").value.trim().toUpperCase();const name=document.getElementById("add-name-input").value.trim();const errEl=document.getElementById("add-err");errEl.textContent="";
     if(!ticker||!name){errEl.textContent="בחר טיקר מהרשימה";return}
-    const custom=getCustomTickers();if(custom.some(c=>c.symbol===ticker)||WATCHLIST.slice(0,15).includes(ticker)){errEl.textContent="טיקר זה כבר במעקב";return}
+    const custom=getCustomTickers();
+    const alreadyTracked=custom.some(c=>c.symbol===ticker)||WATCHLIST.includes(ticker)||(DATA&&DATA.stocks&&DATA.stocks.some(s=>s.ticker===ticker));
+    if(alreadyTracked){errEl.textContent="טיקר זה כבר במעקב";return}
     custom.push({symbol:ticker,name,market:selectedMarket});localStorage.setItem("custom_tickers",JSON.stringify(custom));
     if(!WATCHLIST.includes(ticker))WATCHLIST.push(ticker);closeAddTickerModal();
-    const ph={ticker,company_name:name,sector:"",signal:"סורק...",direction:"neutral",confidence:0,price:0,change_pct:0,bottom_line:"סריקה ראשונית בתהליך...",analysis_type:"",market:selectedMarket,catalysts:[],questions:[],sources:[]};
-    if(!DATA)DATA={stocks:[],meta:{}};DATA.stocks.push(ph);renderSidebar();render();triggerDualScan(ticker);
+    const ph={ticker,company_name:name,sector:"",signal:"סורק...",direction:"neutral",confidence:0,price:0,change_pct:0,bottom_line:"סריקה ראשונית מתבצעת — טווח קצר + טווח ארוך. תוצאות תוך ~3 דקות.",analysis_type:"",market:selectedMarket,catalysts:[],questions:[],sources:[]};
+    if(!DATA)DATA={stocks:[],meta:{}};DATA.stocks.push(ph);renderSidebar();render();
+    // Open ticker page immediately to show scanning state
+    openTickerPage(ticker);
+    triggerDualScan(ticker);
 }
 
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeRunModal();closeAddTickerModal();closeCategoryModal();document.getElementById("cat-assign-drop").classList.remove("on")}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeAddTickerModal();closeCategoryModal();document.getElementById("cat-assign-drop").classList.remove("on")}});
 </script>
 </body>
 </html>
