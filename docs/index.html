@@ -570,8 +570,14 @@ function openDrawer(s){
         h+=`<div class="d-sources"><div class="d-sources-t">תימוכין ומקורות</div><ul class="d-sources-list">`;
         sources.forEach(src=>{
             if(src.startsWith("http")){
-                const display=src.length>60?src.substring(0,57)+"...":src;
-                h+=`<li><a href="${src}" target="_blank" rel="noopener">${display}</a></li>`;
+                try{
+                    const u=new URL(src);
+                    const domain=u.hostname.replace("www.","");
+                    const path=u.pathname.length>1?u.pathname.substring(0,30)+(u.pathname.length>30?"...":""):"";
+                    h+=`<li><a href="${src}" target="_blank" rel="noopener"><strong>${domain}</strong>${path} ↗</a></li>`;
+                }catch(e){
+                    h+=`<li><a href="${src}" target="_blank" rel="noopener">${src.substring(0,60)}... ↗</a></li>`;
+                }
             }else{
                 h+=`<li>${src}</li>`;
             }

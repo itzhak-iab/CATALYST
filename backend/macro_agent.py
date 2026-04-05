@@ -384,7 +384,16 @@ class CatalystEngine:
 3. **אם אין קטליזטור ברור — אמור את זה.** עדיף "אין קטליזטור ברור" מאשר לייצר אחד מלאכותי.
 4. **שאלות ממוקדות**: לכל מניה 2-3 שאלות שמשקיע צריך לשאול את עצמו עכשיו, עם תשובות מבוססות.
 5. **ניתוח buzz ומניפולציות**: כמה מיוצרי ה-buzz הם stakeholders? היכן הנתונים עובדתיים והיכן שיווק? אלו שמייצרים את הבאז הם בין השאר אלו שמעוניינים שנקנה — התייחס לזה בזהירות. מה ההשפעה של הרעש הזה על הלך הרוח בשוק?
-6. **תימוכין ומקורות**: לכל ניתוח, ציין מקורות רשמיים שתומכים בקטליזטורים ובניתוח. לדוגמה: קישורים לדוחות SEC (10-K, 10-Q, 8-K), דוחות רבעוניים באתר החברה, דיווחים ב-Reuters/Bloomberg, החלטות רגולטוריות, נתוני insider trading מ-OpenInsider, וכל מקור מהימן אחר. ציין לפחות 2-4 מקורות לכל מניה.
+6. **תימוכין ומקורות (חובה — URLs מלאים בלבד!)**: לכל מניה, ציין 3-5 קישורים אמיתיים ופעילים. **כל מקור חייב להיות URL מלא שמתחיל ב-https://**. דוגמאות לסוגי מקורות:
+   - SEC EDGAR filing: `https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=TICKER&type=10-Q`
+   - Yahoo Finance: `https://finance.yahoo.com/quote/TICKER/`
+   - MarketWatch: `https://www.marketwatch.com/investing/stock/TICKER`
+   - Reuters: `https://www.reuters.com/companies/TICKER.O`
+   - Seeking Alpha: `https://seekingalpha.com/symbol/TICKER`
+   - OpenInsider: `https://openinsider.com/screener?s=TICKER`
+   - Finviz: `https://finviz.com/quote.ashx?t=TICKER`
+   - Earnings Whispers: `https://www.earningswhispers.com/stocks/TICKER`
+   החלף TICKER בסמל המניה בפועל. **אסור בשום אופן** לכתוב תיאור טקסטואלי במקום URL. כל ערך במערך sources חייב להתחיל ב-https://.
 
 ## נתוני שוק:
 {data_str}
@@ -406,7 +415,7 @@ class CatalystEngine:
       "earnings_insight": "ניתוח דוח רבעוני אחרון — 3-5 משפטים. מה הפתיע? מה השתנה?",
       "bottom_line": "שורה תחתונה אחת — למה לשים לב עכשיו",
       "buzz_alert": "ניתוח באז: כמה מהרעש הוא אמיתי? כמה הוא שיווק של בעלי עניין? מה ההשפעה על הלך הרוח?",
-      "sources": ["https://sec.gov/cgi-bin/browse-edgar?company=XXX", "דוח רבעוני Q1 2025 — אתר החברה", "Reuters: כותרת כתבה רלוונטית"],
+      "sources": ["https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=XXX&type=10-Q", "https://finance.yahoo.com/quote/XXX/", "https://openinsider.com/screener?s=XXX", "https://seekingalpha.com/symbol/XXX"],
       "analysis_type": "{analysis_type}",
       "market": "US/IL",
       "catalysts": [
@@ -437,7 +446,7 @@ class CatalystEngine:
 - analysis_type: "{analysis_type}" (סוג הניתוח)
 - market: "US" (ברירת מחדל) או "IL" (לטיקרים ישראליים)
 - buzz_alert: ניתוח מניפולציות — בדוק מי מייצר את הבאז ולמה, הפרד בין עובדות לשיווק, זהה השפעת הרעש על השוק
-- sources: רשימת 2-4 מקורות רשמיים (URLs או שמות מקורות) — SEC filings, דוחות חברה, Reuters, Bloomberg, OpenInsider וכו'
+- sources: **חובה** — רשימת 3-5 URLs מלאים ופעילים (חייבים להתחיל ב-https://). אסור טקסט חופשי, רק URLs
 - catalysts: 1-5 קטליזטורים (כולל סוגים חדשים: technical, squeeze)
 - questions: 2-3 שאלות עם implication
 - ETFs (SMH, SOXX, QQQ, SPY): נתח ברמת האינדקס עם שאלות ריכוזיות ונזילות
