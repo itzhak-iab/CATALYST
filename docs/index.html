@@ -218,6 +218,27 @@
         .buzz-alert-content{flex:1}
         .buzz-alert-t{font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
         .buzz-alert-b{font-size:12.5px;color:var(--txt);line-height:1.6}
+        /* ── Chart ── */
+        .tp-chart{margin-bottom:14px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:var(--bg2)}
+        .tp-chart-tabs{display:flex;gap:0;background:var(--bg3);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+        .tp-chart-tabs::-webkit-scrollbar{display:none}
+        .tp-chart-tab{padding:8px 14px;font-size:10px;font-weight:700;cursor:pointer;border:none;background:none;color:var(--txt3);transition:.15s;white-space:nowrap;letter-spacing:.5px}
+        .tp-chart-tab:hover{color:var(--txt)}
+        .tp-chart-tab.active{color:var(--accent);background:var(--accent-glow)}
+        .tp-chart-frame{width:100%;height:360px;border:none}
+        /* ── Analyst Ratings ── */
+        .tp-ratings{margin-bottom:14px;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
+        .tp-ratings-t{font-size:11px;font-weight:700;margin-bottom:12px;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+        .tp-ratings-bar{display:flex;height:28px;border-radius:6px;overflow:hidden;margin-bottom:8px}
+        .tp-ratings-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;min-width:20px;transition:.3s}
+        .tp-ratings-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3)}
+        .tp-ratings-detail{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+        .tp-rd{flex:1;min-width:80px;padding:8px;background:var(--bg3);border-radius:8px;text-align:center}
+        .tp-rd-count{font-size:18px;font-weight:900;font-family:var(--mono)}
+        .tp-rd-label{font-size:9px;color:var(--txt3);margin-top:2px}
+        /* ── Remove button ── */
+        .tp-remove-section{margin-top:16px;padding:14px;background:var(--bg2);border:1px solid rgba(240,80,110,.2);border-radius:var(--r);text-align:center}
+
         .tp-sources{margin-bottom:12px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
         .tp-sources-t{font-size:11px;font-weight:700;margin-bottom:8px;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
         .tp-sources-list{list-style:none;padding:0;margin:0}
@@ -552,12 +573,10 @@ function openTickerPage(ticker){
     const stocks=(DATA?DATA.stocks:[]).filter(s=>s.ticker===ticker);
     const shortD=stocks.find(s=>s.analysis_type==="short")||stocks[0]||null;const longD=stocks.find(s=>s.analysis_type==="long")||null;
     const base=shortD||longD||{ticker,company_name:"",price:0,change_pct:0};const chg=base.change_pct||0;
-    const custom=getCustomTickers();const isCustom=custom.some(ct=>ct.symbol===ticker);
 
     document.getElementById("tp-header").innerHTML=`<button class="tp-back" onclick="goHome()">← חזרה לרשימה</button>
         <div class="tp-top"><div class="tp-info"><div class="tp-ticker">${ticker}</div><div class="tp-name">${base.company_name||""}${base.sector?" // "+base.sector:""}</div>
-        <div class="tp-price-row"><span class="tp-price">$${(base.price||0).toLocaleString()}</span><span class="tp-change ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</span></div></div>
-        <div class="tp-actions">${isCustom?'<button class="tp-remove" onclick="removeCustomTicker(\''+ticker+'\')">הסר ממעקב</button>':""}</div></div>`;
+        <div class="tp-price-row"><span class="tp-price">$${(base.price||0).toLocaleString()}</span><span class="tp-change ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</span></div></div></div>`;
 
     const hasShort=!!shortD&&shortD.signal&&shortD.signal!=="סורק...";const hasLong=!!longD&&longD.signal&&longD.signal!=="סורק...";
     currentTickerTab=hasShort?"short":"long";
@@ -576,11 +595,20 @@ function switchTab(tab){
 function renderTickerBody(ticker){
     const body=document.getElementById("tp-body");const stocks=(DATA?DATA.stocks:[]).filter(s=>s.ticker===ticker);
     const data=stocks.find(s=>s.analysis_type===currentTickerTab)||(currentTickerTab==="short"?stocks[0]:null);
+
+    // Chart — always show regardless of analysis data
+    let h=renderChart(ticker);
+
+    // Analyst ratings
+    h+=renderAnalystRatings(ticker);
+
     if(!data||!data.signal||data.signal==="סורק..."){
         const lbl=currentTickerTab==="short"?"טווח קצר":"טווח ארוך";
-        body.innerHTML=`<div class="tp-empty"><div style="font-size:32px;opacity:.3;margin-bottom:12px">${currentTickerTab==="short"?"⏱":"📅"}</div><div style="font-size:14px;margin-bottom:16px">אין נתוני ניתוח ${lbl} עבור ${ticker}</div><button class="tp-scan-btn" onclick="runTickerScan('${ticker}','${currentTickerTab}',this)">סרוק עכשיו — ${lbl}</button></div>`;return;
+        h+=`<div class="tp-empty"><div style="font-size:32px;opacity:.3;margin-bottom:12px">${currentTickerTab==="short"?"⏱":"📅"}</div><div style="font-size:14px;margin-bottom:16px">אין נתוני ניתוח ${lbl} עבור ${ticker}</div><button class="tp-scan-btn" onclick="runTickerScan('${ticker}','${currentTickerTab}',this)">סרוק עכשיו — ${lbl}</button></div>`;
+        h+=renderRemoveButton(ticker);
+        body.innerHTML=h;return;
     }
-    const dir=data.direction||"neutral";const conf=data.confidence||0;const cls=conf>=70?"hi":conf>=45?"mid":"lo";let h="";
+    const dir=data.direction||"neutral";const conf=data.confidence||0;const cls=conf>=70?"hi":conf>=45?"mid":"lo";
     h+=`<div class="tp-signal ${dir}">${data.signal}</div>`;
     h+=`<div class="tp-conf">ביטחון: <strong class="${cls}">${conf}</strong> / 100</div>`;
     h+=`<div style="margin-bottom:14px"><button class="tp-scan-btn" style="font-size:11px;padding:7px 16px" onclick="runTickerScan('${ticker}','${currentTickerTab}',this)">${currentTickerTab==="short"?"⏱ סריקה מחודשת — טווח קצר":"📅 סריקה מחודשת — טווח ארוך"}</button></div>`;
@@ -593,7 +621,52 @@ function renderTickerBody(ticker){
     if(qs.length){h+=`<div class="tp-sec"><div class="tp-sec-t">שאלות מפתח</div>`;qs.forEach(q=>{const ic=q.implication==="חיובי"?"pos":q.implication==="שלילי"?"neg":"neut";h+=`<div class="qa" onclick="this.classList.toggle('open')"><div class="qa-q">${q.question||""}</div><div class="qa-a">${q.answer||""}<br><span class="qa-imp ${ic}">${q.implication||""}</span></div></div>`});h+=`</div>`}
     const sources=data.sources||[];
     if(sources.length){h+=`<div class="tp-sources"><div class="tp-sources-t">תימוכין ומקורות</div><ul class="tp-sources-list">`;sources.forEach(src=>{if(src.startsWith("http")){try{const u=new URL(src);const d=u.hostname.replace("www.","");const p=u.pathname.length>1?u.pathname.substring(0,30)+(u.pathname.length>30?"...":""):"";h+=`<li><a href="${src}" target="_blank" rel="noopener"><strong>${d}</strong>${p} ↗</a></li>`}catch(e){h+=`<li><a href="${src}" target="_blank" rel="noopener">${src.substring(0,60)}... ↗</a></li>`}}else{h+=`<li>${src}</li>`}});h+=`</ul></div>`}
+    h+=renderRemoveButton(ticker);
     body.innerHTML=h;
+}
+
+// ── Chart ──
+let currentChartRange="1M";
+function renderChart(ticker){
+    const ranges=[{k:"1D",l:"יום"},{k:"5D",l:"שבוע"},{k:"1M",l:"חודש"},{k:"YTD",l:"מתחילת שנה"},{k:"1Y",l:"שנה"},{k:"2Y",l:"שנתיים"},{k:"5Y",l:"5 שנים"},{k:"10Y",l:"10 שנים"}];
+    let tabs="";
+    ranges.forEach(r=>{tabs+=`<button class="tp-chart-tab${currentChartRange===r.k?" active":""}" onclick="changeChartRange('${r.k}','${ticker}')">${r.l}</button>`});
+    // Map range to TradingView interval
+    const intervalMap={"1D":"D","5D":"W","1M":"M","YTD":"M","1Y":"M","2Y":"M","5Y":"M","10Y":"M"};
+    const rangeMap={"1D":"1D","5D":"5D","1M":"1M","YTD":"YTD","1Y":"12M","2Y":"24M","5Y":"60M","10Y":"120M"};
+    const src=`https://www.tradingview.com/widgetembed/?frameElementId=tv_chart&symbol=${encodeURIComponent(ticker)}&interval=${intervalMap[currentChartRange]}&range=${rangeMap[currentChartRange]}&theme=dark&style=2&locale=he_IL&enable_publishing=false&hide_top_toolbar=1&hide_side_toolbar=1&save_image=0&backgroundColor=rgba(15,17,23,1)&gridColor=rgba(35,37,56,0.5)&hide_volume=false`;
+    return `<div class="tp-chart"><div class="tp-chart-tabs">${tabs}</div><iframe class="tp-chart-frame" src="${src}" allowtransparency="true"></iframe></div>`;
+}
+function changeChartRange(range,ticker){currentChartRange=range;renderTickerBody(ticker)}
+
+// ── Analyst Ratings (via Yahoo Finance widget) ──
+function renderAnalystRatings(ticker){
+    // Use TradingView Technical Analysis widget as ratings indicator
+    return `<div class="tp-ratings">
+        <div class="tp-ratings-t">המלצות אנליסטים</div>
+        <div id="tv-analyst-${ticker}" style="min-height:80px">
+            <iframe src="https://www.tradingview.com/embed-widget/technical-analysis/?locale=he_IL&symbol=${encodeURIComponent(ticker)}&interval=1W&width=100%25&isTransparent=true&height=200&colorTheme=dark" style="width:100%;height:200px;border:none" allowtransparency="true"></iframe>
+        </div>
+    </div>`;
+}
+
+// ── Remove Ticker Button ──
+function renderRemoveButton(ticker){
+    return `<div class="tp-remove-section"><button class="tp-remove" onclick="removeTicker('${ticker}')" style="width:100%;padding:10px;border-radius:8px;font-size:12px">הסר את ${ticker} מרשימת המעקב</button></div>`;
+}
+
+function removeTicker(ticker){
+    if(!confirm(`להסיר את ${ticker} מרשימת המעקב?`))return;
+    // Remove from custom tickers
+    const custom=getCustomTickers().filter(ct=>ct.symbol!==ticker);
+    localStorage.setItem("custom_tickers",JSON.stringify(custom));
+    // Remove from WATCHLIST
+    const idx=WATCHLIST.indexOf(ticker);if(idx>-1)WATCHLIST.splice(idx,1);
+    // Remove from DATA
+    if(DATA&&DATA.stocks){DATA.stocks=DATA.stocks.filter(s=>s.ticker!==ticker)}
+    // Remove category assignment
+    const a=getTickerAssignments();delete a[ticker];localStorage.setItem("catalyst_ticker_assign",JSON.stringify(a));
+    goHome();renderSidebar();render();
 }
 
 async function runTickerScan(ticker,analysisType,btn){
