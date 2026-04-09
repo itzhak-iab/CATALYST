@@ -131,7 +131,7 @@ class BatchResult(BaseModel):
 class Config:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
     GEMINI_MODEL = "gemini-2.5-flash"
-    GEMINI_FALLBACK_MODELS = ["gemini-2.0-flash", "gemini-1.5-flash"]
+    GEMINI_FALLBACK_MODELS = ["gemini-2.0-flash"]
     OUTPUT_FILE = Path(__file__).parent.parent / "docs" / "master_data.json"
     HISTORY_DIR = Path(__file__).parent.parent / "docs" / "history"
     CONFIG_FILE = Path(__file__).parent.parent / "docs" / "config.json"
