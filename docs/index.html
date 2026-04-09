@@ -9,6 +9,7 @@
     <title>CATALYST</title>
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --bg: #08090c; --bg2: #0f1117; --bg3: #161821; --bg4: #1c1e2a;
@@ -219,23 +220,38 @@
         .buzz-alert-t{font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
         .buzz-alert-b{font-size:12.5px;color:var(--txt);line-height:1.6}
         /* ── Chart ── */
-        .tp-chart{margin-bottom:14px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:var(--bg2)}
-        .tp-chart-tabs{display:flex;gap:0;background:var(--bg3);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+        .tp-chart{margin-bottom:18px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:var(--bg2)}
+        .tp-chart-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg3);border-bottom:1px solid var(--border)}
+        .tp-chart-title{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+        .tp-chart-tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
         .tp-chart-tabs::-webkit-scrollbar{display:none}
-        .tp-chart-tab{padding:8px 14px;font-size:10px;font-weight:700;cursor:pointer;border:none;background:none;color:var(--txt3);transition:.15s;white-space:nowrap;letter-spacing:.5px}
-        .tp-chart-tab:hover{color:var(--txt)}
-        .tp-chart-tab.active{color:var(--accent);background:var(--accent-glow)}
-        .tp-chart-frame{width:100%;height:360px;border:none}
+        .tp-chart-tab{padding:6px 12px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--border);border-radius:6px;background:none;color:var(--txt3);transition:.15s;white-space:nowrap;letter-spacing:.3px}
+        .tp-chart-tab:hover{color:var(--txt);border-color:var(--txt3)}
+        .tp-chart-tab.active{color:#000;background:var(--accent);border-color:var(--accent)}
+        .tp-chart-frame{width:100%;height:420px;border:none;display:block}
         /* ── Analyst Ratings ── */
-        .tp-ratings{margin-bottom:14px;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
-        .tp-ratings-t{font-size:11px;font-weight:700;margin-bottom:12px;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
-        .tp-ratings-bar{display:flex;height:28px;border-radius:6px;overflow:hidden;margin-bottom:8px}
-        .tp-ratings-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;min-width:20px;transition:.3s}
-        .tp-ratings-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3)}
-        .tp-ratings-detail{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-        .tp-rd{flex:1;min-width:80px;padding:8px;background:var(--bg3);border-radius:8px;text-align:center}
-        .tp-rd-count{font-size:18px;font-weight:900;font-family:var(--mono)}
-        .tp-rd-label{font-size:9px;color:var(--txt3);margin-top:2px}
+        .tp-ratings{margin-bottom:18px;padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
+        .tp-ratings-t{font-size:11px;font-weight:700;margin-bottom:14px;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+        .tp-ratings-bar{display:flex;height:32px;border-radius:8px;overflow:hidden;margin-bottom:10px}
+        .tp-ratings-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;min-width:24px;transition:.3s;color:#000}
+        .tp-ratings-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);padding:0 2px}
+        .tp-ratings-detail{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+        .tp-rd{flex:1;min-width:70px;padding:10px 6px;background:var(--bg3);border-radius:10px;text-align:center;border:1px solid var(--border)}
+        .tp-rd-count{font-size:20px;font-weight:900;font-family:var(--mono)}
+        .tp-rd-label{font-size:9px;color:var(--txt3);margin-top:3px;line-height:1.3}
+        /* ── Price Target ── */
+        .tp-price-target{margin-bottom:18px;padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
+        .tp-pt-t{font-size:11px;font-weight:700;margin-bottom:14px;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+        .tp-pt-row{display:flex;gap:8px;flex-wrap:wrap}
+        .tp-pt-card{flex:1;min-width:80px;padding:12px 8px;background:var(--bg3);border-radius:10px;text-align:center;border:1px solid var(--border)}
+        .tp-pt-val{font-size:20px;font-weight:900;font-family:var(--mono)}
+        .tp-pt-label{font-size:9px;color:var(--txt3);margin-top:3px}
+        .tp-pt-upside{display:inline-block;margin-top:10px;padding:5px 14px;border-radius:8px;font-size:12px;font-weight:700;font-family:var(--mono)}
+        .tp-pt-upside.up{background:rgba(45,212,168,.1);color:var(--green);border:1px solid rgba(45,212,168,.2)}
+        .tp-pt-upside.down{background:rgba(240,80,110,.1);color:var(--red);border:1px solid rgba(240,80,110,.2)}
+        /* ── PDF Export ── */
+        .tp-export-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid var(--accent);background:none;color:var(--accent);cursor:pointer;font-size:11px;font-weight:700;transition:.15s;letter-spacing:.5px}
+        .tp-export-btn:hover{background:var(--accent);color:#000}
         /* ── Remove button ── */
         .tp-remove-section{margin-top:16px;padding:14px;background:var(--bg2);border:1px solid rgba(240,80,110,.2);border-radius:var(--r);text-align:center}
 
@@ -576,7 +592,8 @@ function openTickerPage(ticker){
 
     document.getElementById("tp-header").innerHTML=`<button class="tp-back" onclick="goHome()">← חזרה לרשימה</button>
         <div class="tp-top"><div class="tp-info"><div class="tp-ticker">${ticker}</div><div class="tp-name">${base.company_name||""}${base.sector?" // "+base.sector:""}</div>
-        <div class="tp-price-row"><span class="tp-price">$${(base.price||0).toLocaleString()}</span><span class="tp-change ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</span></div></div></div>`;
+        <div class="tp-price-row"><span class="tp-price">$${(base.price||0).toLocaleString()}</span><span class="tp-change ${chg>=0?"up":"down"}">${chg>=0?"+":""}${chg.toFixed(2)}%</span></div></div>
+        <div class="tp-actions"><button class="tp-export-btn" onclick="exportPDF('${ticker}')">📄 ייצוא PDF</button></div></div>`;
 
     const hasShort=!!shortD&&shortD.signal&&shortD.signal!=="סורק...";const hasLong=!!longD&&longD.signal&&longD.signal!=="סורק...";
     currentTickerTab=hasShort?"short":"long";
@@ -599,8 +616,9 @@ function renderTickerBody(ticker){
     // Chart — always show regardless of analysis data
     let h=renderChart(ticker);
 
-    // Analyst ratings
+    // Analyst ratings & price target
     h+=renderAnalystRatings(ticker);
+    h+=renderPriceTarget(ticker);
 
     if(!data||!data.signal||data.signal==="סורק..."){
         const lbl=currentTickerTab==="short"?"טווח קצר":"טווח ארוך";
@@ -631,23 +649,70 @@ function renderChart(ticker){
     const ranges=[{k:"1D",l:"יום"},{k:"5D",l:"שבוע"},{k:"1M",l:"חודש"},{k:"YTD",l:"מתחילת שנה"},{k:"1Y",l:"שנה"},{k:"2Y",l:"שנתיים"},{k:"5Y",l:"5 שנים"},{k:"10Y",l:"10 שנים"}];
     let tabs="";
     ranges.forEach(r=>{tabs+=`<button class="tp-chart-tab${currentChartRange===r.k?" active":""}" onclick="changeChartRange('${r.k}','${ticker}')">${r.l}</button>`});
-    // Map range to TradingView interval
-    const intervalMap={"1D":"D","5D":"W","1M":"M","YTD":"M","1Y":"M","2Y":"M","5Y":"M","10Y":"M"};
+    const intervalMap={"1D":"1","5D":"15","1M":"D","YTD":"D","1Y":"W","2Y":"W","5Y":"M","10Y":"M"};
     const rangeMap={"1D":"1D","5D":"5D","1M":"1M","YTD":"YTD","1Y":"12M","2Y":"24M","5Y":"60M","10Y":"120M"};
-    const src=`https://www.tradingview.com/widgetembed/?frameElementId=tv_chart&symbol=${encodeURIComponent(ticker)}&interval=${intervalMap[currentChartRange]}&range=${rangeMap[currentChartRange]}&theme=dark&style=2&locale=he_IL&enable_publishing=false&hide_top_toolbar=1&hide_side_toolbar=1&save_image=0&backgroundColor=rgba(15,17,23,1)&gridColor=rgba(35,37,56,0.5)&hide_volume=false`;
-    return `<div class="tp-chart"><div class="tp-chart-tabs">${tabs}</div><iframe class="tp-chart-frame" src="${src}" allowtransparency="true"></iframe></div>`;
+    const widgetConfig=JSON.stringify({symbol:ticker,width:"100%",height:420,interval:intervalMap[currentChartRange],range:rangeMap[currentChartRange],timezone:"America/New_York",theme:"dark",style:"2",locale:"he_IL",toolbar_bg:"#0f1117",enable_publishing:false,hide_top_toolbar:false,hide_legend:false,save_image:false,backgroundColor:"rgba(15,17,23,1)",gridColor:"rgba(35,37,56,0.5)",hide_volume:false,container_id:"tv_chart_container_"+ticker});
+    return `<div class="tp-chart"><div class="tp-chart-header"><span class="tp-chart-title">גרף מחיר</span><div class="tp-chart-tabs">${tabs}</div></div><div id="tv_chart_container_${ticker}" style="height:420px"><div class="tradingview-widget-container"><div id="tradingview_${ticker}"></div><script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script><script type="text/javascript">new TradingView.widget(${widgetConfig});</script></div></div></div>`;
 }
 function changeChartRange(range,ticker){currentChartRange=range;renderTickerBody(ticker)}
 
-// ── Analyst Ratings (via Yahoo Finance widget) ──
+// ── Analyst Ratings & Price Target ──
 function renderAnalystRatings(ticker){
-    // Use TradingView Technical Analysis widget as ratings indicator
-    return `<div class="tp-ratings">
-        <div class="tp-ratings-t">המלצות אנליסטים</div>
-        <div id="tv-analyst-${ticker}" style="min-height:80px">
-            <iframe src="https://www.tradingview.com/embed-widget/technical-analysis/?locale=he_IL&symbol=${encodeURIComponent(ticker)}&interval=1W&width=100%25&isTransparent=true&height=200&colorTheme=dark" style="width:100%;height:200px;border:none" allowtransparency="true"></iframe>
-        </div>
-    </div>`;
+    const containerId="analyst_"+ticker+"_"+Date.now();
+    // TradingView Technical Analysis widget (clean embed)
+    const widgetHtml=`<div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js">{"interval":"1W","width":"100%","isTransparent":true,"height":"300","symbol":"${ticker}","showIntervalTabs":true,"displayMode":"multiple","locale":"he_IL","colorTheme":"dark"}</script></div>`;
+    return `<div class="tp-ratings"><div class="tp-ratings-t">ניתוח טכני — המלצות</div><div id="${containerId}" style="min-height:300px">${widgetHtml}</div></div>`;
+}
+
+function renderPriceTarget(ticker){
+    const stocks=(DATA?DATA.stocks:[]).filter(s=>s.ticker===ticker);
+    const stock=stocks[0];
+    if(!stock)return "";
+    let h="";
+    // Analyst Ratings bar (Strong Buy / Buy / Hold / Sell / Strong Sell)
+    const ar=stock.analyst_ratings;
+    if(ar&&(ar.strongBuy||ar.buy||ar.hold||ar.sell||ar.strongSell)){
+        const sb=ar.strongBuy||0,b=ar.buy||0,ho=ar.hold||0,se=ar.sell||0,ss=ar.strongSell||0;
+        const total=sb+b+ho+se+ss;
+        if(total>0){
+            const pct=v=>Math.max(v/total*100,v>0?8:0);
+            h+=`<div class="tp-ratings" style="margin-bottom:18px"><div class="tp-ratings-t">המלצות אנליסטים (${total} אנליסטים)</div>
+                <div class="tp-ratings-bar">
+                    <div class="tp-ratings-seg" style="width:${pct(sb)}%;background:#16a34a">${sb}</div>
+                    <div class="tp-ratings-seg" style="width:${pct(b)}%;background:#2dd4a8">${b}</div>
+                    <div class="tp-ratings-seg" style="width:${pct(ho)}%;background:#f5a623">${ho}</div>
+                    <div class="tp-ratings-seg" style="width:${pct(se)}%;background:#f97316">${se}</div>
+                    <div class="tp-ratings-seg" style="width:${pct(ss)}%;background:#f0506e">${ss}</div>
+                </div>
+                <div class="tp-ratings-detail">
+                    <div class="tp-rd"><div class="tp-rd-count" style="color:#16a34a">${sb}</div><div class="tp-rd-label">קנייה חזקה</div></div>
+                    <div class="tp-rd"><div class="tp-rd-count" style="color:#2dd4a8">${b}</div><div class="tp-rd-label">קנייה</div></div>
+                    <div class="tp-rd"><div class="tp-rd-count" style="color:#f5a623">${ho}</div><div class="tp-rd-label">החזקה</div></div>
+                    <div class="tp-rd"><div class="tp-rd-count" style="color:#f97316">${se}</div><div class="tp-rd-label">מכירה</div></div>
+                    <div class="tp-rd"><div class="tp-rd-count" style="color:#f0506e">${ss}</div><div class="tp-rd-label">מכירה חזקה</div></div>
+                </div>
+            </div>`;
+        }
+    }
+    // Price Target
+    const pt=stock.price_target;
+    if(pt&&pt.mean){
+        const current=stock.price||0;
+        const mean=pt.mean||0;const low=pt.low||0;const high=pt.high||0;const numAn=pt.num_analysts||0;
+        const upside=current>0?((mean-current)/current*100):0;
+        const upsideCls=upside>=0?"up":"down";
+        h+=`<div class="tp-price-target"><div class="tp-pt-t">מחיר יעד ממוצע${numAn?" ("+numAn+" אנליסטים)":""}</div>
+            <div class="tp-pt-row">
+                <div class="tp-pt-card"><div class="tp-pt-val" style="color:var(--red)">$${low.toFixed(0)}</div><div class="tp-pt-label">נמוך</div></div>
+                <div class="tp-pt-card" style="border-color:var(--accent)"><div class="tp-pt-val" style="color:var(--accent)">$${mean.toFixed(0)}</div><div class="tp-pt-label">ממוצע</div></div>
+                <div class="tp-pt-card"><div class="tp-pt-val" style="color:var(--green)">$${high.toFixed(0)}</div><div class="tp-pt-label">גבוה</div></div>
+            </div>
+            <div style="text-align:center;margin-top:12px"><span class="tp-pt-upside ${upsideCls}">${upside>=0?"+":""}${upside.toFixed(1)}% ${upside>=0?"פוטנציאל עלייה":"מתחת ליעד"}</span></div>
+        </div>`;
+    } else {
+        h+=`<div class="tp-price-target"><div class="tp-pt-t">מחיר יעד אנליסטים</div><div style="text-align:center;color:var(--txt3);font-size:12px;padding:10px">אין נתוני מחיר יעד. יעודכן בסריקה הבאה.</div></div>`;
+    }
+    return h;
 }
 
 // ── Remove Ticker Button ──
@@ -667,6 +732,34 @@ function removeTicker(ticker){
     // Remove category assignment
     const a=getTickerAssignments();delete a[ticker];localStorage.setItem("catalyst_ticker_assign",JSON.stringify(a));
     goHome();renderSidebar();render();
+}
+
+// ── PDF Export ──
+function exportPDF(ticker){
+    const header=document.getElementById("tp-header");
+    const tabs=document.getElementById("tp-tabs");
+    const body=document.getElementById("tp-body");
+    // Build a cloned container for PDF
+    const container=document.createElement("div");
+    container.style.cssText="background:#0f1117;color:#e4e6ef;padding:24px;font-family:Heebo,sans-serif;direction:rtl;max-width:780px";
+    // Title section
+    const stocks=(DATA?DATA.stocks:[]).filter(s=>s.ticker===ticker);
+    const base=stocks[0]||{ticker,company_name:"",price:0,change_pct:0};
+    const chg=base.change_pct||0;
+    container.innerHTML=`<div style="margin-bottom:20px;border-bottom:2px solid #00d4ff;padding-bottom:16px">
+        <div style="font-size:28px;font-weight:900;letter-spacing:3px;color:#00d4ff">${ticker}</div>
+        <div style="font-size:14px;color:#9498b3;margin-top:4px">${base.company_name||""} ${base.sector?" // "+base.sector:""}</div>
+        <div style="margin-top:8px"><span style="font-size:18px;font-weight:700">$${(base.price||0).toLocaleString()}</span> <span style="color:${chg>=0?"#2dd4a8":"#f0506e"};font-weight:700">${chg>=0?"+":""}${chg.toFixed(2)}%</span></div>
+        <div style="font-size:10px;color:#565a75;margin-top:8px">CATALYST // ${new Date().toLocaleDateString("he-IL")} // ${currentTickerTab==="short"?"ניתוח טווח קצר":"ניתוח טווח ארוך"}</div>
+    </div>`;
+    // Clone the body content (without iframes/charts)
+    const bodyClone=body.cloneNode(true);
+    // Remove iframes, chart containers, and remove button from PDF
+    bodyClone.querySelectorAll("iframe,.tp-chart,.tp-remove-section,.tp-ratings").forEach(el=>el.remove());
+    container.appendChild(bodyClone);
+    document.body.appendChild(container);
+    const opt={margin:[10,10,10,10],filename:`CATALYST_${ticker}_${new Date().toISOString().slice(0,10)}.pdf`,image:{type:"jpeg",quality:.95},html2canvas:{scale:2,useCORS:true,backgroundColor:"#0f1117"},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}};
+    html2pdf().set(opt).from(container).save().then(()=>{document.body.removeChild(container)}).catch(()=>{document.body.removeChild(container)});
 }
 
 async function runTickerScan(ticker,analysisType,btn){
